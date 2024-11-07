@@ -1,5 +1,5 @@
 name: app_ui
-description: UI components of the app.
+description: App UI Component Library.
 version: 0.1.0+1
 publish_to: none
 
@@ -14,5 +14,20 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mocktail: ^1.0.4
   very_good_analysis: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  generate: false
+
+  fonts:
+    - family: Ubuntu
+      fonts:
+        - asset: assets/fonts/Ubuntu-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Ubuntu-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Ubuntu-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Ubuntu-Light.ttf
+          weight: 300

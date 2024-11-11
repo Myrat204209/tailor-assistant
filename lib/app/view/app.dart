@@ -7,13 +7,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return ScreenUtilInit(
-          designSize: Size(constraints.maxWidth, constraints.maxHeight),
-          builder: (context, child) => const AppView(),
-        );
-      },
+    return SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return ScreenUtilInit(
+            designSize: Size(constraints.maxWidth, constraints.maxHeight),
+            builder: (context, child) => const AppView(),
+          );
+        },
+      ),
     );
   }
 }

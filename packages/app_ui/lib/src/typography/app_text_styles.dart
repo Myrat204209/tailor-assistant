@@ -36,7 +36,7 @@ class AppTextStyle extends TextStyle {
     this.lineHeight,
     double? height,
     super.letterSpacing,
-    super.color,
+    super.color = AppColors.textColor,
   }) : super(
           package: 'app_ui',
           fontFamily: 'Ubuntu',

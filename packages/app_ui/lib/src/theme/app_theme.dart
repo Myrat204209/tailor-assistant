@@ -2,7 +2,6 @@
 
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 /// {@template dap_theme}
 /// The Default App [ThemeData].
@@ -14,7 +13,8 @@ class AppTheme {
   /// Default `ThemeData` for App UI.
   ThemeData get themeData {
     return ThemeData(
-      canvasColor: _backgroundColor,
+      // canvasColor: _backgroundColor,
+      useMaterial3: true,
       scaffoldBackgroundColor: _backgroundColor,
       appBarTheme: _appBarTheme,
       textTheme: _textTheme,
@@ -26,13 +26,13 @@ class AppTheme {
     return const ColorScheme(
       brightness: Brightness.light,
       primary: AppColors.mainAccent,
-      onPrimary: AppColors.majorAccent,
+      onPrimary: AppColors.bgSecond,
       secondary: AppColors.secondAccent,
       onSecondary: AppColors.alertAccent,
       error: AppColors.secondAccent,
       onError: AppColors.alertAccent,
       surface: AppColors.bgMain,
-      onSurface: AppColors.mainAccent,
+      onSurface: AppColors.textColor,
       tertiary: AppColors.thirdLightAccent,
     );
   }
@@ -41,20 +41,18 @@ class AppTheme {
 
   AppBarTheme get _appBarTheme {
     return AppBarTheme(
-      titleTextStyle: const AppTextStyle.text().lg().semiBold().copyWith(
-            letterSpacing: 1,
+      titleTextStyle: const AppTextStyle.text().headline5().regular().copyWith(
             fontFamily: 'Ubuntu',
-            color: AppColors.mainAccent,
+            color: AppColors.textColor,
           ),
       scrolledUnderElevation: 0,
-      centerTitle: true,
       elevation: 0,
       toolbarHeight: 70,
       backgroundColor: AppColors.bgSecond,
-      systemOverlayStyle: const SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-      ),
+      // systemOverlayStyle: const SystemUiOverlayStyle(
+      //   statusBarIconBrightness: Brightness.dark,
+      //   statusBarBrightness: Brightness.light,
+      // ),
     );
   }
 
@@ -88,7 +86,7 @@ class AppDarkTheme extends AppTheme {
   @override
   ColorScheme get _colorScheme {
     return const ColorScheme.dark().copyWith(
-     brightness: Brightness.dark,
+      brightness: Brightness.dark,
       primary: AppColors.mainAccentDark,
       onPrimary: AppColors.majorAccentDark,
       secondary: AppColors.secondAccentDark,

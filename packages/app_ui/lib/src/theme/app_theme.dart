@@ -41,7 +41,7 @@ class AppTheme {
 
   AppBarTheme get _appBarTheme {
     return AppBarTheme(
-      titleTextStyle: const AppTextStyle.text().headline5().regular().copyWith(
+      titleTextStyle: const AppTextStyle.text().pageTitle().regular().copyWith(
             fontFamily: 'Ubuntu',
             color: AppColors.textColor,
           ),
@@ -60,19 +60,19 @@ class AppTheme {
 
   /// The UI text theme based on [AppTextStyle].
   static final uiTextTheme = TextTheme(
-    displayLarge: const AppTextStyle.text().headline1(),
-    displayMedium: const AppTextStyle.text().headline2(),
-    displaySmall: const AppTextStyle.text().headline3(),
-    headlineMedium: const AppTextStyle.text().headline4(),
-    headlineSmall: const AppTextStyle.text().headline5(),
-    titleLarge: const AppTextStyle.text().headline6(),
-    titleMedium: const AppTextStyle.text().subtitle1(),
-    titleSmall: const AppTextStyle.text().subtitle2(),
-    bodyLarge: const AppTextStyle.text().bodyText1(),
-    bodyMedium: const AppTextStyle.text().bodyText2(),
-    labelLarge: const AppTextStyle.text().button(),
-    bodySmall: const AppTextStyle.text().caption(),
-    labelSmall: const AppTextStyle.text().overline(),
+    displayLarge: const AppTextStyle.text().pageTitleBold(),
+    displayMedium: const AppTextStyle.text().pageTitle(),
+    displaySmall: const AppTextStyle.text().contentTitle(),
+    headlineMedium: const AppTextStyle.text().pageTitle(),
+    headlineSmall: const AppTextStyle.text().contentTitle(),
+    titleLarge: const AppTextStyle.text().titleBold(),
+    titleMedium: const AppTextStyle.text().title(),
+    titleSmall: const AppTextStyle.text().description(),
+    // bodyLarge: const AppTextStyle.text().bodyText1(),
+    // bodyMedium: const AppTextStyle.text().bodyText2(),
+    // labelLarge: const AppTextStyle.text().button(),
+    // bodySmall: const AppTextStyle.text().caption(),
+    // labelSmall: const AppTextStyle.text().overline(),
   ).apply();
 }
 

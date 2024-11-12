@@ -1,5 +1,5 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:dap_foreman_assis/login/login.dart';
+import 'package:dap_foreman_assis/root/root.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -28,7 +28,7 @@ class _AppViewState extends State<AppView> {
       debugShowCheckedModeBanner: false,
       theme: const AppTheme().themeData,
       // darkTheme: const AppDarkTheme().themeData,
-      home: const LoginPage(),
+      home: const RootPage(),
       // home: AuthPage(),
     );
   }

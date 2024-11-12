@@ -180,116 +180,40 @@ extension AppTextStyleFontWeightExtension on AppTextStyle {
 
 /// Material typography
 extension AppTextStyleMaterialExtension on AppTextStyle {
-  /// Display 2 Text Style
-  AppTextStyle display2() => _copyWith(
-        fontSize: 57,
-        fontWeight: AppFontWeight.bold,
-        height: 1.12,
-        letterSpacing: -0.25,
-      );
-
-  /// Display 3 Text Style
-  AppTextStyle display3() => _copyWith(
-        fontSize: 45,
-        fontWeight: AppFontWeight.bold,
-        height: 1.15,
-      );
-
-  /// Headline 1 Text Style
-  AppTextStyle headline1() => _copyWith(
-        fontSize: 36,
-        fontWeight: AppFontWeight.bold,
+  /// Title Text Style
+  AppTextStyle title() => _copyWith(
+        fontSize: 16,
+        fontWeight: AppFontWeight.regular,
         height: 1.22,
       );
 
-  /// Headline 2 Text Style
-  AppTextStyle headline2() => _copyWith(
-        fontSize: 32,
-        fontWeight: AppFontWeight.bold,
-        height: 1.25,
+  /// Description Text Style
+  AppTextStyle description() => _copyWith(
+        fontSize: 14,
+        fontWeight: AppFontWeight.regular,
       );
 
-  /// Headline 3 Text Style
-  AppTextStyle headline3() => _copyWith(
-        fontSize: 28,
-        fontWeight: AppFontWeight.semiBold,
-        height: 1.28,
-      );
-
-  /// Headline 4 Text Style
-  AppTextStyle headline4() => _copyWith(
-        fontSize: 24,
-        fontWeight: AppFontWeight.semiBold,
-        height: 1.33,
-      );
-
-  /// Headline 5 Text Style
-  AppTextStyle headline5() => _copyWith(
+  /// Page Title Text Style
+  AppTextStyle pageTitle() => _copyWith(
         fontSize: 22,
         fontWeight: AppFontWeight.regular,
-        height: 1.27,
       );
 
-  /// Headline 6 Text Style
-  AppTextStyle headline6() => _copyWith(
-        fontSize: 18,
-        fontWeight: AppFontWeight.semiBold,
-        height: 1.33,
+  /// Page Title Text Style
+  AppTextStyle contentTitle() => _copyWith(
+        fontSize: 20,
+        fontWeight: AppFontWeight.regular,
       );
 
-  /// Subtitle 1 Text Style
-  AppTextStyle subtitle1() => _copyWith(
+  /// Title Bold Text Style
+  AppTextStyle titleBold() => _copyWith(
         fontSize: 16,
-        height: 1.5,
-        letterSpacing: 0.1,
+        fontWeight: AppFontWeight.bold,
       );
 
-  /// Subtitle 2 Text Style
-  AppTextStyle subtitle2() => _copyWith(
-        fontSize: 14,
-        height: 1.42,
-        letterSpacing: 0.1,
-      );
-
-  /// Body Text 1 Text Style
-  AppTextStyle bodyText1() => _copyWith(
-        fontSize: 16,
-        height: 1.5,
-        letterSpacing: 0.5,
-      );
-
-  /// Body Text 2 Text Style (the default)
-  AppTextStyle bodyText2() => _copyWith(
-        fontSize: 14,
-        height: 1.42,
-        letterSpacing: 0.25,
-      );
-
-  /// Caption Text Style
-  AppTextStyle caption() => _copyWith(
-        fontSize: 12,
-        height: 1.33,
-        letterSpacing: 0.4,
-      );
-
-  /// Button Text Style
-  AppTextStyle button() => _copyWith(
-        fontSize: 16,
-        height: 1.42,
-        letterSpacing: 0.1,
-      );
-
-  /// Overline Text Style
-  AppTextStyle overline() => _copyWith(
-        fontSize: 12,
-        height: 1.33,
-        letterSpacing: 0.5,
-      );
-
-  /// Label Small Text Style
-  AppTextStyle labelSmall() => _copyWith(
-        fontSize: 11,
-        height: 1.45,
-        letterSpacing: 0.5,
+  /// Page Title Bold Text Style
+  AppTextStyle pageTitleBold() => _copyWith(
+        fontSize: 20,
+        fontWeight: AppFontWeight.bold,
       );
 }

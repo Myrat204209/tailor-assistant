@@ -51,8 +51,15 @@ extension WidgetClipperX on Widget {
       );
   Widget clipperOnly(double radius) => ClipRRect(
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(radius),
-            bottomRight: Radius.circular(radius),),
+          topLeft: Radius.circular(radius),
+          bottomRight: Radius.circular(radius),
+        ),
+        child: this,
+      );
+  Widget clipperSymmetric(double radius) => ClipRRect(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(radius),
+        ),
         child: this,
       );
 }

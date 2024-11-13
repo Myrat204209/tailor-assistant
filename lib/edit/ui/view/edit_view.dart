@@ -32,61 +32,17 @@ class EditView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: DropdownButtonFormField2<String>(
-                isExpanded: true,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(15),
+              child: SearchBar(
+                backgroundColor: const WidgetStatePropertyAll(Colors.white),
+                trailing: [
+                  const Icon(Icons.close_rounded).paddingOnly(right: 10),
+                  const Icon(Icons.arrow_downward_rounded),
+                ],
+                elevation: const WidgetStatePropertyAll(0),
+                shape: const WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
-                  // Add more decoration..
-                ),
-                hint: Text(
-                  'Список изделий',
-                  style: const AppTextStyle.text()
-                      .title()
-                      .withColor(AppColors.textColor),
-                ),
-                items: genderItems
-                    .map(
-                      (item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const AppTextStyle.text()
-                              .title()
-                              .withColor(AppColors.textColor),
-                        ),
-                      ),
-                    )
-                    .toList(),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select gender.';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  //Do something when selected item is changed.
-                },
-                onSaved: (value) {},
-                buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.only(right: 16),
-                ),
-                iconStyleData: const IconStyleData(
-                  icon: Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    size: 25,
-                  ),
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
                 ),
               ).paddingOnly(left: 20, right: 14),
             ),
@@ -98,29 +54,53 @@ class EditView extends StatelessWidget {
             ),
           ],
         ).paddingOnly(bottom: 24),
-        const AppListTile().colorize(Colors.white),
-        const Divider(
-          height: 0.1,
-          color: AppColors.secondAccent,
+        AppTextField(
+          controller: TextEditingController(),
+          titleText: 'ОВ - плеч',
+          hintText: 'Выведите количество',
+          isClose: true,
         ),
-        const AppListTile().colorize(Colors.white),
-        const Divider(
-          height: 0.1,
-          color: AppColors.secondAccent,
+        TextButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AppDialog(
+                title: 'Выйти из аккаунта?',
+                onTap: () {},
+                buttonText: 'Отправить',
+              ),
+            );
+          },
+          child: const Text('Press me'),
         ),
-        const AppListTile().colorize(Colors.white),
-        const Divider(
-          height: 0.1,
-          color: AppColors.secondAccent,
-        ),
+
+        // AppTextField(
+        //   controller: TextEditingController(),
+        //   titleText: 'Распошивание рукавов',
+        //   hintText: '52',
+        //   isClose: true,
+        // ),
+        // AppTextField(
+        //   controller: TextEditingController(),
+        //   titleText: 'ПС - пришивание киперки',
+        //   hintText: '150',
+        //   isClose: true,
+        // ),
       ],
     );
   }
 }
 
+
+
 final List<String> genderItems = [
   'Male',
   'Female',
+  'Female1',
+  'Female2',
+  'Female3',
+  'Female4',
+  'Female5',
 ];
 
 class AppListTile extends StatelessWidget {

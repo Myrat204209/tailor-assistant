@@ -1,12 +1,14 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'app_card.dart';
 
 /// Decoration widget for top corner of card widget
 class CardTopCornerDecoration extends StatelessWidget {
   /// Constructor
   const CardTopCornerDecoration({
+    required this.cornerTopColor,
     super.key,
   });
-
+  final Color cornerTopColor;
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -15,7 +17,7 @@ class CardTopCornerDecoration extends StatelessWidget {
             letterSpacing: 5,
             fontSize: 30,
             height: 0.6,
-            color: AppColors.thirdLightAccent,
+            color: cornerTopColor,
           ),
     );
   }
@@ -25,9 +27,10 @@ class CardTopCornerDecoration extends StatelessWidget {
 class CardCornerDecoration extends StatelessWidget {
   /// Constructor
   const CardCornerDecoration({
+    required this.cornerColor,
     super.key,
   });
-
+  final Color cornerColor;
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -44,8 +47,8 @@ class CardCornerDecoration extends StatelessWidget {
           ).paddingOnly(right: 10),
           SizedBox.square(
             dimension: 30,
-            child: const ColoredBox(
-              color: AppColors.majorLightAccent,
+            child: ColoredBox(
+              color: cornerColor,
             ).clipperOnly(13),
           ),
         ],

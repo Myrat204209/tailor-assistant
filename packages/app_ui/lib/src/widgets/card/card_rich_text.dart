@@ -1,42 +1,39 @@
 part of 'app_card.dart';
 
-/// Card content text creator widget
 class AppCardRichText extends StatelessWidget {
-  /// Constructor
   const AppCardRichText({
     required this.title,
     required this.values,
+    required this.colorScheme, // Add text color as a parameter
     super.key,
   });
 
-  /// Title for content of card
   final String title;
-
-  /// Values for specific title of card
   final List<String> values;
+  final ColorScheme colorScheme; // Dynamic text color
+
   @override
   Widget build(BuildContext context) {
-    return Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-            text: '$title: ', // Text before the colon
-            style: const AppTextStyle.text()
-                .title()
-                .withColor(AppColors.textLight),
-          ),
-          TextSpan(
-            text: values
-                .map(
-                  (word) => word != values.last ? '$word, ' : word,
-                )
-                .join(), // Text after the colon
-            style: const AppTextStyle.text()
-                .description()
-                .withColor(AppColors.textLightTitle),
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '$title: ',
+              style: const AppTextStyle.text()
+                  .description()
+                  .withColor(colorScheme.outline),
+            ),
+            TextSpan(
+              text: values.join(', '),
+              style: const AppTextStyle.text()
+                  .description()
+                  .withColor(colorScheme.shadow), // Use dynamic color
+            ),
+          ],
+        ),
       ),
-    ).paddingOnly(bottom: 5);
+    );
   }
 }

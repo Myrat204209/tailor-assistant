@@ -5,6 +5,7 @@ class SewersView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       children: [
         UiAppBar(
@@ -16,33 +17,17 @@ class SewersView extends StatelessWidget {
           firstOnTap: () {},
           secondOnTap: () {},
           thirdOnTap: () {},
+          colorScheme: colorScheme,
         ),
         Expanded(
           child: ListView.builder(
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return ListTile(
-                tileColor: Colors.white,
-                title: Text(
-                  'Оразгуль',
-                  style: const AppTextStyle.text().contentTitle(),
-                ).paddingSymmetric(vertical: 16, horizontal: 14),
-                trailing: IconButton.filled(
-                  onPressed: () {
-                    Navigator.of(context).push(ProfilePage.route());
-                  },
-                  style: FilledButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    alignment: Alignment.center,
-                    foregroundColor: AppColors.thirdAccent,
-                    backgroundColor: AppColors.thirdLightAccent,
-                  ),
-                  icon: const Icon(Icons.east_sharp, size: 35)
-                      .paddingAll(12)
-                      .paddingOnly(bottom: 5),
-                ).paddingOnly(right: 14),
-                contentPadding: EdgeInsets.zero,
-                shape: ShapeBorderX.roundedRectangle(15),
+              return SewerTile(
+                name: 'Оразгуль',
+                onTap: () {
+                  Navigator.of(context).push(ProfilePage.route());
+                },
               ).paddingSymmetric(horizontal: 20, vertical: 7);
             },
             itemCount: 5,

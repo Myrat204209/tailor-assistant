@@ -1,157 +1,154 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-/// {@template dap_theme}
-/// The Default App [ThemeData].
-/// {@endtemplate}
-class AppTheme {
-  /// {@macro dap_theme}
-  const AppTheme();
+/// Base App Theme
+abstract class AppBaseTheme {
+  const AppBaseTheme();
 
-  /// Default `ThemeData` for App UI.
-  ThemeData get themeData {
-    return ThemeData(
-      // canvasColor: _backgroundColor,
-      useMaterial3: true,
-      scaffoldBackgroundColor: _backgroundColor,
-      appBarTheme: _appBarTheme,
-      textTheme: _textTheme,
-      colorScheme: _colorScheme,
-    );
-  }
+  /// Returns the primary `ThemeData` for the app
+  ThemeData get themeData;
 
-  ColorScheme get _colorScheme {
-    return const ColorScheme(
-      brightness: Brightness.light,
-      primary: AppColors.mainAccent,
-      onPrimary: AppColors.bgSecond,
-      secondary: AppColors.secondAccent,
-      onSecondary: AppColors.alertAccent,
-      error: AppColors.secondAccent,
-      onError: AppColors.alertAccent,
-      surface: AppColors.bgMain,
-      onSurface: AppColors.textColor,
-      tertiary: AppColors.thirdLightAccent,
-    );
-  }
+  /// Returns the `ColorScheme` for the theme
+  ColorScheme get colorScheme;
 
-  Color get _backgroundColor => AppColors.bgMain;
+  /// Shared Icon Theme
+  IconThemeData get iconTheme => IconThemeData(color: colorScheme.onSurface);
 
-  AppBarTheme get _appBarTheme {
-    return AppBarTheme(
-      titleTextStyle: const AppTextStyle.text().pageTitle().regular().copyWith(
-            fontFamily: 'Ubuntu',
-            color: AppColors.textColor,
-          ),
-      scrolledUnderElevation: 0,
-      elevation: 0,
-      toolbarHeight: 70,
-      backgroundColor: AppColors.bgSecond,
-      // systemOverlayStyle: const SystemUiOverlayStyle(
-      //   statusBarIconBrightness: Brightness.dark,
-      //   statusBarBrightness: Brightness.light,
-      // ),
-    );
-  }
+  /// Shared Input Decoration Theme
+  InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: colorScheme.onSurface),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: colorScheme.primary),
+        ),
+        labelStyle: TextStyle(color: colorScheme.onSurface),
+        hintStyle: TextStyle(color: colorScheme.onSurface.withOpacity(0.7)),
+      );
 
-  TextTheme get _textTheme => uiTextTheme;
+  /// Shared Button Theme
+  ButtonThemeData get buttonTheme => ButtonThemeData(
+        buttonColor: colorScheme.primary,
+        textTheme: ButtonTextTheme.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      );
 
-  /// The UI text theme based on [AppTextStyle].
-  static final uiTextTheme = TextTheme(
-    displayLarge: const AppTextStyle.text().pageTitleBold(),
-    displayMedium: const AppTextStyle.text().pageTitle(),
-    displaySmall: const AppTextStyle.text().contentTitle(),
-    headlineMedium: const AppTextStyle.text().pageTitle(),
-    headlineSmall: const AppTextStyle.text().contentTitle(),
-    titleLarge: const AppTextStyle.text().titleBold(),
-    titleMedium: const AppTextStyle.text().title(),
-    titleSmall: const AppTextStyle.text().description(),
-    // bodyLarge: const AppTextStyle.text().bodyText1(),
-    // bodyMedium: const AppTextStyle.text().bodyText2(),
-    // labelLarge: const AppTextStyle.text().button(),
-    // bodySmall: const AppTextStyle.text().caption(),
-    // labelSmall: const AppTextStyle.text().overline(),
-  ).apply();
+  /// Shared Divider Theme
+  DividerThemeData get dividerTheme => DividerThemeData(
+        color: colorScheme.onSurface.withOpacity(0.5),
+        thickness: 1,
+        indent: 16,
+        endIndent: 16,
+      );
+
+  /// Restores your original `AppTextStyle` for the `TextTheme`
+  TextTheme get textTheme => TextTheme(
+        displayLarge: const AppTextStyle.text().pageTitleBold(),
+        displayMedium: const AppTextStyle.text().pageTitle(),
+        displaySmall: const AppTextStyle.text().contentTitle(),
+        headlineMedium: const AppTextStyle.text().pageTitle(),
+        headlineSmall: const AppTextStyle.text().contentTitle(),
+        titleLarge: const AppTextStyle.text().titleBold(),
+        titleMedium: const AppTextStyle.text().title(),
+        titleSmall: const AppTextStyle.text().description(),
+      );
 }
 
-/// {@template app_dark_theme}
-/// Dark Mode App [ThemeData].
-/// {@endtemplate}
-class AppDarkTheme extends AppTheme {
-  /// {@macro app_dark_theme}
+/// Light Theme
+class AppTheme extends AppBaseTheme {
+  const AppTheme();
+
+  @override
+  ThemeData get themeData {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: AppColors.bgMain, // Distinct background color
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        backgroundColor: colorScheme.surface, // Distinct app bar surface
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.dark,
+        ),
+        titleTextStyle: textTheme.titleLarge?.copyWith(fontFamily: 'Ubuntu'),
+      ),
+      textTheme: textTheme,
+      iconTheme: iconTheme,
+      inputDecorationTheme: inputDecorationTheme,
+      buttonTheme: buttonTheme,
+      dividerTheme: dividerTheme,
+    );
+  }
+
+  @override
+  ColorScheme get colorScheme {
+    return const ColorScheme.light(
+      primary: AppColors.mainAccent,
+      onPrimary: AppColors.secondAccent,
+      secondary: AppColors.majorAccent,
+      onSecondary: AppColors.majorLightAccent,
+      error: AppColors.alertLightAccent,
+      onError: AppColors.alertAccent,
+      onSurface: AppColors.textColor,
+      tertiary: AppColors.thirdAccent,
+      onTertiary: AppColors.thirdLightAccent,
+      outline: AppColors.textLight,
+      shadow: AppColors.textLightTitle,
+    );
+  }
+}
+
+/// Dark Theme
+class AppDarkTheme extends AppBaseTheme {
   const AppDarkTheme();
 
   @override
-  ColorScheme get _colorScheme {
-    return const ColorScheme.dark().copyWith(
+  ThemeData get themeData {
+    return ThemeData(
+      useMaterial3: true,
       brightness: Brightness.dark,
-      primary: AppColors.mainAccentDark,
-      onPrimary: AppColors.majorAccentDark,
-      secondary: AppColors.secondAccentDark,
-      onSecondary: AppColors.alertAccentDark,
-      error: AppColors.secondAccentDark,
-      onError: AppColors.alertAccentDark,
-      surface: AppColors.bgMainDark,
-      onSurface: AppColors.mainAccentDark,
-      tertiary: AppColors.thirdLightAccentDark,
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor:
+          AppColors.bgMainDark, // Distinct background color
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        backgroundColor: colorScheme.surface, // Distinct app bar surface
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarBrightness: Brightness.dark,
+          statusBarIconBrightness: Brightness.light,
+        ),
+        titleTextStyle: textTheme.titleLarge?.copyWith(fontFamily: 'Ubuntu'),
+      ),
+      textTheme: textTheme,
+      iconTheme: iconTheme,
+      inputDecorationTheme: inputDecorationTheme,
+      buttonTheme: buttonTheme,
+      dividerTheme: dividerTheme,
     );
   }
 
-  // @override
-  // TextTheme get _textTheme {
-  //   return AppTheme.contentTextTheme.apply(
-  //     bodyColor: AppColors.white,
-  //     displayColor: AppColors.white,
-  //     decorationColor: AppColors.white,
-  //   );
-  // }
-
-  // @override
-  // SnackBarThemeData get _snackBarTheme {
-  //   return SnackBarThemeData(
-  //     contentTextStyle: UITextStyle.bodyText1.copyWith(
-  //       color: AppColors.black,
-  //     ),
-  //     shape: RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.circular(AppSpacing.sm),
-  //     ),
-  //     actionTextColor: AppColors.lightBlue.shade300,
-  //     backgroundColor: AppColors.grey.shade300,
-  //     elevation: 4,
-  //     behavior: SnackBarBehavior.floating,
-  //   );
-  // }
-
-  // @override
-  // TextButtonThemeData get _textButtonTheme {
-  //   return TextButtonThemeData(
-  //     style: TextButton.styleFrom(
-  //       textStyle: _textTheme.labelLarge?.copyWith(
-  //         fontWeight: AppFontWeight.light,
-  //       ),
-  //       foregroundColor: AppColors.white,
-  //     ),
-  //   );
-  // }
-
   @override
-  Color get _backgroundColor => AppColors.bgMainDark;
-
-  // @override
-  // IconThemeData get _iconTheme {
-  //   return const IconThemeData(color: AppColors.white);
-  // }
-
-  // @override
-  // DividerThemeData get _dividerTheme {
-  //   return const DividerThemeData(
-  //     color: AppColors.onBackground,
-  //     space: AppSpacing.lg,
-  //     thickness: AppSpacing.xxxs,
-  //     indent: AppSpacing.lg,
-  //     endIndent: AppSpacing.lg,
-  //   );
-  // }
+  ColorScheme get colorScheme {
+    return const ColorScheme.dark(
+      primary: AppColors.mainAccentDark,
+      onPrimary: AppColors.secondAccentDark,
+      secondary: AppColors.majorAccentDark,
+      onSecondary: AppColors.majorLightAccentDark,
+      error: AppColors.alertLightAccentDark,
+      onError: AppColors.alertAccentDark,
+      onSurface: AppColors.textColorDark,
+      surface: AppColors.bgSecondDark,
+      tertiary: AppColors.thirdAccentDark,
+      onTertiary: AppColors.thirdLightAccentDark,
+      outline: AppColors.textLightDark,
+      shadow: AppColors.textLightTitleDark,
+    );
+  }
 }

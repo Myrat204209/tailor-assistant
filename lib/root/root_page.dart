@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:animated_button_bar/animated_button_bar.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:dap_foreman_assis/products/products.dart';
@@ -7,21 +6,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class RootPage extends HookWidget {
-  const RootPage({
-    super.key,
-  });
-  static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const RootPage());
-  }
+  const RootPage({super.key});
+
+  static Route<void> route() =>
+      MaterialPageRoute<void>(builder: (_) => const RootPage());
 
   @override
   Widget build(BuildContext context) {
     final pageController = usePageController();
+    final selectedIndex = useState(0);
+
+    // Get theme-aware colors
+    final colorScheme = Theme.of(context).colorScheme;
+    final selectedColor = colorScheme.primary;
+    final unSelectedColor = colorScheme.onPrimary;
+
+    void onPageChange(int index) {
+      selectedIndex.value = index;
+    }
+
+    void onButtonTap(int index) {
+      pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.linear,
+      );
+      selectedIndex.value = index;
+    }
+
     return Stack(
       fit: StackFit.expand,
       children: [
         PageView(
           controller: pageController,
+          onPageChanged: onPageChange,
           children: const [
             ProductsPage(),
             SewersPage(),
@@ -33,40 +51,48 @@ class RootPage extends HookWidget {
             width: 155,
             height: 80,
             child: AnimatedButtonBar(
+              controller: AnimatedButtonController(),
               radius: 50,
-              backgroundColor: AppColors.secondAccent,
-              foregroundColor: AppColors.mainAccent,
+              backgroundColor: selectedColor,
+              foregroundColor: unSelectedColor,
               elevation: 20,
               children: [
-                ButtonBarEntry(
-                  onTap: () => pageController.animateToPage(
-                    0,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeIn,
-                  ),
-                  child: const Icon(
-                    Icons.dry_cleaning_rounded,
-                    size: 35,
-                    color: AppColors.mainAccent,
-                  ),
+                _buildButton(
+                  icon: Icons.dry_cleaning_rounded,
+                  isSelected: selectedIndex.value == 0,
+                  selectedColor: selectedColor,
+                  unSelectedColor: unSelectedColor,
+                  onTap: () => onButtonTap(0),
                 ),
-                ButtonBarEntry(
-                  onTap: () => pageController.animateToPage(
-                    1,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeIn,
-                  ),
-                  child: const Icon(
-                    Icons.person_3_rounded,
-                    size: 35,
-                    color: Colors.white,
-                  ),
+                _buildButton(
+                  icon: Icons.person_3_rounded,
+                  isSelected: selectedIndex.value == 1,
+                  selectedColor: selectedColor,
+                  unSelectedColor: unSelectedColor,
+                  onTap: () => onButtonTap(1),
                 ),
               ],
             ),
           ).paddingOnly(bottom: 40),
         ),
       ],
+    );
+  }
+
+  ButtonBarEntry _buildButton({
+    required IconData icon,
+    required bool isSelected,
+    required Color selectedColor,
+    required Color unSelectedColor,
+    required VoidCallback onTap,
+  }) {
+    return ButtonBarEntry(
+      onTap: onTap,
+      child: Icon(
+        icon,
+        size: 35,
+        color: isSelected ? selectedColor : unSelectedColor,
+      ),
     );
   }
 }

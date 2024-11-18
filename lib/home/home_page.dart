@@ -5,12 +5,12 @@ import 'package:dap_foreman_assis/sewers/sewers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class RootPage extends HookWidget {
-  const RootPage({
+class HomePage extends HookWidget {
+  const HomePage({
     super.key,
   });
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const RootPage());
+    return MaterialPageRoute<void>(builder: (_) => const HomePage());
   }
 
   @override

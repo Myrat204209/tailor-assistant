@@ -1,5 +1,4 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:dap_foreman_assis/edit/edit.dart';
 import 'package:dap_foreman_assis/profile/ui/widgets/profile_list_tile.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';

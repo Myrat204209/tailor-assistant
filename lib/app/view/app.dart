@@ -3,7 +3,8 @@ import 'package:auth_repository/auth_repository.dart';
 import 'package:dap_foreman_assis/app/app.dart';
 import 'package:dap_foreman_assis/auth/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 
 class App extends StatelessWidget {
   final UserRepository _userRepository;
@@ -17,14 +18,22 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return ScreenUtilInit(
-            designSize: Size(constraints.maxWidth, constraints.maxHeight),
-            builder: (context, child) => const AppView(),
-          );
-        },
+    final authBloc = AuthBloc(
+      authRepository: _authRepository,
+      userRepository: _userRepository,
+    )..add(AuthSubscriptionRequested());
+    final themeCubit = ThemeCubit()..loadTheme();
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(value: _authRepository),
+        RepositoryProvider.value(value: _userRepository),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: authBloc),
+          BlocProvider.value(value: themeCubit),
+        ],
+        child: const AppView(),
       ),
     );
   }

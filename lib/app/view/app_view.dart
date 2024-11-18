@@ -1,8 +1,14 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:dap_foreman_assis/root/root.dart';
+import 'package:dap_foreman_assis/app/app.dart';
+import 'package:dap_foreman_assis/auth/auth.dart';
+import 'package:dap_foreman_assis/home/home.dart';
+import 'package:dap_foreman_assis/login/login.dart';
+
 import 'package:dap_foreman_assis/splash/splash.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppView extends StatefulWidget {
   const AppView({super.key});
@@ -12,25 +18,54 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
-  @override
-  void initState() {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.light,
-        statusBarColor: Color(0xFFE2EAFF),
-      ),
-    );
-    super.initState();
-  }
+  final _navigatorKey = GlobalKey<NavigatorState>();
+  NavigatorState get _navigator => _navigatorKey.currentState!;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: const AppTheme().themeData,
-      // darkTheme: const AppDarkTheme().themeData,
-      home: const RootPage(),
-      // home: AuthPage(),
+    return SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return ScreenUtilInit(
+            designSize: Size(constraints.maxWidth, constraints.maxHeight),
+            builder: (context, child) {
+              return BlocBuilder<ThemeCubit, ThemeMode>(
+                builder: (context, state) {
+                  return MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    navigatorKey: _navigatorKey,
+                    theme: const AppTheme().themeData,
+                    themeMode: state,
+                    darkTheme: const AppDarkTheme().themeData,
+                    builder: (context, child) {
+                      return BlocListener<AuthBloc, AuthState>(
+                        listener: (context, state) {
+                          switch (state) {
+                            case AuthState.authenticated:
+                              _navigator.pushAndRemoveUntil<void>(
+                                HomePage.route(),
+                                (route) => false,
+                              );
+                            case AuthState.unauthenticated:
+                              _navigator.pushAndRemoveUntil<void>(
+                                LoginPage.route(),
+                                (route) => false,
+                              );
+                            case AuthState.unknown:
+                              break;
+                          }
+                        },
+                        child: child,
+                      );
+                    },
+                    onGenerateRoute: (_) => SplashPage.route(),
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

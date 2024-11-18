@@ -32,7 +32,6 @@ class AppTextField extends StatelessWidget {
       children: [
         SizedBox(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Row(
@@ -74,12 +73,7 @@ class AppTextField extends StatelessWidget {
             ],
           ).paddingAll(20).colorize(colorScheme.surface),
         ),
-        const Divider(
-          height: 2,
-          endIndent: 0,
-          indent: 0,
-          color: AppColors.secondAccent,
-        ),
+        const Divider(height: 0.1),
       ],
     );
   }

@@ -5,6 +5,7 @@ class EditView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -12,11 +13,9 @@ class EditView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AppIconButton(
-              foregroundColor: Colors.black,
-              backgroundColor: AppColors.bgSecond,
-              onIconPressed: () {
-                Navigator.pop(context);
-              },
+              foregroundColor: colorScheme.onSurface,
+              backgroundColor: colorScheme.surface,
+              onIconPressed: () => Navigator.pop(context),
               icon: Icons.west_rounded,
             ),
             FilledButton(
@@ -24,7 +23,7 @@ class EditView extends StatelessWidget {
               child: Text(
                 'Сохранить',
                 style: const AppTextStyle.text().pageTitle(),
-              ),
+              ).paddingSymmetric(horizontal: 20, vertical: 14),
             ),
           ],
         ).paddingSymmetric(horizontal: 20, vertical: 30),
@@ -33,7 +32,7 @@ class EditView extends StatelessWidget {
           children: [
             Expanded(
               child: SearchBar(
-                backgroundColor: const WidgetStatePropertyAll(Colors.white),
+                backgroundColor: WidgetStatePropertyAll(colorScheme.surface),
                 trailing: [
                   const Icon(Icons.close_rounded).paddingOnly(right: 10),
                   const Icon(Icons.arrow_downward_rounded),
@@ -44,7 +43,10 @@ class EditView extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
                 ),
-              ).paddingOnly(left: 20, right: 14),
+              ).paddingOnly(
+                left: 20,
+                right: 14,
+              ),
             ),
             AppIconButton(
               foregroundColor: AppColors.bgSecond,
@@ -54,26 +56,22 @@ class EditView extends StatelessWidget {
             ),
           ],
         ).paddingOnly(bottom: 24),
-        AppTextField(
-          colorScheme: Theme.of(context).colorScheme,
-          controller: TextEditingController(),
-          titleText: 'ОВ - плеч',
-          hintText: 'Выведите количество',
-          isClose: true,
+        Expanded(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: 7,
+            itemBuilder: (context, index) {
+              return AppTextField(
+                colorScheme: Theme.of(context).colorScheme,
+                controller: TextEditingController(),
+                titleText: 'ОВ - плеч',
+                hintText: 'Выведите количество',
+                isClose: true,
+              );
+            },
+          ),
         ),
-        TextButton(
-          onPressed: () {
-            // showDialog(
-            //   context: context,
-            //   builder: (context) => AppDialog(
-            //     title: 'Выйти из аккаунта?',
-            //     onTap: () {},
-            //     buttonText: 'Отправить',
-            //   ),
-            // );
-          },
-          child: const Text('Press me'),
-        ),
+        const Padding(padding: EdgeInsets.only(bottom: 20)),
 
         // AppTextField(
         //   controller: TextEditingController(),

@@ -1,6 +1,6 @@
 import 'package:animated_button_bar/animated_button_bar.dart';
 import 'package:app_ui/app_ui.dart';
-import 'package:dap_foreman_assis/products/products.dart';
+import 'package:dap_foreman_assis/orders/orders.dart';
 import 'package:dap_foreman_assis/sewers/sewers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -43,7 +43,7 @@ class HomePage extends HookWidget {
           controller: pageController,
           onPageChanged: onPageChange,
           children: const [
-            ProductsPage(),
+            OrdersPage(),
             SewersPage(),
           ],
         ),

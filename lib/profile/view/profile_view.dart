@@ -95,9 +95,12 @@ class ProfileView extends StatelessWidget {
             ),
           ],
         ).paddingOnly(bottom: 24),
-        ProfileListTile(
+        ProductTile(
+          onDeleteTap: () {},
           colorScheme: colorScheme,
-          onTap: () {},
+          onEditTap: () {
+            Navigator.of(context).push(EditPage.route());
+          },
         ),
       ],
     );

@@ -1,7 +1,7 @@
-part of 'products_page.dart';
+part of 'orders_page.dart';
 
-class ProductsView extends StatelessWidget {
-  const ProductsView({super.key});
+class OrdersView extends StatelessWidget {
+  const OrdersView({super.key});
 
   @override
   Widget build(BuildContext context) {

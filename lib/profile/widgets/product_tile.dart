@@ -1,14 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
-class ProfileListTile extends StatelessWidget {
-  const ProfileListTile({
+class ProductTile extends StatelessWidget {
+  const ProductTile({
     required this.colorScheme,
-    required this.onTap,
+    required this.onDeleteTap,
+    required this.onEditTap,
     super.key,
   });
   final ColorScheme colorScheme;
-  final VoidCallback onTap;
+  final VoidCallback onDeleteTap;
+  final VoidCallback onEditTap;
 
   @override
   Widget build(BuildContext context) {
@@ -29,25 +33,25 @@ class ProfileListTile extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   AppIconButton(
-                    foregroundColor: colorScheme.error,
-                    backgroundColor: colorScheme.errorContainer,
-                    onIconPressed: () {},
+                    foregroundColor: colorScheme.onError,
+                    backgroundColor: colorScheme.error,
+                    onIconPressed: onDeleteTap,
                     icon: Icons.delete_outlined,
                   ),
                   AppIconButton(
-                    foregroundColor: colorScheme.primary,
-                    backgroundColor: colorScheme.primaryContainer,
-                    onIconPressed: onTap,
+                    foregroundColor: colorScheme.secondary,
+                    backgroundColor: colorScheme.onSecondary,
+                    onIconPressed: onEditTap,
                     icon: Icons.edit_rounded,
                   ),
                 ],
               ),
             ],
           ).paddingSymmetric(vertical: 10),
-        ).colorize(Colors.white),
-        const Divider(
+        ).colorize(colorScheme.surface),
+        Divider(
           height: 0.1,
-          color: AppColors.secondAccent,
+          color: colorScheme.onPrimary,
         ),
       ],
     );

@@ -1,19 +1,15 @@
-// import 'package:data_provider/data_provider.dart';
+import 'package:data_provider/data_provider.dart';
 
-// class EmployeesClient {
-//   const EmployeesClient({
-//     required Http httpClient,
-//   }) : _http = httpClient;
+class EmployeesClient {
+  const EmployeesClient({
+    required Http httpClient,
+  }) : _http = httpClient;
 
-//   final Http _http;
+  final Http _http;
 
-//   Future<List<EmployeesItem>> getEmployeess() async {
-//     final response = await _http.get<List<dynamic>>('/Employeess');
-//     final List<EmployeesItem>? Employeess;
+  Future<List<EmployeesItem>?> getEmployees() async {
+    final response = await _http.get<List<JsonType>>('/employees');
 
-//     Employeess =
-//         response.data!.map((Employees) => EmployeesItem.fromJson(Employees)).toList();
-
-//     return Employeess;
-//   }
-// }
+    return response.data!.map(EmployeesItem.fromJson).toList();
+  }
+}

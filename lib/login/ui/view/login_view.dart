@@ -61,7 +61,7 @@ class LoginView extends HookWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    RootPage.route(),
+                    HomePage.route(),
                   );
                 },
                 style: FilledButton.styleFrom(

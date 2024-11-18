@@ -62,14 +62,14 @@ class EditView extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => AppDialog(
-                title: 'Выйти из аккаунта?',
-                onTap: () {},
-                buttonText: 'Отправить',
-              ),
-            );
+            // showDialog(
+            //   context: context,
+            //   builder: (context) => AppDialog(
+            //     title: 'Выйти из аккаунта?',
+            //     onTap: () {},
+            //     buttonText: 'Отправить',
+            //   ),
+            // );
           },
           child: const Text('Press me'),
         ),
@@ -90,8 +90,6 @@ class EditView extends StatelessWidget {
     );
   }
 }
-
-
 
 final List<String> genderItems = [
   'Male',

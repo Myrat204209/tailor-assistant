@@ -10,16 +10,21 @@ dependencies:
   animated_button_bar: ^1.0.0
   app_ui:
     path: packages/app_ui
+  auth_repository: 
+    path: packages/auth_repository
   bloc: ^8.1.4
   data_provider:
     path: packages/data_provider
   dropdown_button2: ^2.3.9
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
   flutter_hooks: ^0.20.5
   flutter_screenutil: ^5.9.3
   intl: ^0.19.0
+  user_repository:
+    path: packages/user_repository
 
 dev_dependencies:
   flutter_test:

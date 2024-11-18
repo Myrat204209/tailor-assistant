@@ -1,2 +1,2 @@
-export 'data/data.dart';
-export 'ui/ui.dart';
+export 'bloc/auth_bloc.dart';
+export 'widgets/widgets.dart';

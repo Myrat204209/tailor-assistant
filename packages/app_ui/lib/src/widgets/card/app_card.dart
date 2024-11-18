@@ -13,6 +13,7 @@ class AppCard extends StatelessWidget {
     required this.orderName,
     required this.orderId,
     required this.contents,
+    required this.colorScheme,
     super.key,
   });
 
@@ -20,17 +21,21 @@ class AppCard extends StatelessWidget {
   final String orderId;
 
   final Map<String, List<String>> contents;
+  final ColorScheme colorScheme;
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
+
     return Card(
       shape: ShapeBorderX.roundedRectangle(15),
-      color: AppColors.bgSecond,
+      color: colorScheme.surface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CardTopCornerDecoration(),
+          CardTopCornerDecoration(
+            cornerTopColor: colorScheme.onTertiary,
+          ),
           SizedBox(
             width: width * 0.779,
             child: Row(
@@ -40,22 +45,30 @@ class AppCard extends StatelessWidget {
                   orderId,
                   style: const AppTextStyle.text()
                       .description()
-                      .withColor(AppColors.majorAccent),
+                      .withColor(colorScheme.secondary),
                 ).paddingSymmetric(vertical: 6).centralize(),
               ],
             ),
           )
-              .colorize(AppColors.thirdLightAccent)
+              .colorize(colorScheme.onTertiary)
               .clipper(100)
               .paddingOnly(right: 24, left: 68),
           Text(
             orderName,
-            style: const AppTextStyle.text().contentTitle(),
+            style: const AppTextStyle.text()
+                .contentTitle()
+                .withColor(colorScheme.onSurface),
           ).paddingSymmetric(vertical: 15),
           ...contents.entries.map(
-            (e) => AppCardRichText(title: e.key, values: e.value),
+            (e) => AppCardRichText(
+              title: e.key,
+              values: e.value,
+              colorScheme: colorScheme,
+            ),
           ),
-          const CardCornerDecoration(),
+          CardCornerDecoration(
+            cornerColor: colorScheme.onSecondary,
+          ),
         ],
       ).paddingOnly(left: 15),
     ).paddingSymmetric(horizontal: 20);

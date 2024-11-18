@@ -1,8 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
-/// App Ui AppBard
+/// App Ui AppBar
 class UiAppBar extends StatelessWidget {
   /// Constructor
   const UiAppBar({
@@ -14,8 +13,10 @@ class UiAppBar extends StatelessWidget {
     required this.secondIcon,
     required this.thirdOnTap,
     required this.thirdIcon,
+    required this.colorScheme, // Pass the entire ColorScheme
     super.key,
   });
+
   final String title;
   final int quantity;
   final VoidCallback firstOnTap;
@@ -25,6 +26,9 @@ class UiAppBar extends StatelessWidget {
   final VoidCallback thirdOnTap;
   final IconData thirdIcon;
 
+  /// The active theme's ColorScheme
+  final ColorScheme colorScheme;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -32,33 +36,38 @@ class UiAppBar extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const AppTextStyle.text().pageTitle(),
+          style: const AppTextStyle.text()
+              .pageTitle()
+              .withColor(colorScheme.onSurface), // Use onSurface for title
         ).paddingOnly(left: 20, right: 5),
         Text(
           '$quantity',
-          style:
-              const AppTextStyle.text().description().withColor(Colors.white),
+          style: const AppTextStyle.text().description().withColor(
+                Colors.white,
+              ),
         )
             .paddingSymmetric(vertical: 5, horizontal: 14)
-            .colorize(AppColors.alertAccent)
+            .colorize(
+              colorScheme.onError,
+            )
             .clipper(15),
         const Spacer(),
         AppIconButton(
           icon: firstIcon,
-          foregroundColor: AppColors.majorLightAccent,
-          backgroundColor: AppColors.majorAccent,
+          foregroundColor: colorScheme.onSecondary,
+          backgroundColor: colorScheme.secondary,
           onIconPressed: firstOnTap,
         ),
         AppIconButton(
           icon: secondIcon,
-          foregroundColor: AppColors.thirdLightAccent,
-          backgroundColor: AppColors.thirdAccent,
+          foregroundColor: colorScheme.onTertiary,
+          backgroundColor: colorScheme.tertiary,
           onIconPressed: secondOnTap,
         ),
         AppIconButton(
           icon: thirdIcon,
-          foregroundColor: AppColors.secondAccent,
-          backgroundColor: AppColors.mainAccent,
+          foregroundColor: colorScheme.onPrimary,
+          backgroundColor: colorScheme.primary,
           onIconPressed: thirdOnTap,
         ).paddingOnly(
           right: 10,

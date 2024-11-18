@@ -23,8 +23,6 @@ dependencies:
   flutter_hooks: ^0.20.5
   flutter_screenutil: ^5.9.3
   intl: ^0.19.0
-  user_repository:
-    path: packages/user_repository
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// `AppColors` is a utility class that holds color constants 
-/// for both Light and Dark modes to maintain color consistency 
+/// `AppColors` is a utility class that holds color constants
+/// for both Light and Dark modes to maintain color consistency
 /// across the app.
 abstract class AppColors {
   /// Main accent color used throughout the app in Light Mode.

@@ -18,11 +18,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = AuthBloc(
-      authRepository: _authRepository,
-      userRepository: _userRepository,
-    )..add(AuthSubscriptionRequested());
-    final themeCubit = ThemeCubit()..loadTheme();
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: _authRepository),
@@ -30,8 +25,14 @@ class App extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider.value(value: authBloc),
-          BlocProvider.value(value: themeCubit),
+          BlocProvider(
+            lazy: false,
+            create: (_) => AuthBloc(
+              authRepository: _authRepository,
+              userRepository: _userRepository,
+            )..add(AuthSubscriptionRequested()),
+          ),
+          BlocProvider(create: (_) => ThemeCubit()..loadTheme()),
         ],
         child: const AppView(),
       ),

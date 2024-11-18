@@ -42,9 +42,11 @@ extension WidgetPaddingX on Widget {
   ///
   /// [right] is the amount of padding to apply to the right side of the widget.
   ///
-  /// [bottom] is the amount of padding to apply to the bottom side of the widget.
+  /// [bottom] is the amount of padding to apply to the bottom
+  /// side of the widget.
   ///
-  /// The returned widget is a [Padding] widget configured with [EdgeInsets.only]
+  /// The returned widget is a [Padding] widget
+  ///  configured with [EdgeInsets.only]
   /// using the specified padding values and the original widget as its child.
   Widget paddingOnly({
     double left = 0,

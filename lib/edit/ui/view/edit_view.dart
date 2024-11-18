@@ -55,6 +55,7 @@ class EditView extends StatelessWidget {
           ],
         ).paddingOnly(bottom: 24),
         AppTextField(
+          colorScheme: Theme.of(context).colorScheme,
           controller: TextEditingController(),
           titleText: 'ОВ - плеч',
           hintText: 'Выведите количество',
@@ -100,4 +101,3 @@ final List<String> genderItems = [
   'Female4',
   'Female5',
 ];
-

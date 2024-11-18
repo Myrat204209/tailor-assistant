@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:user_repository/user_repository.dart';
 
 part 'auth_event.dart';
@@ -49,7 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  FutureOr<void> _onLogoutPressed(
+  void _onLogoutPressed(
     AuthLogoutRequested event,
     Emitter<AuthState> emit,
   ) {

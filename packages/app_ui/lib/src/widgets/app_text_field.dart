@@ -1,68 +1,83 @@
+// ignore_for_file:  sort_constructors_first
+// ignore_for_file: public_member_api_docs
+
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 class AppTextField extends StatelessWidget {
   const AppTextField({
-    required this.controller,
     required this.titleText,
+    required this.colorScheme,
     required this.hintText,
+    this.textFieldKey,
     this.isClose = false,
+    this.controller,
+    this.errorText,
+    this.onChanged,
     super.key,
   });
-
+  final Key? textFieldKey;
   final bool isClose;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String titleText;
+  final ColorScheme colorScheme;
   final String hintText;
+  final String? errorText;
+  // ignore: inference_failure_on_function_return_type
+  final Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          child: ColoredBox(
-            color: AppColors.bgSecond,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      titleText,
-                      style: const AppTextStyle.text().lg().regular(),
-                    ),
-                    if (isClose)
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.close,
-                          size: 25,
-                          color: AppColors.alertAccent,
-                        ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    titleText,
+                    style: const AppTextStyle.text().lg().regular(),
+                  ),
+                  if (isClose)
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.close,
+                        size: 25,
+                        color: AppColors.alertAccent,
                       ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                TextField(
-                  textAlign: isClose ? TextAlign.end : TextAlign.start,
-                  decoration: InputDecoration(
-                    hintText: hintText,
-                    contentPadding: const EdgeInsets.all(14),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: const BorderSide(color: AppColors.border),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              TextField(
+                key: textFieldKey,
+                onChanged: onChanged,
+                textAlign: isClose ? TextAlign.end : TextAlign.start,
+                decoration: InputDecoration(
+                  hintText: hintText,
+                  errorText: errorText,
+                  contentPadding: const EdgeInsets.all(14),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(
+                      color: colorScheme.onPrimary,
                     ),
                   ),
                 ),
-              ],
-            ).paddingAll(20),
-          ),
+              ),
+            ],
+          ).paddingAll(20).colorize(colorScheme.surface),
         ),
         const Divider(
           height: 2,
+          endIndent: 0,
+          indent: 0,
           color: AppColors.secondAccent,
         ),
       ],

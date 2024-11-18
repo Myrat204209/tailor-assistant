@@ -18,32 +18,21 @@ abstract class AppBaseTheme {
   /// Shared Input Decoration Theme
   InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: colorScheme.onSurface),
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: AppColors.border),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: colorScheme.primary),
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: AppColors.border),
         ),
         labelStyle: TextStyle(color: colorScheme.onSurface),
         hintStyle: TextStyle(color: colorScheme.onSurface.withOpacity(0.7)),
       );
 
-  /// Shared Button Theme
-  ButtonThemeData get buttonTheme => ButtonThemeData(
-        buttonColor: colorScheme.primary,
-        textTheme: ButtonTextTheme.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      );
-
   /// Shared Divider Theme
   DividerThemeData get dividerTheme => DividerThemeData(
         color: colorScheme.onSurface.withOpacity(0.5),
-        thickness: 1,
-        indent: 16,
-        endIndent: 16,
+        thickness: 2,
       );
 
   /// Restores your original `AppTextStyle` for the `TextTheme`
@@ -82,7 +71,7 @@ class AppTheme extends AppBaseTheme {
       textTheme: textTheme,
       iconTheme: iconTheme,
       inputDecorationTheme: inputDecorationTheme,
-      buttonTheme: buttonTheme,
+      // buttonTheme: buttonTheme,
       dividerTheme: dividerTheme,
     );
   }
@@ -129,7 +118,7 @@ class AppDarkTheme extends AppBaseTheme {
       textTheme: textTheme,
       iconTheme: iconTheme,
       inputDecorationTheme: inputDecorationTheme,
-      buttonTheme: buttonTheme,
+      // buttonTheme: buttonTheme,
       dividerTheme: dividerTheme,
     );
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 part of 'app_card.dart';
 
 class AppCardRichText extends StatelessWidget {

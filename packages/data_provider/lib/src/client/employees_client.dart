@@ -1,3 +1,5 @@
+
+
 import 'package:data_provider/data_provider.dart';
 
 class EmployeesClient {
@@ -8,8 +10,11 @@ class EmployeesClient {
   final Http _http;
 
   Future<List<EmployeesItem>?> getEmployees() async {
-    final response = await _http.get<List<JsonType>>('/employees');
+    final response = await _http.get<List<dynamic>>('/employees');
+    
+    final employeesList =
+        (response.data!).map((e) => e as Map<String, dynamic>).toList();
 
-    return response.data!.map(EmployeesItem.fromJson).toList();
+    return employeesList.map(EmployeesItem.fromJson).toList();
   }
 }

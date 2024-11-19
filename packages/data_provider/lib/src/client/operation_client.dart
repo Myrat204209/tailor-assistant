@@ -7,9 +7,13 @@ class OperationClient {
 
   final Http _http;
 
-  Future<List<OperationItem>?> getOperations() async {
-    final response = await _http.get<List<JsonType>>('/operations');
-
-    return response.data!.map(OperationItem.fromJson).toList();
+  Future<List<OperationItem>?> getOperations([String? search]) async {
+    final response = await _http.get<List<dynamic>>(
+      '/type_oper',
+      queryParameters: {'search': search},
+    );
+    final operationsList =
+        (response.data!).map((e) => e as Map<String, dynamic>).toList();
+    return operationsList.map(OperationItem.fromJson).toList();
   }
 }

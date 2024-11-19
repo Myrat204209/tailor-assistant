@@ -16,7 +16,7 @@ class EmployeesItem {
   @JsonKey(name: 'employee_name')
   final String employeeName;
   @JsonKey(name: '_fld23708')
-  final String id;
+  final bool id;
 
   factory EmployeesItem.fromJson(JsonType json) =>
       _$EmployeesItemFromJson(json);

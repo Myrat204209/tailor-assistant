@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:app_ui/app_ui.dart';
 import 'package:dap_foreman_assis/app/app.dart';
 import 'package:dap_foreman_assis/login/login.dart';
@@ -10,6 +11,7 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       body: ListView(
         children: [
@@ -22,11 +24,12 @@ class LoginView extends StatelessWidget {
               icon: Icons.dark_mode_rounded,
             ).paddingOnly(right: 10, top: 30),
           ),
-          FittedBox(
+          SizedBox.square(
+            dimension: height * 0.44,
             child: Image.asset(
               'assets/auth.png',
               fit: BoxFit.fill,
-            ).paddingOnly(top: 30, right: 45, left: 67),
+            ).paddingOnly(right: 45, left: 67),
           ),
           // const Expanded(child: LoginForm()),
           const LoginForm(),

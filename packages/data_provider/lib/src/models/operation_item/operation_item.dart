@@ -18,6 +18,6 @@ class OperationItem {
   String workName;
 
   @JsonKey(name: 'work_price')
-  double workPrice;
+  String workPrice;
   JsonType toJson() => _$OperationItemToJson(this);
 }

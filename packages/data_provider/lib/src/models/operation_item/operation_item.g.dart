@@ -9,7 +9,7 @@ part of 'operation_item.dart';
 OperationItem _$OperationItemFromJson(Map<String, dynamic> json) =>
     OperationItem(
       workName: json['work_name'] as String,
-      workPrice: (json['work_price'] as num).toDouble(),
+      workPrice: json['work_price'] as String,
     );
 
 Map<String, dynamic> _$OperationItemToJson(OperationItem instance) =>

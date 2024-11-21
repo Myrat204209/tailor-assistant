@@ -28,9 +28,11 @@ class CardCornerDecoration extends StatelessWidget {
   /// Constructor
   const CardCornerDecoration({
     required this.cornerColor,
+    required this.startOrder,
     super.key,
   });
   final Color cornerColor;
+  final String startOrder;
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -40,7 +42,7 @@ class CardCornerDecoration extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            DateFormat('dd/MM/yyyy').format(DateTime.now()),
+            formatDate(startOrder),
             style: const AppTextStyle.text()
                 .description()
                 .copyWith(color: AppColors.thirdAccent, height: 0.6),
@@ -55,4 +57,10 @@ class CardCornerDecoration extends StatelessWidget {
       ),
     );
   }
+}
+
+String formatDate(String inputDate) {
+  final dateTime = DateTime.parse(inputDate);
+  final formatter = DateFormat('dd/MM/yyyy');
+  return formatter.format(dateTime);
 }

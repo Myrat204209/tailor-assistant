@@ -57,7 +57,6 @@ class HomePage extends HookWidget {
               radius: 50,
               backgroundColor: selectedColor,
               foregroundColor: unSelectedColor,
-              elevation: 20,
               children: [
                 _buildButton(
                   icon: Icons.dry_cleaning_rounded,

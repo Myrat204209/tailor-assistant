@@ -7,47 +7,53 @@ class OrdersView extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeCubit = context.select((ThemeCubit cubit) => cubit.state);
     final colorScheme = Theme.of(context).colorScheme;
-    return Column(
-      children: [
-        UiAppBar(
-          title: 'Изделия',
-          quantity: 10,
-          colorScheme: colorScheme,
-          firstOnTap: () {},
-          secondOnTap: () {},
-          thirdOnTap: () {
-            context.read<ThemeCubit>().toggleTheme();
-          },
-          firstIcon: Icons.cached_rounded,
-          secondIcon: Icons.logout_rounded,
-          thirdIcon: themeCubit == ThemeMode.dark
-              ? Icons.light_mode_rounded
-              : Icons.dark_mode_rounded,
-        ),
-        Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemBuilder: (context, index) => AppCard(
-              orderName: 'Рубашка мужская',
-              orderId: 'НФCB-000002',
-              contents: contents,
+    return BlocBuilder<OrdersBloc, OrdersState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            UiAppBar(
+              title: 'Изделия',
+              quantity: state.orders == null ? 0 : state.orders!.length,
               colorScheme: colorScheme,
+              firstOnTap: () {},
+              secondOnTap: () {},
+              thirdOnTap: () {
+                context.read<ThemeCubit>().toggleTheme();
+              },
+              firstIcon: Icons.cached_rounded,
+              secondIcon: Icons.logout_rounded,
+              thirdIcon: themeCubit == ThemeMode.dark
+                  ? Icons.light_mode_rounded
+                  : Icons.dark_mode_rounded,
             ),
-            itemCount: 5,
-          ),
-        ),
-      ],
+            Expanded(
+              child: ListView.builder(
+                itemCount: state.orders!.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  final order = state.orders![index];
+                  return AppCard(
+                    startOrder: order.startOrder,
+                    quantity: order.orderQuantity!,
+                    orderName: order.orderName!,
+                    orderId: order.orderId!,
+                    contents: {
+                      'Цвет': order.orderColors,
+                      'Коллекция': order.orderCollection ?? [],
+                      'Вышивка': order.orderVyshyvka ?? [],
+                      'Ткань': order.orderTextile,
+                      'Принт': order.orderPrint ?? [],
+                    },
+                    colorScheme: colorScheme,
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
-const Map<String, List<String>> contents = {
-  'Цвет': ['Экру', 'Бежевый', 'Черный', 'Темно синий', 'Мышиный'],
-  'Коллекция': [
-    'Urban SPRING 24',
-  ],
-  'Вышивка': ['Atlyjam'],
-  'Ткань': [
-    'Poplin',
-  ],
-};
+const Map<String, List<String>> contents = {};

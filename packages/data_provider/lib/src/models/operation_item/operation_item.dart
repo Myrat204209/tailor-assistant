@@ -15,9 +15,9 @@ class OperationItem {
   factory OperationItem.fromJson(JsonType json) =>
       _$OperationItemFromJson(json);
   @JsonKey(name: 'work_name')
-  String workName;
+  final String workName;
 
   @JsonKey(name: 'work_price')
-  String workPrice;
+  final String workPrice;
   JsonType toJson() => _$OperationItemToJson(this);
 }

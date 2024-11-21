@@ -80,6 +80,18 @@ extension WidgetColorX on Widget {
       );
 }
 
+/// Colorize Widget
+extension WidgetColorClipX on Widget {
+  /// Wrap the widget in a [ColoredBox] widget, then wrap it in a [ClipRRect].
+  Widget colorizeClip(Color color, double radius) => ClipRRect(
+        borderRadius: BorderRadius.circular(radius),
+        child: ColoredBox(
+          color: color,
+          child: this,
+        ),
+      );
+}
+
 /// Clipper
 extension WidgetClipperX on Widget {
   /// Clip the widget with a circular border radius.

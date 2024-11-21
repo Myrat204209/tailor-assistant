@@ -10,17 +10,14 @@ part 'card_rich_text.dart';
 class AppCard extends StatelessWidget {
   /// Constructor
   const AppCard({
-    required this.orderName,
-    required this.orderId,
-    required this.contents,
-    required this.colorScheme,
-    super.key,
+    required this.startOrder, required this.orderName, required this.orderId, required this.contents, required this.quantity, required this.colorScheme, super.key,
   });
-
+  final String startOrder;
   final String orderName;
   final String orderId;
 
   final Map<String, List<String>> contents;
+  final int quantity;
   final ColorScheme colorScheme;
 
   @override
@@ -41,17 +38,35 @@ class AppCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  orderId,
-                  style: const AppTextStyle.text()
-                      .description()
-                      .withColor(colorScheme.secondary),
-                ).paddingSymmetric(vertical: 6).centralize(),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    orderId,
+                    style: const AppTextStyle.text()
+                        .description()
+                        .withColor(colorScheme.secondary),
+                  ).centralize(),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        quantity.toString(),
+                        style: const AppTextStyle.text()
+                            .titleBold()
+                            .withColor(colorScheme.primary),
+                      )
+                          .paddingSymmetric(vertical: 6, horizontal: 16)
+                          .colorizeClip(colorScheme.onPrimary, 100),
+                    ],
+                  ).colorizeClip(colorScheme.onSecondary, 100),
+                ),
               ],
             ),
           )
-              .colorize(colorScheme.onTertiary)
-              .clipper(100)
+              .colorizeClip(colorScheme.onTertiary, 100)
               .paddingOnly(right: 24, left: 68),
           Text(
             orderName,
@@ -59,7 +74,7 @@ class AppCard extends StatelessWidget {
                 .contentTitle()
                 .withColor(colorScheme.onSurface),
           ).paddingSymmetric(vertical: 15),
-          ...contents.entries.map(
+          ...contents.entries  .where((e) => e.value.isNotEmpty).map(
             (e) => AppCardRichText(
               title: e.key,
               values: e.value,
@@ -67,6 +82,7 @@ class AppCard extends StatelessWidget {
             ),
           ),
           CardCornerDecoration(
+            startOrder: startOrder,
             cornerColor: colorScheme.onSecondary,
           ),
         ],

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:dap_foreman_assis/edit/edit.dart';
+import 'package:dap_foreman_assis/operation/operation.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,7 +14,6 @@ class OperationBloc extends Bloc<OperationEvent, OperationState> {
         super(const OperationState.initial()) {
     on<OperationRequested>(_onRequested);
     on<OperationRefreshRequested>(_onRefreshRequested);
-    on<OperationSearchUpdated>(_onSearchUpdated);
   }
   final OperationRepository _operationRepository;
   bool _isFetching = false;
@@ -26,7 +25,7 @@ class OperationBloc extends Bloc<OperationEvent, OperationState> {
     _isFetching = true;
     try {
       emit(state.copyWith(status: OperationStatus.loading));
-      final operations = await _operationRepository.getOperations(state.search);
+      final operations = await _operationRepository.getOperations();
       emit(
         state.copyWith(
           status: OperationStatus.success,
@@ -47,14 +46,6 @@ class OperationBloc extends Bloc<OperationEvent, OperationState> {
   ) {
     emit(state.copyWith(status: OperationStatus.initial));
     emit(const OperationState.initial());
-    add(const OperationRequested());
-  }
-
-  FutureOr<void> _onSearchUpdated(
-    OperationSearchUpdated event,
-    Emitter<OperationState> emit,
-  ) {
-    emit(state.copyWith(search: event.search));
     add(const OperationRequested());
   }
 }

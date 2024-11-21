@@ -13,11 +13,15 @@ class OrderItem {
     this.finishOrder,
     this.items,
   );
-  final String docNumber;
-  final String dateCreate;
-  final String startOrder;
-  final String finishOrder;
-  final List<ProductItem>? items;
+  @JsonKey(name: 'doc_number')
+  final String? docNumber;
+  @JsonKey(name: 'date_create_date')
+  final String? dateCreate;
+  @JsonKey(name: 'start_order')
+  final String? startOrder;
+  @JsonKey(name: 'finish_order')
+  final String? finishOrder;
+  final List<ProductItem?>? items;
 
   factory OrderItem.fromJson(JsonType json) => _$OrderItemFromJson(json);
   JsonType toJson() => _$OrderItemToJson(this);

@@ -22,39 +22,39 @@ class ProductItem {
   factory ProductItem.fromJson(JsonType json) => _$ProductItemFromJson(json);
 
   @JsonKey(name: 'item_code')
-  String itemCode;
+  final String itemCode;
 
   @JsonKey(name: 'item_name')
-  String itemName;
+  final String itemName;
 
   @JsonKey(name: 'attr_color')
-  String attrColor;
+  final String attrColor;
 
   @JsonKey(name: 'attr_size')
-  String attrSize;
+  final String attrSize;
 
   @JsonKey(name: 'attr_collection')
-  String attrCollection;
+  final String attrCollection;
 
   @JsonKey(name: 'attr_order')
-  String attrOrder;
+  final String attrOrder;
 
   @JsonKey(name: 'attr_print')
-  String attrPrint;
+  final String attrPrint;
 
   @JsonKey(name: 'attr_vyshyvka')
-  String attrVyshyvka;
+  final String attrVyshyvka;
 
   @JsonKey(name: 'attr_textile')
-  String attrTextile;
+  final String attrTextile;
 
   @JsonKey(name: 'attr_lekalo')
-  String attrLekalo;
+  final String attrLekalo;
 
   @JsonKey(name: 'quantity')
-  double quantity;
+  final double quantity;
 
   @JsonKey(name: 'item_measure')
-  String itemMeasure;
+  final String itemMeasure;
   JsonType toJson() => _$ProductItemToJson(this);
 }

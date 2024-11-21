@@ -1,4 +1,4 @@
-part of 'edit_page.dart';
+part of 'operation_page.dart';
 
 class EditView extends HookWidget {
   const EditView({super.key});

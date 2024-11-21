@@ -20,9 +20,9 @@ class OperationRepository {
 
   final OperationClient _operationClient;
 
-  Future<List<OperationItem>?> getOperations([String? search]) async {
+  Future<List<OperationItem>?> getOperations() async {
     try {
-      return await _operationClient.getOperations(search);
+      return await _operationClient.getOperations();
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(GetOperationListFailure(error), stackTrace);
     }

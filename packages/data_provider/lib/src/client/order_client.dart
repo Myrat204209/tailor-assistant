@@ -1,3 +1,5 @@
+// import 'dart:developer';
+
 import 'package:data_provider/data_provider.dart';
 
 class OrderClient {
@@ -8,8 +10,8 @@ class OrderClient {
   final Http _http;
 
   Future<List<OrderItem>?> getOrders() async {
-    final response = await _http.get<List<JsonType>>('/prod_order');
-
-    return response.data!.map(OrderItem.fromJson).toList();
+    final response = await _http.get<List<dynamic>>('/prod_order');
+    final ordersList = (response.data!).map((e) => e as JsonType).toList();
+    return ordersList.map(OrderItem.fromJson).toList();
   }
 }

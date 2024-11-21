@@ -7,7 +7,7 @@ class Http extends DioForNative {
   /// Construct a new Http
   Http({
     required String defaultBaseUrl,
-    bool enableLogger = true,
+    bool enableLogger = false,
   })  : _defaultBaseUrl = defaultBaseUrl,
         super(
           BaseOptions(

@@ -11,10 +11,4 @@ final class OperationRequested extends OperationEvent {
   const OperationRequested();
 }
 final class OperationRefreshRequested extends OperationEvent {}
-final class OperationSearchUpdated extends OperationEvent {
-  const OperationSearchUpdated(this.search);
-  final String search;
 
-  @override
-  List<Object> get props => [search];
-}

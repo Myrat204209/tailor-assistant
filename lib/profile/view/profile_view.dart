@@ -1,113 +1,120 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'profile_page.dart';
 
-class ProfileView extends StatelessWidget {
-  const ProfileView({super.key});
+class ProfileView extends HookWidget {
+  const ProfileView({
+    required this.name,
+    super.key,
+  });
+
+  final String name;
 
   @override
   Widget build(BuildContext context) {
+    final searchController = useSearchController();
     final colorScheme = Theme.of(context).colorScheme;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+    void resetSearch() {
+      searchController.clear();
+    }
+
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppIconButton(
-              foregroundColor: colorScheme.onSurface,
-              backgroundColor: colorScheme.surface,
-              onIconPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icons.west_rounded,
-            ),
-            Text(
-              'Оразгуль',
-              style: const AppTextStyle.text().pageTitle(),
-            ),
-          ],
-        ).paddingSymmetric(horizontal: 20, vertical: 30),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: DropdownButtonFormField2<String>(
-                isExpanded: true,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  // Add more decoration..
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppIconButton(
+                  foregroundColor: colorScheme.onSurface,
+                  backgroundColor: colorScheme.surface,
+                  onIconPressed: () => Navigator.pop(context),
+                  icon: Icons.west_rounded,
                 ),
-                hint: Text(
-                  'Список изделий',
-                  style: const AppTextStyle.text()
-                      .title()
-                      .withColor(colorScheme.onSurface),
+                Text(
+                  name,
+                  style: const AppTextStyle.text().pageTitle(),
                 ),
-                items: genderItems
-                    .map(
-                      (item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const AppTextStyle.text()
-                              .title()
-                              .withColor(colorScheme.onSurface),
-                        ),
+              ],
+            ).paddingSymmetric(horizontal: 20, vertical: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: SearchAnchor.bar(
+                    isFullScreen: false,
+                    suggestionsBuilder: (context, controller) {
+                      final query = controller.text.toLowerCase();
+                      return state.products
+                          .where(
+                            (product) => product.toLowerCase().contains(query),
+                          )
+                          .map(
+                            (product) => ListTile(
+                              title: Text(product),
+                              onTap: () {
+                                context
+                                    .read<ProfileCubit>()
+                                    .addProduct(product);
+                                controller.closeView(product);
+                                resetSearch();
+                              },
+                            ),
+                          )
+                          .toList();
+                    },
+                    searchController: searchController,
+                    barTrailing: [
+                      IconButton(
+                        icon: const Icon(Icons.close_rounded),
+                        onPressed: resetSearch,
                       ),
-                    )
-                    .toList(),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select gender.';
-                  }
-                  return null;
+                      IconButton(
+                        icon: const Icon(Icons.arrow_downward_rounded),
+                        onPressed: () {
+                          // Additional functionality can be added here
+                        },
+                      ),
+                    ],
+                    barElevation: const WidgetStatePropertyAll(0),
+                    barShape: const WidgetStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                    ),
+                  ).paddingOnly(left: 20, right: 14),
+                ),
+                AppIconButton(
+                  foregroundColor: colorScheme.surface,
+                  backgroundColor: colorScheme.primary,
+                  onIconPressed: resetSearch,
+                  icon: Icons.add_rounded,
+                ),
+              ],
+            ).paddingOnly(bottom: 24),
+            Expanded(
+              child: ListView.builder(
+                itemCount: state.selectedProducts.length,
+                itemBuilder: (context, index) {
+                  final productName = state.selectedProducts[index];
+                  return ProductTile(
+                    title: productName,
+                    onDeleteTap: () {
+                      context.read<ProfileCubit>().removeProduct(productName);
+                    },
+                    colorScheme: colorScheme,
+                    onEditTap: () {
+                      Navigator.of(context)
+                          .push(OperationPage.route(product: productName));
+                    },
+                  );
                 },
-                onChanged: (value) {
-                  //Do something when selected item is changed.
-                },
-                onSaved: (value) {},
-                buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.only(right: 16),
-                ),
-                iconStyleData: const IconStyleData(
-                  icon: Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    size: 25,
-                  ),
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                ),
-              ).paddingOnly(left: 20, right: 14),
-            ),
-            AppIconButton(
-              foregroundColor: colorScheme.surface,
-              backgroundColor: colorScheme.primary,
-              onIconPressed: () {},
-              icon: Icons.add_rounded,
+              ),
             ),
           ],
-        ).paddingOnly(bottom: 24),
-        ProductTile(
-          onDeleteTap: () {},
-          colorScheme: colorScheme,
-          onEditTap: () {
-            Navigator.of(context).push(EditPage.route());
-          },
-        ),
-      ],
+        );
+      },
     );
   }
 }
-
-final List<String> genderItems = [
-  'Male',
-  'Female',
-];

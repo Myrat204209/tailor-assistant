@@ -6,5 +6,6 @@ environment:
   sdk: ^3.5.3
 
 dependencies:
+  shared_preferences: ^2.3.3
 
 dev_dependencies:

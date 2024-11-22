@@ -7,7 +7,9 @@ class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const LoginPage());
+    return MaterialPageRoute<void>(
+        builder: (_) => const LoginPage(),
+        settings: const RouteSettings(name: '/login'));
   }
 
   @override

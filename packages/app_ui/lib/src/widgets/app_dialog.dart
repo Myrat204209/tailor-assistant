@@ -70,3 +70,21 @@ class AppDialog extends StatelessWidget {
     ).paddingSymmetric(horizontal: 56);
   }
 }
+
+void showAppDialog(
+  BuildContext context,
+  String message,
+  String buttonText,
+  void Function() onTap,
+) {
+  showDialog<AppDialog>(
+    context: context,
+    builder: (BuildContext context) {
+      return AppDialog(
+        title: message,
+        buttonText: buttonText,
+        onTap: onTap,
+      );
+    },
+  );
+}

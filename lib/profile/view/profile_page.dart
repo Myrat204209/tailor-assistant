@@ -1,21 +1,41 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:app_ui/app_ui.dart';
 import 'package:dap_foreman_assis/operation/operation.dart';
-import 'package:dap_foreman_assis/profile/widgets/product_tile.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:dap_foreman_assis/orders/orders.dart';
+import 'package:dap_foreman_assis/profile/cubit/profile_cubit.dart';
+import 'package:dap_foreman_assis/profile/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'profile_view.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-  static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const ProfilePage());
+  const ProfilePage({
+    required this.profileName,
+    super.key,
+  });
+  final String profileName;
+  static Route<void> route(String name) {
+    return MaterialPageRoute<void>(
+      builder: (_) => ProfilePage(
+        profileName: name,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: ProfileView(),
+    final ordersList = context
+        .select((OrdersBloc bloc) => bloc.state.orders)!
+        .map((e) => e.orderName!)
+        .toList();
+    context.read<ProfileCubit>()
+      ..setProducts(ordersList)
+      ..clearProduct();
+
+    return Scaffold(
+      body: ProfileView(name: profileName),
     );
   }
 }

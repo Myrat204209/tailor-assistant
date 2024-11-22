@@ -1,117 +1,138 @@
-part of 'operation_page.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:app_ui/app_ui.dart';
+import 'package:dap_foreman_assis/operation/operation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class EditView extends HookWidget {
-  const EditView({super.key});
+class OperationView extends HookWidget {
+  const OperationView({
+    required this.name,
+    super.key,
+  });
+  final String name;
 
   @override
   Widget build(BuildContext context) {
     final searchController = useSearchController();
     final colorScheme = Theme.of(context).colorScheme;
-    final operationsList =
-        context.select((OperationBloc bloc) => bloc.state.operations);
-    final filteredList = useState<List<OperationItem>>(operationsList);
-
-    void handleSearch(String query) {
-      if (query.isEmpty) {
-        filteredList.value = operationsList;
-      } else {
-        filteredList.value = operationsList
-            .where(
-              (operation) => operation.workName
-                  .toLowerCase()
-                  .contains(query.toLowerCase()),
-            )
-            .toList();
-      }
-    }
-
     void resetSearch() {
       searchController.clear();
-      filteredList.value = operationsList;
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<EditCubit, EditState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppIconButton(
-              foregroundColor: colorScheme.onSurface,
-              backgroundColor: colorScheme.surface,
-              onIconPressed: () => Navigator.pop(context),
-              icon: Icons.west_rounded,
-            ),
-            FilledButton(
-              onPressed: () {
-                // Handle save logic here
-              },
-              child: Text(
-                'Сохранить',
-                style: const AppTextStyle.text().pageTitle(),
-              ).paddingSymmetric(horizontal: 20, vertical: 14),
-            ),
-          ],
-        ).paddingSymmetric(horizontal: 20, vertical: 30),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: SearchAnchor.bar(
-                isFullScreen: false,
-                suggestionsBuilder: (context, controller) {
-                  return [];
-                },
-                searchController: searchController,
-                barTrailing: [
-                  IconButton(
-                    icon: const Icon(Icons.close_rounded),
-                    onPressed: resetSearch,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.arrow_downward_rounded),
-                    onPressed: () {
-                      // Additional functionality can be added here
-                    },
-                  ),
-                ],
-                onChanged: handleSearch,
-                barElevation: const WidgetStatePropertyAll(0),
-                barShape: const WidgetStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppIconButton(
+                  foregroundColor: colorScheme.onSurface,
+                  backgroundColor: colorScheme.surface,
+                  onIconPressed: () => Navigator.pop(context),
+                  icon: Icons.west_rounded,
                 ),
-              ).paddingOnly(
-                left: 20,
-                right: 14,
+                FilledButton(
+                  onPressed: () {
+                    // Handle save logic here
+                  },
+                  child: Text(
+                    'Сохранить',
+                    style: const AppTextStyle.text().pageTitle(),
+                  ).paddingSymmetric(horizontal: 20, vertical: 14),
+                ),
+              ],
+            ).paddingSymmetric(
+              horizontal: 20,
+            ),
+            Text(
+              name,
+              softWrap: true,
+              style: const AppTextStyle.text().pageTitle(),
+            ).paddingSymmetric(horizontal: 20, vertical: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: SearchAnchor.bar(
+                    isFullScreen: false,
+                    suggestionsBuilder: (context, controller) {
+                      final query = controller.text.toLowerCase();
+                      return state.operations
+                          .where(
+                            (operation) =>
+                                operation.toLowerCase().contains(query),
+                          )
+                          .map(
+                            (operation) => ListTile(
+                              title: Text(operation),
+                              onTap: () {
+                                context
+                                    .read<EditCubit>()
+                                    .addOperation(operation);
+                                controller.closeView(operation);
+                                resetSearch();
+                              },
+                            ),
+                          )
+                          .toList();
+                    },
+                    searchController: searchController,
+                    barTrailing: [
+                      IconButton(
+                        icon: const Icon(Icons.close_rounded),
+                        onPressed: searchController.clear,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_downward_rounded),
+                        onPressed: searchController.openView,
+                      ),
+                    ],
+                    barElevation: const WidgetStatePropertyAll(0),
+                    barShape: const WidgetStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                    ),
+                  ).paddingOnly(left: 20, right: 14),
+                ),
+                AppIconButton(
+                  foregroundColor: AppColors.bgSecond,
+                  backgroundColor: AppColors.mainAccent,
+                  onIconPressed: () {
+                    // Add new operation logic here
+                  },
+                  icon: Icons.add_rounded,
+                ),
+              ],
+            ).paddingOnly(bottom: 24),
+            Expanded(
+              child: ListView.builder(
+                itemCount: state.selectedOperations.length,
+                itemBuilder: (context, index) {
+                  final operation = state.selectedOperations[index];
+final controller = context.read<EditCubit>().getController(operation);
+                  return AppTextField(
+                    colorScheme: colorScheme,
+                    titleText: operation,
+                    controller: controller,
+                    isClose: true,
+                    textFieldKey: Key('operationKey$operation'),
+                    onChanged: (value) {},
+                    onRemove: () =>
+                        context.read<EditCubit>().removeOperation(operation),
+                    hintText: 'Введите количество',
+                  );
+                },
               ),
             ),
-            AppIconButton(
-              foregroundColor: AppColors.bgSecond,
-              backgroundColor: AppColors.mainAccent,
-              onIconPressed: resetSearch, // Reset search and show all items
-              icon: Icons.add_rounded,
-            ),
+            const Padding(padding: EdgeInsets.only(bottom: 20)),
           ],
-        ).paddingOnly(bottom: 24),
-        Expanded(
-          child: ListView.builder(
-            itemCount: filteredList.value.length,
-            itemBuilder: (context, index) {
-              final operation = filteredList.value[index];
-              return ListTile(
-                title: Text(operation.workName),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () {},
-                ),
-              );
-            },
-          ),
-        ),
-        const Padding(padding: EdgeInsets.only(bottom: 20)),
-      ],
+        );
+      },
     );
   }
 }

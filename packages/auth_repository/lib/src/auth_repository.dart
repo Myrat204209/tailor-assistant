@@ -1,13 +1,24 @@
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum AuthStatus { authenticated, unauthenticated, unknown }
 
 class AuthRepository {
+  static const _authKey = 'auth_status';
   final _controller = StreamController<AuthStatus>();
-  Stream<AuthStatus> get status async* {
-    await Future<void>.delayed(const Duration(seconds: 1));
-    yield AuthStatus.unauthenticated;
-    yield* _controller.stream;
+
+  AuthRepository() {
+    _loadInitialStatus();
+  }
+
+  Stream<AuthStatus> get status => _controller.stream;
+
+  Future<void> _loadInitialStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isAuthenticated = prefs.getBool(_authKey) ?? false;
+    _controller.add(
+      isAuthenticated ? AuthStatus.authenticated : AuthStatus.unauthenticated,
+    );
   }
 
   Future<void> logIn({
@@ -16,11 +27,17 @@ class AuthRepository {
   }) async {
     await Future.delayed(
       const Duration(milliseconds: 300),
-      () => _controller.add(AuthStatus.authenticated),
+      () async {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool(_authKey, true);
+        _controller.add(AuthStatus.authenticated);
+      },
     );
   }
 
-  void logOut() {
+  Future<void> logOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_authKey, false);
     _controller.add(AuthStatus.unauthenticated);
   }
 

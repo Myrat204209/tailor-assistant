@@ -15,8 +15,24 @@ class OrdersView extends StatelessWidget {
               title: 'Изделия',
               quantity: state.orders == null ? 0 : state.orders!.length,
               colorScheme: colorScheme,
-              firstOnTap: () {},
-              secondOnTap: () {},
+              firstOnTap: () {
+                showAppDialog(
+                  context,
+                  'После обновления будут стёрты заполненные данные?',
+                  'Обновить',
+                  () {
+                    context.read<OrdersBloc>().add(const OrdersRequested());
+                    Navigator.pop(context);
+                  },
+                );
+              },
+              secondOnTap: () {
+                showAppDialog(context, 'Выйти из аккаунта?', 'Выход', () {
+                  context.read<AuthBloc>().add(AuthLogoutRequested());
+                  // Navigator.of(context)
+                  //     .popUntil((route) => route.settings.name == '/login');
+                });
+              },
               thirdOnTap: () {
                 context.read<ThemeCubit>().toggleTheme();
               },
@@ -55,5 +71,3 @@ class OrdersView extends StatelessWidget {
     );
   }
 }
-
-const Map<String, List<String>> contents = {};

@@ -10,7 +10,13 @@ part 'card_rich_text.dart';
 class AppCard extends StatelessWidget {
   /// Constructor
   const AppCard({
-    required this.startOrder, required this.orderName, required this.orderId, required this.contents, required this.quantity, required this.colorScheme, super.key,
+    required this.startOrder,
+    required this.orderName,
+    required this.orderId,
+    required this.contents,
+    required this.quantity,
+    required this.colorScheme,
+    super.key,
   });
   final String startOrder;
   final String orderName;
@@ -70,17 +76,18 @@ class AppCard extends StatelessWidget {
               .paddingOnly(right: 24, left: 68),
           Text(
             orderName,
+            softWrap: true,
             style: const AppTextStyle.text()
                 .contentTitle()
                 .withColor(colorScheme.onSurface),
           ).paddingSymmetric(vertical: 15),
-          ...contents.entries  .where((e) => e.value.isNotEmpty).map(
-            (e) => AppCardRichText(
-              title: e.key,
-              values: e.value,
-              colorScheme: colorScheme,
-            ),
-          ),
+          ...contents.entries.where((e) => e.value.isNotEmpty).map(
+                (e) => AppCardRichText(
+                  title: e.key,
+                  values: e.value,
+                  colorScheme: colorScheme,
+                ),
+              ),
           CardCornerDecoration(
             startOrder: startOrder,
             cornerColor: colorScheme.onSecondary,

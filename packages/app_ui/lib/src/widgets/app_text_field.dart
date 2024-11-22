@@ -9,12 +9,13 @@ class AppTextField extends StatelessWidget {
     required this.titleText,
     required this.colorScheme,
     required this.hintText,
+    super.key,
     this.textFieldKey,
     this.isClose = false,
     this.controller,
     this.errorText,
     this.onChanged,
-    super.key,
+    this.onRemove,
   });
   final Key? textFieldKey;
   final bool isClose;
@@ -25,6 +26,7 @@ class AppTextField extends StatelessWidget {
   final String? errorText;
   // ignore: inference_failure_on_function_return_type
   final Function(String)? onChanged;
+  final VoidCallback? onRemove;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,14 +39,17 @@ class AppTextField extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    titleText,
-                    style: const AppTextStyle.text().lg().regular(),
+                  Flexible(
+                    child: Text(
+                      titleText,
+                      softWrap: true,
+                      style: const AppTextStyle.text().lg().regular(),
+                    ),
                   ),
                   if (isClose)
                     IconButton(
                       padding: EdgeInsets.zero,
-                      onPressed: () {},
+                      onPressed: onRemove,
                       icon: const Icon(
                         Icons.close,
                         size: 25,

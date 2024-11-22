@@ -12,9 +12,11 @@ OrderItem _$OrderItemFromJson(Map<String, dynamic> json) => OrderItem(
       json['start_order'] as String?,
       json['finish_order'] as String?,
       (json['items'] as List<dynamic>?)
-          ?.map((e) => e == null
-              ? null
-              : ProductItem.fromJson(e as Map<String, dynamic>))
+          ?.map(
+            (e) => e == null
+                ? null
+                : ProductItem.fromJson(e as Map<String, dynamic>),
+          )
           .toList(),
     );
 

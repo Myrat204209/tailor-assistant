@@ -8,11 +8,13 @@ class ProductTile extends StatelessWidget {
     required this.colorScheme,
     required this.onDeleteTap,
     required this.onEditTap,
+    required this.title,
     super.key,
   });
   final ColorScheme colorScheme;
   final VoidCallback onDeleteTap;
   final VoidCallback onEditTap;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +27,13 @@ class ProductTile extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Рубашка мужская',
-                style: const AppTextStyle.text().contentTitle(),
-              ).paddingAll(20),
+              Flexible(
+                child: Text(
+                  title,
+                  softWrap: true,
+                  style: const AppTextStyle.text().contentTitle(),
+                ).paddingAll(20),
+              ),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

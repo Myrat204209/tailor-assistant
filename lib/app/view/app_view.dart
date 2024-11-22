@@ -34,6 +34,7 @@ class _AppViewState extends State<AppView> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           return BlocBuilder<ThemeCubit, ThemeMode>(
+            buildWhen: (previous, current) => previous != current,
             builder: (context, themeMode) {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
@@ -50,8 +51,8 @@ class _AppViewState extends State<AppView> {
                         _navigateTo(HomePage.route());
                       } else if (authState.status ==
                           AuthStatus.unauthenticated) {
-                        //TODO: Change to LoginPage
-                        _navigateTo(HomePage.route());
+                        
+                        _navigateTo(LoginPage.route());
                       }
                     },
                     child: child,

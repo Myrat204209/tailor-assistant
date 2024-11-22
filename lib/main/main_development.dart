@@ -17,7 +17,6 @@ void main() {
     /// HTTP Client
     final httpClient = Http(
       defaultBaseUrl: defaultBaseUrl,
-      enableLogger: false,
     );
 
     /// Only for development

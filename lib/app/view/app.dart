@@ -4,8 +4,8 @@ import 'package:dap_foreman_assis/app/app.dart';
 import 'package:dap_foreman_assis/auth/auth.dart';
 import 'package:dap_foreman_assis/employees/employees.dart';
 import 'package:dap_foreman_assis/operation/operation.dart';
-import 'package:dap_foreman_assis/orders/data/data.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
+import 'package:dap_foreman_assis/profile/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
@@ -36,13 +36,16 @@ class App extends StatelessWidget {
       userRepository: _userRepository,
     )..add(AuthSubscriptionRequested());
     final operationBloc =
-        OperationBloc(operationRepository: _operationRepository);
+        OperationBloc(operationRepository: _operationRepository)
+          ..add(const OperationRequested());
     final ordersBloc = OrdersBloc(ordersRepository: _ordersRepository)
       ..add(const OrdersRequested());
     final employeesBloc =
         EmployeesBloc(employeesRepository: _employeesRepository)
           ..add(EmployeesInitRequested());
     final themeCubit = ThemeCubit()..loadTheme();
+    final editCubit = EditCubit();
+    final profileCubit = ProfileCubit();
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: _authRepository),
@@ -58,6 +61,8 @@ class App extends StatelessWidget {
           BlocProvider.value(value: operationBloc),
           BlocProvider.value(value: ordersBloc),
           BlocProvider.value(value: themeCubit),
+          BlocProvider.value(value: editCubit),
+          BlocProvider.value(value: profileCubit),
         ],
         child: const AppView(),
       ),

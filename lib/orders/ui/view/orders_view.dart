@@ -9,6 +9,9 @@ class OrdersView extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return BlocBuilder<OrdersBloc, OrdersState>(
       builder: (context, state) {
+        if (state.status == OrdersStatus.loading) {
+          return const Center(child: CircularProgressIndicator.adaptive());
+        }
         return Column(
           children: [
             UiAppBar(
@@ -49,16 +52,16 @@ class OrdersView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final order = state.orders![index];
                   return AppCard(
-                    startOrder: order.startOrder,
-                    quantity: order.orderQuantity!,
-                    orderName: order.orderName!,
-                    orderId: order.orderId!,
+                    startOrder: order.startOrder!,
+                    quantity: order.quantity.toInt(),
+                    orderName: order.itemName,
+                    orderId: order.docNumber!,
                     contents: {
-                      'Цвет': order.orderColors,
-                      'Коллекция': order.orderCollection ?? [],
-                      'Вышивка': order.orderVyshyvka ?? [],
-                      'Ткань': order.orderTextile,
-                      'Принт': order.orderPrint ?? [],
+                      'Цвет': order.attrColor,
+                      'Коллекция': [order.attrCollection],
+                      'Вышивка': order.attrVyshyvka,
+                      'Ткань': order.attrTextile,
+                      'Принт': order.attrPrint,
                     },
                     colorScheme: colorScheme,
                   );

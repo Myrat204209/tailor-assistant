@@ -7,7 +7,7 @@ class ProfileView extends HookWidget {
     super.key,
   });
 
-  final String name;
+  final EmployeesItem name;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class ProfileView extends HookWidget {
                   icon: Icons.west_rounded,
                 ),
                 Text(
-                  name,
+                  name.employeeName,
                   style: const AppTextStyle.text().pageTitle(),
                 ),
               ],
@@ -48,16 +48,17 @@ class ProfileView extends HookWidget {
                       final query = controller.text.toLowerCase();
                       return state.products
                           .where(
-                            (product) => product.toLowerCase().contains(query),
+                            (product) =>
+                                product.itemName.toLowerCase().contains(query),
                           )
                           .map(
                             (product) => ListTile(
-                              title: Text(product),
+                              title: Text(product.itemName),
                               onTap: () {
                                 context
                                     .read<ProfileCubit>()
                                     .addProduct(product);
-                                controller.closeView(product);
+                                controller.closeView(product.itemName);
                                 resetSearch();
                               },
                             ),
@@ -99,14 +100,18 @@ class ProfileView extends HookWidget {
                 itemBuilder: (context, index) {
                   final productName = state.selectedProducts[index];
                   return ProductTile(
-                    title: productName,
+                    title: productName.itemName,
                     onDeleteTap: () {
                       context.read<ProfileCubit>().removeProduct(productName);
                     },
                     colorScheme: colorScheme,
                     onEditTap: () {
-                      Navigator.of(context)
-                          .push(OperationPage.route(product: productName));
+                      Navigator.of(context).push(
+                        OperationPage.route(
+                          order: productName,
+                          sewer: name,
+                        ),
+                      );
                     },
                   );
                 },

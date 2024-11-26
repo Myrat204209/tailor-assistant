@@ -13,7 +13,7 @@ class EmployeesClient {
     final response = await _http.get<List<dynamic>>('/employees');
     
     final employeesList =
-        (response.data!).map((e) => e as Map<String, dynamic>).toList();
+        (response.data!).map((e) => e as JsonType).toList();
 
     return employeesList.map(EmployeesItem.fromJson).toList();
   }

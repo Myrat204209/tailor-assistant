@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
+import 'package:data_provider/data_provider.dart';
 import 'package:equatable/equatable.dart';
 
 part 'orders_event.dart';

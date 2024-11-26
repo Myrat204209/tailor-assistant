@@ -1,6 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:app_ui/app_ui.dart';
+import 'package:dap_foreman_assis/excel/excel_create.dart';
 import 'package:dap_foreman_assis/operation/operation.dart';
+import 'package:data_provider/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -8,14 +12,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class OperationView extends HookWidget {
   const OperationView({
     required this.name,
+    required this.sewer,
     super.key,
   });
-  final String name;
+  final OrderItem name;
+  final EmployeesItem sewer;
 
   @override
   Widget build(BuildContext context) {
     final searchController = useSearchController();
     final colorScheme = Theme.of(context).colorScheme;
+
     void resetSearch() {
       searchController.clear();
     }
@@ -36,20 +43,19 @@ class OperationView extends HookWidget {
                   icon: Icons.west_rounded,
                 ),
                 FilledButton(
-                  onPressed: () {
-                    // Handle save logic here
+                  onPressed: () async {
+                    log('Pressed Save');
+                    await createAndSaveExcelFile();
                   },
                   child: Text(
-                    'Сохранить',
+                    'Сохранить1',
                     style: const AppTextStyle.text().pageTitle(),
                   ).paddingSymmetric(horizontal: 20, vertical: 14),
                 ),
               ],
-            ).paddingSymmetric(
-              horizontal: 20,
-            ),
+            ).paddingSymmetric(horizontal: 20),
             Text(
-              name,
+              name.itemName,
               softWrap: true,
               style: const AppTextStyle.text().pageTitle(),
             ).paddingSymmetric(horizontal: 20, vertical: 24),
@@ -103,7 +109,7 @@ class OperationView extends HookWidget {
                   foregroundColor: AppColors.bgSecond,
                   backgroundColor: AppColors.mainAccent,
                   onIconPressed: () {
-                    // Add new operation logic here
+                    // Add new operation logic here if needed
                   },
                   icon: Icons.add_rounded,
                 ),
@@ -114,14 +120,23 @@ class OperationView extends HookWidget {
                 itemCount: state.selectedOperations.length,
                 itemBuilder: (context, index) {
                   final operation = state.selectedOperations[index];
-final controller = context.read<EditCubit>().getController(operation);
+                  // Get or create controller for this operation
+                  // final controller =
+                  //     context.read<EditCubit>().getController(operation,);
+
                   return AppTextField(
                     colorScheme: colorScheme,
                     titleText: operation,
-                    controller: controller,
+                    // controller: controller,
                     isClose: true,
                     textFieldKey: Key('operationKey$operation'),
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      context.read<EditCubit>().updateFieldValue(
+                            operation,
+                            'quantity', 
+                            value,
+                          );
+                    },
                     onRemove: () =>
                         context.read<EditCubit>().removeOperation(operation),
                     hintText: 'Введите количество',

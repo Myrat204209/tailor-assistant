@@ -9,14 +9,14 @@ final class OrdersState extends Equatable {
   });
   const OrdersState.initial() : this(status: OrdersStatus.initial);
   final OrdersStatus status;
-  final List<OrdersModel>? orders;
+  final List<OrderItem>? orders;
 
   @override
   List<Object?> get props => [status, orders];
 
   OrdersState copyWith({
     OrdersStatus? status,
-    List<OrdersModel>? orders,
+    List<OrderItem>? orders,
   }) {
     return OrdersState(
       status: status ?? this.status,

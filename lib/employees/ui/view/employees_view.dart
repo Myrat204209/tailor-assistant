@@ -56,7 +56,7 @@ class EmployeesView extends StatelessWidget {
                           onTap: () {
                             Navigator.of(context).push(
                               ProfilePage.route(
-                                employeesList.elementAt(index).employeeName,
+                                employeesList.elementAt(index),
                               ),
                             );
                           },

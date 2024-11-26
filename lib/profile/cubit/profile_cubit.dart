@@ -1,3 +1,5 @@
+
+import 'package:data_provider/data_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileState {
@@ -5,12 +7,12 @@ class ProfileState {
     required this.products,
     required this.selectedProducts,
   });
-  final List<String> products;
-  final List<String> selectedProducts;
+  final List<OrderItem> products;
+  final List<OrderItem> selectedProducts;
 
   ProfileState copyWith({
-    List<String>? products,
-    List<String>? selectedProducts,
+    List<OrderItem>? products,
+    List<OrderItem>? selectedProducts,
   }) {
     return ProfileState(
       products: products ?? this.products,
@@ -22,24 +24,25 @@ class ProfileState {
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileState(products: [], selectedProducts: []));
 
-  void addProduct(String product) {
-    final updatedSelected = List<String>.from(state.selectedProducts)
-      ..add(product);
-    emit(state.copyWith(selectedProducts: updatedSelected));
+  void addProduct(OrderItem product) {
+    emit(
+      state.copyWith(selectedProducts: [...state.selectedProducts, product]),
+    );
   }
 
-  void removeProduct(String product) {
-    final updatedSelected = List<String>.from(state.selectedProducts)
+  void removeProduct(OrderItem product) {
+    final updatedSelected = List<OrderItem>.from(state.selectedProducts)
       ..remove(product);
     emit(state.copyWith(selectedProducts: updatedSelected));
   }
+
   void clearProduct() {
-    final updatedSelected = List<String>.from(state.selectedProducts)
+    final updatedSelected = List<OrderItem>.from(state.selectedProducts)
       ..clear();
     emit(state.copyWith(selectedProducts: updatedSelected));
   }
 
-  void setProducts(List<String> products) {
+  void setProducts(List<OrderItem> products) {
     emit(state.copyWith(products: products));
   }
 }

@@ -1,22 +1,30 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dap_foreman_assis/operation/operation.dart';
+import 'package:data_provider/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+
 class OperationPage extends StatelessWidget {
   const OperationPage({
-    required this.productName,
+    required this.order,
+    required this.sewer,
     super.key,
   });
-  static Route<void> route({required String product}) {
+  static Route<void> route({
+    required OrderItem order,
+    required EmployeesItem sewer,
+  }) {
     return MaterialPageRoute<void>(
       builder: (context) => OperationPage(
-        productName: product,
+        sewer: sewer,
+        order: order,
       ),
     );
   }
 
-  final String productName;
+  final OrderItem order;
+  final EmployeesItem sewer;
   @override
   Widget build(BuildContext context) {
     final operationsList = context
@@ -30,7 +38,8 @@ class OperationPage extends StatelessWidget {
       ..clearOperations();
     return Scaffold(
       body: OperationView(
-        name: productName,
+        name: order,
+        sewer: sewer,
       ),
     );
   }

@@ -9,14 +9,12 @@ class EmployeesItem {
   const EmployeesItem({
     required this.employeeCode,
     required this.employeeName,
-    required this.id,
   });
   @JsonKey(name: 'employee_code')
   final String employeeCode;
   @JsonKey(name: 'employee_name')
   final String employeeName;
-  @JsonKey(name: '_fld23708')
-  final bool id;
+  
 
   factory EmployeesItem.fromJson(JsonType json) =>
       _$EmployeesItemFromJson(json);

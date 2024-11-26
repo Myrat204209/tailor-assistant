@@ -13,7 +13,7 @@ class Http extends DioForNative {
           BaseOptions(
             baseUrl: defaultBaseUrl,
             connectTimeout: const Duration(milliseconds: 20000),
-            receiveTimeout: const Duration(milliseconds: 20000),
+            receiveTimeout: const Duration(minutes: 1),
           ),
         ) {
     /// Add all interceptors

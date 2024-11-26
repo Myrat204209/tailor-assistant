@@ -62,6 +62,9 @@ class AppTextField extends StatelessWidget {
               TextField(
                 key: textFieldKey,
                 onChanged: onChanged,
+                controller: controller,
+                keyboardType:
+                    isClose ? TextInputType.number : TextInputType.text,
                 textAlign: isClose ? TextAlign.end : TextAlign.start,
                 decoration: InputDecoration(
                   hintText: hintText,

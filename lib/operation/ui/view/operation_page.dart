@@ -4,7 +4,6 @@ import 'package:data_provider/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class OperationPage extends StatelessWidget {
   const OperationPage({
     required this.order,
@@ -33,9 +32,8 @@ class OperationPage extends StatelessWidget {
           (e) => e.workName,
         )
         .toList();
-    context.read<EditCubit>()
-      ..setOperations(operationsList)
-      ..clearOperations();
+    context.read<EditCubit>().setOperations(operationsList); 
+    // ..clearOperations();
     return Scaffold(
       body: OperationView(
         name: order,

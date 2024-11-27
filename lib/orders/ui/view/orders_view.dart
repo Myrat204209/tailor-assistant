@@ -9,9 +9,6 @@ class OrdersView extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return BlocBuilder<OrdersBloc, OrdersState>(
       builder: (context, state) {
-        if (state.status == OrdersStatus.loading) {
-          return const Center(child: CircularProgressIndicator.adaptive());
-        }
         return Column(
           children: [
             UiAppBar(
@@ -45,29 +42,34 @@ class OrdersView extends StatelessWidget {
                   ? Icons.light_mode_rounded
                   : Icons.dark_mode_rounded,
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: state.orders!.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  final order = state.orders![index];
-                  return AppCard(
-                    startOrder: order.startOrder!,
-                    quantity: order.quantity.toInt(),
-                    orderName: order.itemName,
-                    orderId: order.docNumber!,
-                    contents: {
-                      'Цвет': order.attrColor,
-                      'Коллекция': [order.attrCollection],
-                      'Вышивка': order.attrVyshyvka,
-                      'Ткань': order.attrTextile,
-                      'Принт': order.attrPrint,
-                    },
-                    colorScheme: colorScheme,
-                  );
-                },
+            if (state.status == OrdersStatus.loading)
+              const Align(
+                child: Center(child: CircularProgressIndicator.adaptive()),
+              )
+            else
+              Expanded(
+                child: ListView.builder(
+                  itemCount: state.orders!.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    final order = state.orders![index];
+                    return AppCard(
+                      startOrder: order.startOrder!,
+                      quantity: order.quantity.toInt(),
+                      orderName: order.itemName,
+                      orderId: order.docNumber!,
+                      contents: {
+                        'Цвет': order.attrColor,
+                        'Коллекция': [order.attrCollection],
+                        'Вышивка': order.attrVyshyvka,
+                        'Ткань': order.attrTextile,
+                        'Принт': order.attrPrint,
+                      },
+                      colorScheme: colorScheme,
+                    );
+                  },
+                ),
               ),
-            ),
           ],
         );
       },

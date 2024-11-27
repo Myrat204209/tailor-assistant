@@ -46,6 +46,9 @@ class OperationView extends HookWidget {
                   onPressed: () async {
                     log('Pressed Save');
                     await createAndSaveExcelFile();
+
+                    // Handle save logic here, potentially passing
+                    // state.operationValues for persistence
                   },
                   child: Text(
                     'Сохранить1',
@@ -120,20 +123,29 @@ class OperationView extends HookWidget {
                 itemCount: state.selectedOperations.length,
                 itemBuilder: (context, index) {
                   final operation = state.selectedOperations[index];
-                  // Get or create controller for this operation
-                  // final controller =
-                  //     context.read<EditCubit>().getController(operation,);
+                  // Example field ID for each operation (can be dynamic)
+                  const fieldId = 'quantity'; // Adjust based on your needs
+
+                  // Get or create controller for this operation and fieldId
+                  final controller = context
+                      .read<EditCubit>()
+                      .getController(operation, fieldId);
+
+                  // Get the value saved for the operation and field
+                  final fieldValue =
+                      state.operationValues[operation]?[fieldId] ?? '';
 
                   return AppTextField(
                     colorScheme: colorScheme,
                     titleText: operation,
-                    // controller: controller,
+                    controller: controller..text = fieldValue,
                     isClose: true,
-                    textFieldKey: Key('operationKey$operation'),
+                    textFieldKey: Key('operationKey$operation$fieldId'),
+                    // Save the text field value on change
                     onChanged: (value) {
                       context.read<EditCubit>().updateFieldValue(
                             operation,
-                            'quantity', 
+                            fieldId,
                             value,
                           );
                     },

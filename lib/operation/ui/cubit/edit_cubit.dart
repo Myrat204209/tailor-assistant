@@ -1,30 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-class EditState {
-  EditState({
-    required this.operations,
-    required this.selectedOperations,
-    required this.operationValues, // Store values of each operation
-  });
-
-  final List<String> operations;
-  final List<String> selectedOperations;
-  final Map<String, Map<String, String>>
-      operationValues; // Stores values for each operation's fields
-
-  EditState copyWith({
-    List<String>? operations,
-    List<String>? selectedOperations,
-    Map<String, Map<String, String>>? operationValues,
-  }) {
-    return EditState(
-      operations: operations ?? this.operations,
-      selectedOperations: selectedOperations ?? this.selectedOperations,
-      operationValues: operationValues ?? this.operationValues,
-    );
-  }
-}
+part 'edit_state.dart';
 
 class EditCubit extends Cubit<EditState> {
   EditCubit()
@@ -36,21 +12,21 @@ class EditCubit extends Cubit<EditState> {
           ),
         );
 
-  // Map of TextEditingControllers, each operation can have multiple fields
+  void setOperations(List<String> operations) {
+    emit(state.copyWith(operations: operations));
+  }
+
   final Map<String, Map<String, TextEditingController>> _controllers = {};
 
-  // Get a controller for a specific operation and field
+  // Get or create a controller for a specific operation and field
   TextEditingController getController(String operation, String fieldId) {
     return _controllers.putIfAbsent(operation, () => {})[fieldId] ??
         (_controllers[operation]![fieldId] = TextEditingController());
   }
 
-  // Remove a controller for a specific operation and field
+  // Remove the controller for a specific operation and field
   void removeController(String operation, String fieldId) {
     _controllers[operation]?.remove(fieldId);
-    _controllers[operation]
-        ?.values
-        .forEach((controller) => controller.dispose());
   }
 
   // Add an operation to the selected list
@@ -69,27 +45,15 @@ class EditCubit extends Cubit<EditState> {
     final updatedOperations =
         state.selectedOperations.where((o) => o != operation).toList();
     emit(state.copyWith(selectedOperations: updatedOperations));
-    // Optionally clear values when an operation is removed
     removeOperationValues(operation);
   }
 
-  // Clear all selected operations
-  void clearOperations() {
-    emit(state.copyWith(selectedOperations: []));
-    // Optionally clear values when all operations are cleared
-    clearOperationValues();
-  }
-
-  // Set the list of available operations
-  void setOperations(List<String> operations) {
-    emit(state.copyWith(operations: operations));
-  }
-
-  // Update the value for a specific field in an operation
+  // Update the field value for a specific operation and field
   void updateFieldValue(String operation, String fieldId, String value) {
     final updatedValues =
         Map<String, String>.from(state.operationValues[operation] ?? {});
     updatedValues[fieldId] = value;
+
     final updatedOperationValues =
         Map<String, Map<String, String>>.from(state.operationValues)
           ..[operation] = updatedValues;
@@ -97,12 +61,7 @@ class EditCubit extends Cubit<EditState> {
     emit(state.copyWith(operationValues: updatedOperationValues));
   }
 
-  // Get the saved value for a specific field of an operation
-  String? getFieldValue(String operation, String fieldId) {
-    return state.operationValues[operation]?[fieldId];
-  }
-
-  // Clear all values for a specific operation
+  // Remove all values for a specific operation
   void removeOperationValues(String operation) {
     final updatedValues =
         Map<String, Map<String, String>>.from(state.operationValues)
@@ -115,7 +74,7 @@ class EditCubit extends Cubit<EditState> {
     emit(state.copyWith(operationValues: {}));
   }
 
-  // Dispose all controllers for a specific operation
+  // Dispose controllers when no longer needed
   void disposeControllers() {
     _controllers.forEach((operation, fields) {
       for (final controller in fields.values) {

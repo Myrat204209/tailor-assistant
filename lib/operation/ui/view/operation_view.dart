@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer';
 
 import 'package:app_ui/app_ui.dart';
-import 'package:dap_foreman_assis/excel/excel_create.dart';
 import 'package:dap_foreman_assis/operation/operation.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:flutter/material.dart';
@@ -44,14 +42,22 @@ class OperationView extends HookWidget {
                 ),
                 FilledButton(
                   onPressed: () async {
-                    log('Pressed Save');
-                    await createAndSaveExcelFile();
-
-                    // Handle save logic here, potentially passing
-                    // state.operationValues for persistence
+                    // Save all controller values when the button is pressed
+                    for (final operation in state.selectedOperations) {
+                      for (final fieldId in ['quantity']) {
+                        // Add any other fieldIds as needed
+                        final value = context
+                            .read<EditCubit>()
+                            .getController(operation, fieldId)
+                            .text;
+                        context
+                            .read<EditCubit>()
+                            .updateFieldValue(operation, fieldId, value);
+                      }
+                    }
                   },
                   child: Text(
-                    'Сохранить1',
+                    'Сохранить',
                     style: const AppTextStyle.text().pageTitle(),
                   ).paddingSymmetric(horizontal: 20, vertical: 14),
                 ),
@@ -108,14 +114,6 @@ class OperationView extends HookWidget {
                     ),
                   ).paddingOnly(left: 20, right: 14),
                 ),
-                AppIconButton(
-                  foregroundColor: AppColors.bgSecond,
-                  backgroundColor: AppColors.mainAccent,
-                  onIconPressed: () {
-                    // Add new operation logic here if needed
-                  },
-                  icon: Icons.add_rounded,
-                ),
               ],
             ).paddingOnly(bottom: 24),
             Expanded(
@@ -123,25 +121,26 @@ class OperationView extends HookWidget {
                 itemCount: state.selectedOperations.length,
                 itemBuilder: (context, index) {
                   final operation = state.selectedOperations[index];
-                  // Example field ID for each operation (can be dynamic)
                   const fieldId = 'quantity'; // Adjust based on your needs
 
-                  // Get or create controller for this operation and fieldId
+                  // Get or create controller for this operation and field
                   final controller = context
                       .read<EditCubit>()
                       .getController(operation, fieldId);
 
-                  // Get the value saved for the operation and field
+                  // Get the saved value for the operation and field
                   final fieldValue =
                       state.operationValues[operation]?[fieldId] ?? '';
+
+                  // Set the controller text to the saved value
+                  controller.text = fieldValue;
 
                   return AppTextField(
                     colorScheme: colorScheme,
                     titleText: operation,
-                    controller: controller..text = fieldValue,
+                    controller: controller,
                     isClose: true,
                     textFieldKey: Key('operationKey$operation$fieldId'),
-                    // Save the text field value on change
                     onChanged: (value) {
                       context.read<EditCubit>().updateFieldValue(
                             operation,

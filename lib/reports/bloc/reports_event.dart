@@ -36,4 +36,46 @@ final class ReportDeleteRequested extends ReportEvent {
   List<Object> get props => [id];
 }
 
-final class ReportRefreshRequested extends ReportEvent {}
+final class ReportEmployeeSelected extends ReportEvent {
+  const ReportEmployeeSelected({
+    required this.employeeCode,
+    required this.employeeName,
+  });
+  final String employeeCode;
+  final String employeeName;
+
+  @override
+  List<Object> get props => [employeeCode, employeeName];
+}
+
+final class ReportProductSelected extends ReportEvent {
+  const ReportProductSelected({required this.product});
+  final OrderItem product;
+
+  @override
+  List<Object> get props => [product];
+}
+
+final class ReportOperationSelected extends ReportEvent {
+  const ReportOperationSelected({required this.operation});
+  final OperationItem operation;
+
+  @override
+  List<Object> get props => [operation];
+}
+
+final class ReportQuantityAdded extends ReportEvent {
+  const ReportQuantityAdded({
+    required this.workCode,
+    required this.quantity,
+  });
+  final String workCode;
+  final double quantity;
+
+  @override
+  List<Object> get props => [workCode, quantity];
+}
+
+final class ReportSaved extends ReportEvent {
+  const ReportSaved();
+}

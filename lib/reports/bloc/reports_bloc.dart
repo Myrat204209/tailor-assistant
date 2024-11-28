@@ -10,6 +10,7 @@ part 'reports_state.dart';
 class ReportsBloc extends Bloc<ReportEvent, ReportsState> {
   ReportsBloc({required this.reportsRepository})
       : super(const ReportsState.initial()) {
+    on<ReportEmployeeSelected>(_onEmployeeSelected);
     on<ReportsRequested>(_onRequested);
     on<ReportsSendRequested>(_onSendRequested);
     on<ReportUpdateRequested>(_onUpdateRequested);
@@ -116,4 +117,9 @@ class ReportsBloc extends Bloc<ReportEvent, ReportsState> {
       _isFetching = false;
     }
   }
+
+  FutureOr<void> _onEmployeeSelected(
+    ReportEmployeeSelected event,
+    Emitter<ReportsState> emit,
+  ) {}
 }

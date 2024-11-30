@@ -5,7 +5,7 @@ class OrdersView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeCubit = context.select((ThemeCubit cubit) => cubit.state);
+    final themeBloc = context.select((ThemeModeBloc bloc) => bloc.state);
     final colorScheme = Theme.of(context).colorScheme;
     return BlocBuilder<OrdersBloc, OrdersState>(
       builder: (context, state) {
@@ -34,11 +34,13 @@ class OrdersView extends StatelessWidget {
                 });
               },
               thirdOnTap: () {
-                context.read<ThemeCubit>().toggleTheme();
+                context
+                    .read<ThemeModeBloc>()
+                    .add(const ThemeModeChanged(ThemeMode.dark));
               },
               firstIcon: Icons.cached_rounded,
               secondIcon: Icons.logout_rounded,
-              thirdIcon: themeCubit == ThemeMode.dark
+              thirdIcon: themeBloc == ThemeMode.dark
                   ? Icons.light_mode_rounded
                   : Icons.dark_mode_rounded,
             ),

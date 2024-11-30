@@ -1,7 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:auth_repository/auth_repository.dart';
 
-import 'package:dap_foreman_assis/app/app.dart';
 import 'package:dap_foreman_assis/auth/auth.dart';
 import 'package:dap_foreman_assis/home/home.dart';
 import 'package:dap_foreman_assis/login/login.dart';
@@ -33,34 +32,29 @@ class _AppViewState extends State<AppView> {
     return SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return BlocBuilder<ThemeCubit, ThemeMode>(
-            buildWhen: (previous, current) => previous != current,
-            builder: (context, themeMode) {
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                navigatorKey: _navigatorKey,
-                themeMode: themeMode,
-                theme: const AppTheme().themeData,
-                darkTheme: const AppDarkTheme().themeData,
-                builder: (context, child) {
-                  return BlocListener<AuthBloc, AuthState>(
-                    listenWhen: (previous, current) =>
-                        previous.status != current.status,
-                    listener: (context, authState) {
-                      if (authState.status == AuthStatus.authenticated) {
-                        _navigateTo(HomePage.route());
-                      } else if (authState.status ==
-                          AuthStatus.unauthenticated) {
-                        
-                        _navigateTo(LoginPage.route());
-                      }
-                    },
-                    child: child,
-                  );
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            navigatorKey: _navigatorKey,
+            themeMode: ThemeMode.light,
+            theme: const AppTheme().themeData,
+            darkTheme: const AppDarkTheme().themeData,
+            builder: (context, child) {
+              return BlocListener<AuthBloc, AuthState>(
+                listenWhen: (previous, current) =>
+                    previous.status != current.status,
+                listener: (context, authState) {
+                  if (authState.status == AuthStatus.authenticated) {
+                    _navigateTo(HomePage.route());
+                  } else if (authState.status ==
+                      AuthStatus.unauthenticated) {
+                    
+                    _navigateTo(LoginPage.route());
+                  }
                 },
-                onGenerateRoute: (_) => SplashPage.route(),
+                child: child,
               );
             },
+            onGenerateRoute: (_) => SplashPage.route(),
           );
         },
       ),

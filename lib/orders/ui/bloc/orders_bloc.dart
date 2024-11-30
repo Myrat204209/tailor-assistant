@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'orders_event.dart';
 part 'orders_state.dart';
 
-class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
+class OrdersBloc extends HydratedBloc<OrdersEvent, OrdersState> {
   OrdersBloc({required OrdersRepository ordersRepository})
       : _ordersRepository = ordersRepository,
         super(const OrdersState.initial()) {
@@ -36,6 +36,24 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     } catch (error) {
       emit(state.copyWith(status: OrdersStatus.failure));
       addError(error);
+    }
+  }
+
+  @override
+  OrdersState? fromJson(JsonType json) {
+    try {
+      return OrdersState.fromJson(json);
+    } catch (_) {
+      return const OrdersState.initial();
+    }
+  }
+
+  @override
+  JsonType? toJson(OrdersState state) {
+    try {
+      return state.toJson();
+    } catch (_) {
+      return null;
     }
   }
 }

@@ -10,13 +10,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
 
-  @override
-  void onEvent(Bloc<dynamic, dynamic> bloc, Object? event) {
-    final stopwatch = Stopwatch()..start();
-    super.onEvent(bloc, event);
-    stopwatch.stop();
-    log('onEvent(${bloc.runtimeType}, $event) took ${stopwatch.elapsedMilliseconds}ms');
-  }
+  // @override
+  // void onEvent(Bloc<dynamic, dynamic> bloc, Object? event) {
+  //   final stopwatch = Stopwatch()..start();
+  //   super.onEvent(bloc, event);
+  //   stopwatch.stop();
+  //   log('onEvent(${bloc.runtimeType}, $event) took ${stopwatch.elapsedMilliseconds}ms');
+  // }
 
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {

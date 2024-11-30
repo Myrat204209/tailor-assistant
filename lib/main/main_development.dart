@@ -6,18 +6,22 @@ import 'package:dap_foreman_assis/employees/data/data.dart';
 import 'package:dap_foreman_assis/main/bootstrap/bootstrap.dart';
 import 'package:dap_foreman_assis/operation/operation.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
+import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:user_repository/user_repository.dart';
 
 void main() {
   bootstrap(() {
     /// Constants
-    const defaultBaseUrl = 'http://192.168.0.161:3000';
+    const defaultBaseUrl = 'http://95.85.117.102:8545';
 
     /// HTTP Client
     final httpClient = Http(
       defaultBaseUrl: defaultBaseUrl,
     );
+    const permissionClient = PermissionClient();
+    final storageRepository =
+        StorageRepository(permissionClient: permissionClient);
 
     /// Only for development
     HttpOverrides.global = MyHttpOverrides();
@@ -31,7 +35,11 @@ void main() {
         OperationRepository(operationClient: operationClient);
     final authRepository = AuthRepository();
     final userRepository = UserRepository();
+    final reportsClient = ReportsClient(httpClient: httpClient);
+    final reportsRepository = ReportsRepository(reportsClient: reportsClient);
     return App(
+      storageRepository: storageRepository,
+      reportsRepository: reportsRepository,
       ordersRepository: ordersRepository,
       authRepository: authRepository,
       userRepository: userRepository,

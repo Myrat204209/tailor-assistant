@@ -2,84 +2,95 @@ import 'package:animated_button_bar/animated_button_bar.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:dap_foreman_assis/employees/employees.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
+import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
-class HomePage extends HookWidget {
-  const HomePage({
-    super.key,
-  });
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   static Route<void> route() {
     return MaterialPageRoute<void>(builder: (_) => const HomePage());
   }
 
   @override
-  Widget build(BuildContext context) {
-    final pageController = usePageController();
+  _HomePageState createState() => _HomePageState();
+}
 
-    final animatedButtonController = useMemoized(AnimatedButtonController.new);
+class _HomePageState extends State<HomePage> {
+  final PageController _pageController = PageController();
+  int _selectedIndex = 0; // Keeps track of selected button index
 
-    // Get theme-aware colors
+  // Get theme-aware colors
+  late Color selectedColor;
+  late Color unSelectedColor;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     final colorScheme = Theme.of(context).colorScheme;
-    final selectedColor = colorScheme.primary;
-    final unSelectedColor = colorScheme.onPrimary;
+    selectedColor = colorScheme.onPrimary;
+    unSelectedColor = colorScheme.primary;
+  }
 
-    void onPageChange(int index) {
-      animatedButtonController.setIndex(index);
-    }
+  // Handle page changes and button tap actions
+  void onPageChange(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
-    void onButtonTap(int index) {
-      pageController.animateToPage(
-        index,
-        duration: const Duration(milliseconds: 100),
-        curve: Curves.linear,
-      );
-      animatedButtonController.setIndex(index);
-    }
+  void onButtonTap(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.linear,
+    );
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       fit: StackFit.expand,
       children: [
         PageView(
-          controller: pageController,
+          controller: _pageController,
           onPageChanged: onPageChange,
           children: const [
             OrdersPage(),
             EmployeesPage(),
-            EmployeesPage(),
+            ReportsPage(),
           ],
         ),
         Align(
           alignment: Alignment.bottomCenter,
           child: SizedBox(
-            width: 230,
+            width: 250,
             height: 80,
             child: AnimatedButtonBar(
-              controller: animatedButtonController,
               radius: 50,
               backgroundColor: selectedColor,
               foregroundColor: unSelectedColor,
               children: [
                 _buildButton(
                   icon: Icons.dry_cleaning_rounded,
-                  // isSelected: selectedIndex.value == 0,
-                  isSelected: animatedButtonController.index == 0,
+                  index: 0,
                   selectedColor: selectedColor,
                   unSelectedColor: unSelectedColor,
                   onTap: () => onButtonTap(0),
                 ),
                 _buildButton(
                   icon: Icons.person_3_rounded,
-                  // isSelected: selectedIndex.value == 1,
-                  isSelected: animatedButtonController.index == 1,
+                  index: 1,
                   selectedColor: selectedColor,
                   unSelectedColor: unSelectedColor,
                   onTap: () => onButtonTap(1),
                 ),
                 _buildButton(
                   icon: Icons.notes_rounded,
-                  // isSelected: selectedIndex.value == 1,
-                  isSelected: animatedButtonController.index == 2,
+                  index: 2,
                   selectedColor: selectedColor,
                   unSelectedColor: unSelectedColor,
                   onTap: () => onButtonTap(2),
@@ -92,13 +103,16 @@ class HomePage extends HookWidget {
     );
   }
 
+  // Button builder
   ButtonBarEntry _buildButton({
     required IconData icon,
-    required bool isSelected,
+    required int index,
     required Color selectedColor,
     required Color unSelectedColor,
     required VoidCallback onTap,
   }) {
+    final isSelected = _selectedIndex == index;
+
     return ButtonBarEntry(
       onTap: onTap,
       child: Icon(

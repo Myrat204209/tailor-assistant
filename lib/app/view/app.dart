@@ -6,6 +6,8 @@ import 'package:dap_foreman_assis/employees/employees.dart';
 import 'package:dap_foreman_assis/operation/operation.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
 import 'package:dap_foreman_assis/profile/cubit/profile_cubit.dart';
+import 'package:dap_foreman_assis/reports/reports.dart';
+import 'package:dap_foreman_assis/theme_selector/theme_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
@@ -17,9 +19,13 @@ class App extends StatelessWidget {
     required OperationRepository operationRepository,
     required EmployeesRepository employeesRepository,
     required OrdersRepository ordersRepository,
+    required ReportsRepository reportsRepository,
+    required StorageRepository storageRepository,
     super.key,
   })  : _authRepository = authRepository,
         _employeesRepository = employeesRepository,
+        _reportsRepository = reportsRepository,
+        _storageRepository = storageRepository,
         _operationRepository = operationRepository,
         _ordersRepository = ordersRepository,
         _userRepository = userRepository;
@@ -29,6 +35,8 @@ class App extends StatelessWidget {
   final EmployeesRepository _employeesRepository;
   final OperationRepository _operationRepository;
   final OrdersRepository _ordersRepository;
+  final ReportsRepository _reportsRepository;
+  final StorageRepository _storageRepository;
   @override
   Widget build(BuildContext context) {
     final authBloc = AuthBloc(
@@ -43,14 +51,17 @@ class App extends StatelessWidget {
     final employeesBloc =
         EmployeesBloc(employeesRepository: _employeesRepository)
           ..add(EmployeesInitRequested());
-    final themeCubit = ThemeCubit()..loadTheme();
+    // final themeCubit = ThemeCubit()..loadTheme();
     final editCubit = EditCubit();
     final profileCubit = ProfileCubit();
+    final themeModeBloc = ThemeModeBloc();
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: _authRepository),
         RepositoryProvider.value(value: _ordersRepository),
         RepositoryProvider.value(value: _userRepository),
+        RepositoryProvider.value(value: _reportsRepository),
+        RepositoryProvider.value(value: _storageRepository),
         RepositoryProvider.value(value: _operationRepository),
         RepositoryProvider.value(value: _employeesRepository),
       ],
@@ -60,7 +71,8 @@ class App extends StatelessWidget {
           BlocProvider.value(value: employeesBloc),
           BlocProvider.value(value: operationBloc),
           BlocProvider.value(value: ordersBloc),
-          BlocProvider.value(value: themeCubit),
+          BlocProvider.value(value: themeModeBloc),
+          // BlocProvider.value(value: themeCubit),
           BlocProvider.value(value: editCubit),
           BlocProvider.value(value: profileCubit),
         ],

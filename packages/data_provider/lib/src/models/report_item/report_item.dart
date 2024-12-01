@@ -1,10 +1,11 @@
+import 'package:data_provider/data_provider.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'report_item.g.dart';
 
 @JsonSerializable()
 class ReportItem {
- const ReportItem({
+  ReportItem({
     this.employeeCode,
     this.employeeName,
     this.itemCode,
@@ -19,39 +20,91 @@ class ReportItem {
   });
 
   // From JSON
-  factory ReportItem.fromJson(Map<String, dynamic> json) =>
-      _$ReportItemFromJson(json);
+  factory ReportItem.fromJson(JsonType json) => _$ReportItemFromJson(json);
+
+  // Copy constructor
+  ReportItem.copy(ReportItem reportItem)
+      : employeeCode = reportItem.employeeCode,
+        employeeName = reportItem.employeeName,
+        itemCode = reportItem.itemCode,
+        itemName = reportItem.itemName,
+        id = reportItem.id,
+        docNumber = reportItem.docNumber,
+        workCode = reportItem.workCode,
+        workName = reportItem.workName,
+        workQuantity = reportItem.workQuantity,
+        reportDate = reportItem.reportDate,
+        comments = reportItem.comments;
+
+  // Copy with method
+  ReportItem copyWith({
+    String? employeeCode,
+    String? employeeName,
+    String? itemCode,
+    String? itemName,
+    String? docNumber,
+    String? workCode,
+    String? workName,
+    int? workQuantity,
+    String? comments,
+    int? id,
+    String? reportDate,
+  }) {
+    return ReportItem(
+      employeeCode: employeeCode ?? this.employeeCode,
+      employeeName: employeeName ?? this.employeeName,
+      itemCode: itemCode ?? this.itemCode,
+      itemName: itemName ?? this.itemName,
+      docNumber: docNumber ?? this.docNumber,
+      workCode: workCode ?? this.workCode,
+      workName: workName ?? this.workName,
+      workQuantity: workQuantity ?? this.workQuantity,
+      comments: comments ?? this.comments,
+      id: id ?? this.id,
+      reportDate: reportDate ?? this.reportDate,
+    );
+  }
+
   @JsonKey(name: 'employee_code')
-  final String? employeeCode;
+  String? employeeCode;
 
   @JsonKey(name: 'employee_name')
-  final String? employeeName;
+  String? employeeName;
 
   @JsonKey(name: 'item_code')
-  final String? itemCode;
+  String? itemCode;
 
   @JsonKey(name: 'item_name')
-  final String? itemName;
+  String? itemName;
 
   @JsonKey(name: 'doc_number')
-  final String? docNumber;
+  String? docNumber;
 
   @JsonKey(name: 'work_code')
-  final String? workCode;
+  String? workCode;
 
   @JsonKey(name: 'work_name')
-  final String? workName;
+  String? workName;
 
   @JsonKey(name: 'work_quantity')
-  final int? workQuantity;
+  int? workQuantity;
 
-  final String? comments;
+  String? comments;
 
-  final int? id;
+  int? id;
 
   @JsonKey(name: 'report_date')
-  final String? reportDate;
+  String? reportDate;
 
   // To JSON
   Map<String, dynamic> toJson() => _$ReportItemToJson(this);
+}
+
+extension ReportItemValidation on ReportItem {
+  bool get isNotEmpty {
+    return (employeeCode?.isNotEmpty ?? false) ||
+        (employeeName?.isNotEmpty ?? false) ||
+        (itemCode?.isNotEmpty ?? false) ||
+        (itemName?.isNotEmpty ?? false);
+  }
 }

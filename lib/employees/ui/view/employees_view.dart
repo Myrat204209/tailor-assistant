@@ -51,13 +51,18 @@ class EmployeesView extends StatelessWidget {
                   : ListView.builder(
                       itemCount: employeesList.length,
                       itemBuilder: (context, index) {
+                        final employee = employeesList[index];
                         return SewerTile(
-                          name: employeesList.elementAt(index).employeeName,
+                          name: employee.employeeName,
                           onTap: () {
+                            context.read<ReportsBloc>().add(
+                                  ReportEmployeeSelected(
+                                    employeeCode: employee.employeeCode,
+                                    employeeName: employee.employeeName,
+                                  ),
+                                );
                             Navigator.of(context).push(
-                              ProfilePage.route(
-                                employeesList.elementAt(index),
-                              ),
+                              ProfilePage.route(employee),
                             );
                           },
                         ).paddingSymmetric(horizontal: 20, vertical: 7);

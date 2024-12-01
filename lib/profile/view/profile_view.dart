@@ -56,8 +56,7 @@ class ProfileView extends HookWidget {
                               title: Text(product.itemName),
                               onTap: () {
                                 context
-                                    .read<ProfileCubit>()
-                                    .addProduct(product);
+                                  ..read<ProfileCubit>().addProduct(product);
                                 controller.closeView(product.itemName);
                                 resetSearch();
                               },
@@ -106,6 +105,9 @@ class ProfileView extends HookWidget {
                     },
                     colorScheme: colorScheme,
                     onEditTap: () {
+                      context.read<ReportsBloc>().add(
+                            ReportProductSelected(product: productName),
+                          );
                       Navigator.of(context).push(
                         OperationPage.route(
                           order: productName,

@@ -142,6 +142,7 @@ class OperationView extends HookWidget {
                     isClose: true,
                     textFieldKey: Key('operationKey$operation$fieldId'),
                     onChanged: (value) {
+                      
                       context.read<EditCubit>().updateFieldValue(
                             operation,
                             fieldId,

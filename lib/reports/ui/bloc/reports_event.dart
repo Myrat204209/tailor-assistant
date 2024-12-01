@@ -70,7 +70,7 @@ final class ReportQuantityAdded extends ReportEvent {
     required this.quantity,
   });
   final String workCode;
-  final double quantity;
+  final int quantity;
 
   @override
   List<Object> get props => [workCode, quantity];

@@ -4,6 +4,7 @@ import 'package:dap_foreman_assis/operation/operation.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
 import 'package:dap_foreman_assis/profile/cubit/profile_cubit.dart';
 import 'package:dap_foreman_assis/profile/profile.dart';
+import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +29,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ordersList =
-        context.select((OrdersBloc bloc) => bloc.state.orders)!.toList();
+        context.select((OrdersBloc bloc) => bloc.state.orders).toList();
     context.read<ProfileCubit>()
       ..setProducts(ordersList)
       ..clearProduct();

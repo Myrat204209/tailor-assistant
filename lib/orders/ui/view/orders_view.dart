@@ -13,7 +13,7 @@ class OrdersView extends StatelessWidget {
           children: [
             UiAppBar(
               title: 'Изделия',
-              quantity: state.orders == null ? 0 : state.orders!.length,
+              quantity: state.orders.length,
               colorScheme: colorScheme,
               firstOnTap: () {
                 showAppDialog(
@@ -51,10 +51,10 @@ class OrdersView extends StatelessWidget {
             else
               Expanded(
                 child: ListView.builder(
-                  itemCount: state.orders!.length,
+                  itemCount: state.orders.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    final order = state.orders![index];
+                    final order = state.orders[index];
                     return AppCard(
                       startOrder: order.startOrder!,
                       quantity: order.quantity.toInt(),

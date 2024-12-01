@@ -55,6 +55,7 @@ class App extends StatelessWidget {
     final editCubit = EditCubit();
     final profileCubit = ProfileCubit();
     final themeModeBloc = ThemeModeBloc();
+    final reportsBloc = ReportsBloc(reportsRepository: _reportsRepository);
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: _authRepository),
@@ -72,7 +73,7 @@ class App extends StatelessWidget {
           BlocProvider.value(value: operationBloc),
           BlocProvider.value(value: ordersBloc),
           BlocProvider.value(value: themeModeBloc),
-          // BlocProvider.value(value: themeCubit),
+          BlocProvider.value(value: reportsBloc),
           BlocProvider.value(value: editCubit),
           BlocProvider.value(value: profileCubit),
         ],

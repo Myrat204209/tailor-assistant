@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:dap_foreman_assis/app/app.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -20,6 +21,9 @@ Future<void> bootstrap(AppBuilder builder) async {
     if (kDebugMode) {
       await HydratedBloc.storage.clear();
     }
+     /// Hive Box
+      await Hive.initFlutter();
+
     Bloc.observer = blocObserver;
     runApp(
       await builder(),

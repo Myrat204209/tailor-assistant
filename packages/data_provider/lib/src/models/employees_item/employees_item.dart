@@ -1,22 +1,27 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:data_provider/data_provider.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'employees_item.g.dart';
+part 'employees_item.g.dart'; 
 
 @JsonSerializable()
+@HiveType(typeId: 0) 
 class EmployeesItem {
   const EmployeesItem({
     required this.employeeCode,
     required this.employeeName,
   });
-  @JsonKey(name: 'employee_code')
-  final String employeeCode;
-  @JsonKey(name: 'employee_name')
-  final String employeeName;
-  
 
   factory EmployeesItem.fromJson(JsonType json) =>
       _$EmployeesItemFromJson(json);
+
+  @HiveField(0) 
+  @JsonKey(name: 'employee_code')
+  final String employeeCode;
+
+  @HiveField(1) 
+  @JsonKey(name: 'employee_name')
+  final String employeeName;
+
   JsonType toJson() => _$EmployeesItemToJson(this);
 }

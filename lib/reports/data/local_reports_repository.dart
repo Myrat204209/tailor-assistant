@@ -39,106 +39,140 @@ class ReportsRepository {
 
   final UserReportsBox _reportsBox;
 
-  /// Get all OrderItems for a given EmployeeItem
-  Future<List<OrderMap>> getOrders({required EmployeesItem employee}) async {
+  /// Add EmployeeItem to the box if not already exists, otherwise fetch Orders.
+  Future<void> addEmployee(EmployeesItem employee) async {
     try {
       final employeeData = _reportsBox.get(employee);
       if (employeeData == null) {
-        return [];
+        // If the employee does not exist in the box, create a new entry
+        await _reportsBox.put(employee, []);
+      } else {
+        // If the employee exists, retrieve their orders
+        await getOrders(employee);
       }
-
-      return employeeData[employee] ?? [];
-    } catch (error) {
-      log('Error fetching order items for employee: $error');
-      return [];
+    } catch (error, stackTrace) {
+      log('Error adding employee: $error');
     }
   }
 
-  /// Get all OperationItems and their int values for a given OrderItem of a specific EmployeeItem
-  Future<List<OperationMap>> getOperationItemsForOrder({
-    required EmployeesItem employee,
-    required OrderItem order,
-  }) async {
+  /// Get all OrderItems for the provided EmployeeItem
+  Future<List<OrderMap>> getOrders(EmployeesItem employee) async {
     try {
-      // Fetch the employee data
       final employeeData = _reportsBox.get(employee);
-
-      if (employeeData == null) {
-        return [];
+      if (employeeData != null) {
+        return employeeData.expand((orderMap) => orderMap.values).toList();
       }
-      final employeeOrders = employeeData[employee] ?? [];
-
-      // Loop through the employee's order list
-      for (final orderMap in employeeOrders) {
-        // Check if the current OrderMap contains the given OrderItem
-        if (orderMap.containsKey(order)) {
-          // Return all OperationMaps for the provided OrderItem
-          return List<OperationMap>.from(orderMap[order] ?? []);
-        }
-      }
-
-      // If no OrderItem found, return empty list
       return [];
     } catch (error, stackTrace) {
-      log('Error fetching operation items for order: $error');
-      return []; // Return empty list in case of error
+      log('Error fetching orders for employee: $error');
+      return [];
     }
   }
 
-  /// Save OperationMaps to the provided OrderItem
-  Future<void> saveOperationMapsToOrder(
+  /// Add OrderItem for a given EmployeeItem if not exists, otherwise fetch operations
+  Future<void> addOrder(EmployeesItem employee, OrderItem order) async {
+    try {
+      final employeeData = _reportsBox.get(employee);
+      if (employeeData != null) {
+        final existingOrderMap = employeeData.firstWhere(
+          (orderMap) => orderMap.containsKey(order),
+          orElse: () => {},
+        );
+
+        if (existingOrderMap.isEmpty) {
+          // If OrderItem doesn't exist, add it to the employee's data
+          final newOrderMap = {order: []};
+          employeeData.add(newOrderMap);
+          await _reportsBox.put(employee, employeeData);
+        } else {
+          // If OrderItem exists, fetch operations for this order
+          await getOperations(employee, order);
+        }
+      } else {
+        log('Employee does not exist in the box.');
+      }
+    } catch (error, stackTrace) {
+      log('Error adding order for employee: $error');
+    }
+  }
+
+  /// Get all OperationItems for the provided OrderItem
+  Future<List<OperationMap>> getOperations(
+    EmployeesItem employee,
+    OrderItem order,
+  ) async {
+    try {
+      final employeeData = _reportsBox.get(employee);
+      if (employeeData != null) {
+        for (final orderMap in employeeData) {
+          if (orderMap.containsKey(order)) {
+            return orderMap[order]!;
+          }
+        }
+      }
+      return [];
+    } catch (error, stackTrace) {
+      log('Error fetching operations for order: $error');
+      return [];
+    }
+  }
+
+  /// Add OperationMap for a given OrderItem and EmployeeItem if not exists
+  Future<void> addOperation(
+    EmployeesItem employee,
     OrderItem order,
     List<OperationMap> operationMaps,
   ) async {
     try {
-      final allEmployees = _reportsBox.values.toList();
+      final employeeData = _reportsBox.get(employee);
+      if (employeeData != null) {
+        var orderFound = false;
 
-      // Iterate over all employee data
-      for (final employeeData in allEmployees) {
-        if (employeeData is List<OrderMap>) {
-          for (final orderMap in employeeData) {
-            // If the order exists, clear the existing operation maps and save the new ones
-            if (orderMap.containsKey(order)) {
-              orderMap[order]!.clear(); // Clear previous operation maps
-              orderMap[order]!.addAll(operationMaps); // Add new operation maps
-              await _reportsBox.put(
-                order,
-                employeeData,
-              ); // Save updated employee data
-              return;
-            }
+        for (final orderMap in employeeData) {
+          if (orderMap.containsKey(order)) {
+            orderMap[order]!.addAll(operationMaps);
+            await _reportsBox.put(employee, employeeData);
+            orderFound = true;
+            break;
           }
         }
+
+        if (!orderFound) {
+          employeeData.add({order: operationMaps});
+          await _reportsBox.put(employee, employeeData);
+        }
       }
-      log('Failed to save operation maps to order: Order not found');
     } catch (error, stackTrace) {
-      log('Error saving operation maps to order: $error');
+      log('Error adding operation for employee and order: $error');
     }
   }
 
-  /// Save OrderMaps to the provided EmployeeItem
-  Future<void> saveOrderMapsToEmployee(
+  /// Add Quantity for a given OperationItem under an OrderItem for an EmployeeItem
+  Future<void> addQuantity(
     EmployeesItem employee,
-    List<OrderMap> orderMaps,
+    OrderItem order,
+    OperationItem operation,
+    int quantity,
   ) async {
     try {
       final employeeData = _reportsBox.get(employee);
-
       if (employeeData != null) {
-        // Ensure employeeData is a List<OrderMap>
-        if (employeeData is List<OrderMap>) {
-          // Clear existing order maps for this employee
-          employeeData.clear();
-          // Save the new order maps
-          employeeData.addAll(orderMaps);
-          await _reportsBox.put(employee, employeeData);
+        for (final orderMap in employeeData) {
+          if (orderMap.containsKey(order)) {
+            final operationMapList = orderMap[order];
+            for (final operationMap in operationMapList!) {
+              if (operationMap.containsKey(operation)) {
+                operationMap[operation] = quantity;
+                await _reportsBox.put(employee, employeeData);
+                return; // Exit after updating the quantity
+              }
+            }
+          }
         }
-      } else {
-        // If no data exists for the employee, create a new list
-        await _reportsBox.put(employee, [orderMaps]);
+        log('Operation not found for this order.');
       }
     } catch (error, stackTrace) {
-      log('Error saving order maps to employee: $error');
+      log('Error adding quantity for operation: $error');
     }
   }
 

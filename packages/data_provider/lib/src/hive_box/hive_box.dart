@@ -7,8 +7,8 @@ abstract class HiveBoxKeys {
   static const String userReportsBoxKey = '__user_reports_key__';
 }
 
-typedef UserReportsBox = Box<EmployeesMap>;
+typedef UserReportsBox = Box<List<OrderMap>>;
 
 typedef OperationMap = Map<OperationItem, int>;
 typedef OrderMap = Map<OrderItem, List<OperationMap>>;
-typedef EmployeesMap = Map<EmployeesItem, List<OrderMap>>;
+// typedef EmployeesMap = Map<EmployeesItem, List<OrderMap>>;

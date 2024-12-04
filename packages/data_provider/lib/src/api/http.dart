@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 /// Dio extended custom Http Client
@@ -13,16 +16,10 @@ class Http extends DioForNative {
           BaseOptions(
             baseUrl: defaultBaseUrl,
             connectTimeout: const Duration(milliseconds: 20000),
-            receiveTimeout: const Duration(minutes: 1),
+            receiveTimeout: const Duration(milliseconds: 20),
           ),
         ) {
-    /// Add all interceptors
     interceptors.addAll([
-      /// Token Interceptor
-
-      /// Additional interceptor
-      // const AlwaysAcceptApplicationJsonInterceptor(),
-
       /// Pretty logger interceptor
       if (enableLogger)
         PrettyDioLogger(
@@ -39,5 +36,16 @@ class Http extends DioForNative {
   /// If given value is null default is used
   void updateBaseUrl(String? baseUrl) {
     options.baseUrl = baseUrl ?? _defaultBaseUrl;
+  }
+}
+
+Future<List<dynamic>?> getJsonList(String url) async {
+  final response = await rootBundle.loadString(url);
+
+  final jsonData = jsonDecode(response);
+  if (jsonData is List<dynamic>) {
+    return jsonData;
+  } else {
+    return null;
   }
 }

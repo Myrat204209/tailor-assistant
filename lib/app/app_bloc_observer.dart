@@ -5,16 +5,16 @@ import 'package:dap_foreman_assis/reports/reports.dart';
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
 
-  @override
-  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
-    if (bloc is ReportsBloc) {
-      // Only log if the bloc is ReportsBloc
-      final stopwatch = Stopwatch()..start();
-      super.onChange(bloc, change);
-      stopwatch.stop();
-      log('onChange(${bloc.runtimeType}, $change) took ${stopwatch.elapsedMilliseconds}ms');
-    }
-  }
+  // @override
+  // void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
+  //   if (bloc is ReportsBloc) {
+  //     // Only log if the bloc is ReportsBloc
+  //     final stopwatch = Stopwatch()..start();
+  //     super.onChange(bloc, change);
+  //     stopwatch.stop();
+  //     log('onChange(${bloc.runtimeType}, $change) took ${stopwatch.elapsedMilliseconds}ms\n');
+  //   }
+  // }
 
   @override
   void onTransition(
@@ -26,7 +26,7 @@ class AppBlocObserver extends BlocObserver {
       final stopwatch = Stopwatch()..start();
       super.onTransition(bloc, transition);
       stopwatch.stop();
-      log('onTransition(${bloc.runtimeType}, $transition) took ${stopwatch.elapsedMilliseconds}ms');
+      log('onTransition(${bloc.runtimeType}, $transition) took ${stopwatch.elapsedMilliseconds}ms\n');
     }
   }
 
@@ -35,7 +35,7 @@ class AppBlocObserver extends BlocObserver {
     if (bloc is ReportsBloc) {
       // Only log if the bloc is ReportsBloc
       super.onError(bloc, error, stackTrace);
-      log('onError(${bloc.runtimeType}, $error, $stackTrace)');
+      log('onError(${bloc.runtimeType}, $error, $stackTrace)\n');
     }
   }
 }

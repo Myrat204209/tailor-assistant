@@ -7,8 +7,6 @@ part 'order_item.g.dart';
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 2)
 class OrderItem {
-
-  factory OrderItem.fromJson(JsonType json) => _$OrderItemFromJson(json);
   const OrderItem(
     this.docNumber,
     this.dateCreate,
@@ -28,6 +26,8 @@ class OrderItem {
     this.quantity,
     this.itemMeasure,
   );
+
+  factory OrderItem.fromJson(JsonType json) => _$OrderItemFromJson(json);
 
   @HiveField(0)
   @JsonKey(name: 'doc_number')

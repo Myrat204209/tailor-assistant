@@ -12,87 +12,67 @@ abstract class ReportsFailure with EquatableMixin implements Exception {
   List<Object> get props => [error];
 }
 
-class GetOrderItemsFailure extends ReportsFailure {
-  const GetOrderItemsFailure(super.error);
+class GetOrdersFailure extends ReportsFailure {
+  const GetOrdersFailure(super.error);
 }
 
-class GetOperationItemsFailure extends ReportsFailure {
-  const GetOperationItemsFailure(super.error);
+class GetOperationsFailure extends ReportsFailure {
+  const GetOperationsFailure(super.error);
 }
 
-class SaveOrderMapFailure extends ReportsFailure {
-  const SaveOrderMapFailure(super.error);
+class AddOrdersFailure extends ReportsFailure {
+  const AddOrdersFailure(super.error);
 }
 
-class SaveOperationMapFailure extends ReportsFailure {
-  const SaveOperationMapFailure(super.error);
+class AddEmployeesFailure extends ReportsFailure {
+  const AddEmployeesFailure(super.error);
+}
+
+class AddOperationsFailure extends ReportsFailure {
+  const AddOperationsFailure(super.error);
 }
 
 class ClearReportsFailure extends ReportsFailure {
   const ClearReportsFailure(super.error);
 }
 
+// Repository interacting with ReportBoxClient
 class ReportsRepository {
   const ReportsRepository({
-    required UserReportsBox reportsBox,
-  }) : _reportsBox = reportsBox;
+    required ReportBoxClient reportBoxClient, // Use ReportBoxClient here
+  }) : _reportBoxClient = reportBoxClient;
 
-  final UserReportsBox _reportsBox;
+  final ReportBoxClient _reportBoxClient;
 
   /// Add EmployeeItem to the box if not already exists, otherwise fetch Orders.
   Future<void> addEmployee(EmployeesItem employee) async {
     try {
-      final employeeData = _reportsBox.get(employee);
-      if (employeeData == null) {
-        // If the employee does not exist in the box, create a new entry
-        await _reportsBox.put(employee, []);
-      } else {
-        // If the employee exists, retrieve their orders
-        await getOrders(employee);
-      }
-    } catch (error, stackTrace) {
+      await _reportBoxClient.addEmployee(employee: employee);
+    } catch (error) {
       log('Error adding employee: $error');
+      throw AddEmployeesFailure(error);
     }
   }
 
   /// Get all OrderItems for the provided EmployeeItem
   Future<List<OrderMap>> getOrders(EmployeesItem employee) async {
     try {
-      final employeeData = _reportsBox.get(employee);
-      if (employeeData != null) {
-        return employeeData.expand((orderMap) => orderMap.values).toList();
-      }
-      return [];
-    } catch (error, stackTrace) {
+      final employeeData = await _reportBoxClient.getOrders(employee: employee);
+      return employeeData ?? [];
+    } catch (error) {
       log('Error fetching orders for employee: $error');
-      return [];
+      throw GetOrdersFailure(error);
     }
   }
 
-  /// Add OrderItem for a given EmployeeItem if not exists, otherwise fetch operations
   Future<void> addOrder(EmployeesItem employee, OrderItem order) async {
     try {
-      final employeeData = _reportsBox.get(employee);
-      if (employeeData != null) {
-        final existingOrderMap = employeeData.firstWhere(
-          (orderMap) => orderMap.containsKey(order),
-          orElse: () => {},
-        );
-
-        if (existingOrderMap.isEmpty) {
-          // If OrderItem doesn't exist, add it to the employee's data
-          final newOrderMap = {order: []};
-          employeeData.add(newOrderMap);
-          await _reportsBox.put(employee, employeeData);
-        } else {
-          // If OrderItem exists, fetch operations for this order
-          await getOperations(employee, order);
-        }
-      } else {
-        log('Employee does not exist in the box.');
-      }
-    } catch (error, stackTrace) {
+      log('--------------------Add Order ---- \nEmployee: + $employee, \nOrder: + $order' );
+      await _reportBoxClient.addOrder(employee: employee, order: order);
+      log('--------------------Add Order ---- checking.....' );
+    } catch (error) {
       log('Error adding order for employee: $error');
+      throw AddOrdersFailure(error);
     }
   }
 
@@ -102,18 +82,14 @@ class ReportsRepository {
     OrderItem order,
   ) async {
     try {
-      final employeeData = _reportsBox.get(employee);
-      if (employeeData != null) {
-        for (final orderMap in employeeData) {
-          if (orderMap.containsKey(order)) {
-            return orderMap[order]!;
-          }
-        }
-      }
-      return [];
-    } catch (error, stackTrace) {
+      final operations = await _reportBoxClient.getOperations(
+        employee: employee,
+        order: order,
+      );
+      return operations ?? [];
+    } catch (error) {
       log('Error fetching operations for order: $error');
-      return [];
+      throw GetOperationsFailure(error);
     }
   }
 
@@ -121,29 +97,19 @@ class ReportsRepository {
   Future<void> addOperation(
     EmployeesItem employee,
     OrderItem order,
-    List<OperationMap> operationMaps,
+    OperationItem operation,
+    int quantity,
   ) async {
     try {
-      final employeeData = _reportsBox.get(employee);
-      if (employeeData != null) {
-        var orderFound = false;
-
-        for (final orderMap in employeeData) {
-          if (orderMap.containsKey(order)) {
-            orderMap[order]!.addAll(operationMaps);
-            await _reportsBox.put(employee, employeeData);
-            orderFound = true;
-            break;
-          }
-        }
-
-        if (!orderFound) {
-          employeeData.add({order: operationMaps});
-          await _reportsBox.put(employee, employeeData);
-        }
-      }
-    } catch (error, stackTrace) {
+      await _reportBoxClient.addOperation(
+        employee: employee,
+        order: order,
+        operation: operation,
+        quantity: quantity,
+      );
+    } catch (error) {
       log('Error adding operation for employee and order: $error');
+      throw AddOperationsFailure(error);
     }
   }
 
@@ -155,33 +121,33 @@ class ReportsRepository {
     int quantity,
   ) async {
     try {
-      final employeeData = _reportsBox.get(employee);
-      if (employeeData != null) {
-        for (final orderMap in employeeData) {
-          if (orderMap.containsKey(order)) {
-            final operationMapList = orderMap[order];
-            for (final operationMap in operationMapList!) {
-              if (operationMap.containsKey(operation)) {
-                operationMap[operation] = quantity;
-                await _reportsBox.put(employee, employeeData);
-                return; // Exit after updating the quantity
-              }
-            }
-          }
-        }
+      final operationData = await _reportBoxClient.getQuantities(
+        employee: employee,
+        order: order,
+        operation: operation,
+      );
+      if (operationData != null) {
+        await _reportBoxClient.addOperation(
+          employee: employee,
+          order: order,
+          operation: operation,
+          quantity: quantity,
+        );
+      } else {
         log('Operation not found for this order.');
       }
-    } catch (error, stackTrace) {
+    } catch (error) {
       log('Error adding quantity for operation: $error');
     }
   }
 
   /// Clear all data in the reports box
-  Future<void> clearAllReports() async {
+  void clearAllReports() {
     try {
-      await _reportsBox.clear();
-    } catch (error, stackTrace) {
+      _reportBoxClient.clearAllReports();
+    } catch (error) {
       log('Error clearing all reports: $error');
+      throw ClearReportsFailure(error);
     }
   }
 }

@@ -1,0 +1,32 @@
+[
+    {
+    "work_code": "OP001",
+    "work_name": "Пошив изделия",
+    "work_price": 100.0
+    },
+    {
+    "work_code": "OP002",
+    "work_name": "Утюжка изделия",
+    "work_price": 15.0
+    },
+    {
+    "work_code": "OP003",
+    "work_name": "Стирка изделия",
+    "work_price": 10.0
+    },
+    {
+    "work_code": "OP004",
+    "work_name": "Ремонт изделия",
+    "work_price": 50.0
+    },
+    {
+    "work_code": "OP005",
+    "work_name": "Изменение размера изделия",
+    "work_price": 30.0
+    },
+    {
+    "work_code": "OP006",
+    "work_name": "Укорачивание изделия",
+    "work_price": 20.0
+    }
+]

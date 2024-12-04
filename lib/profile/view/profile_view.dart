@@ -3,11 +3,11 @@ part of 'profile_page.dart';
 
 class ProfileView extends HookWidget {
   const ProfileView({
-    required this.name,
+    required this.employee,
     super.key,
   });
 
-  final EmployeesItem name;
+  final EmployeesItem employee;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class ProfileView extends HookWidget {
                   icon: Icons.west_rounded,
                 ),
                 Text(
-                  name.employeeName,
+                  employee.employeeName,
                   style: const AppTextStyle.text().pageTitle(),
                 ),
               ],
@@ -56,7 +56,8 @@ class ProfileView extends HookWidget {
                               title: Text(product.itemName),
                               onTap: () {
                                 context
-                                  ..read<ProfileCubit>().addProduct(product);
+                                    .read<ReportsBloc>()
+                                    .add(ReportOrderAdded(employee, product));
                                 controller.closeView(product.itemName);
                                 resetSearch();
                               },
@@ -93,31 +94,38 @@ class ProfileView extends HookWidget {
                 ),
               ],
             ).paddingOnly(bottom: 24),
-            Expanded(
-              child: ListView.builder(
-                itemCount: state.selectedProducts.length,
-                itemBuilder: (context, index) {
-                  final productName = state.selectedProducts[index];
-                  return ProductTile(
-                    title: productName.itemName,
-                    onDeleteTap: () {
-                      context.read<ProfileCubit>().removeProduct(productName);
-                    },
-                    colorScheme: colorScheme,
-                    onEditTap: () {
-                      context.read<ReportsBloc>().add(
-                            ReportProductSelected(product: productName),
+            BlocBuilder<ReportsBloc, ReportsState>(
+              builder: (context, state) {
+                final orders = state.orders;
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: orders?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      final productName = orders![index];
+                      return ProductTile(
+                        title: productName.keys.first.toString(),
+                        onDeleteTap: () {
+                          // context
+                          //     .read<ProfileCubit>()
+                          //     .removeProduct(productName);
+                        },
+                        colorScheme: colorScheme,
+                        onEditTap: () {
+                          // context.read<ReportsBloc>().add(
+                          //       ReportProductSelected(product: productName),
+                          // );
+                          Navigator.of(context).push(
+                            OperationPage.route(
+                              order: productName.keys.first,
+                              sewer: employee,
+                            ),
                           );
-                      Navigator.of(context).push(
-                        OperationPage.route(
-                          order: productName,
-                          sewer: name,
-                        ),
+                        },
                       );
                     },
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ],
         );

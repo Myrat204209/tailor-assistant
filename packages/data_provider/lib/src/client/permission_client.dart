@@ -3,20 +3,30 @@ import 'package:permission_handler/permission_handler.dart';
 export 'package:permission_handler/permission_handler.dart'
     show PermissionStatus, PermissionStatusGetters;
 
-/// {@template permission_client}
-/// A client that handles requesting permissions on a device.
-/// {@endtemplate}
 class PermissionClient {
-  /// {@macro permission_client}
   const PermissionClient();
+
+  /// Initialize method to check and request permissions when the app starts.
+  /// It will ask for permissions that are not already granted.
+  Future<void> init() async {
+    await _checkAndRequestPermission(Permission.storage);
+    await _checkAndRequestPermission(Permission.manageExternalStorage);
+    // Add other permissions here as needed
+  }
+
+  /// Request a specific permission if not already granted.
+  Future<void> _checkAndRequestPermission(Permission permission) async {
+    final status = await permission.status;
+    if (!status.isGranted) {
+      await permission.request();
+    }
+  }
 
   /// Request access to storage permissions (for Android < 10),
   /// if access hasn't been previously granted.
   Future<PermissionStatus> requestStoragePermissions() async {
-    // Request for storage permissions
     final storageStatus = await Permission.storage.request();
     if (storageStatus.isDenied || storageStatus.isPermanentlyDenied) {
-      // If denied, you can open app settings for the user to grant manually
       await openAppSettings();
     }
     return storageStatus;
@@ -37,12 +47,10 @@ class PermissionClient {
   /// Returns the current permission status for storage.
   Future<PermissionStatus> storageStatus() => Permission.storage.status;
 
-  /// Returns the current permission status for `MANAGE_EXTERNAL_STORAGE`.
+  /// Returns the current permission status for `MANAGE_EXTERNAL_STORAGE` (Android 10+).
   Future<PermissionStatus> manageExternalStorageStatus() =>
       Permission.manageExternalStorage.status;
 
   /// Opens the app settings page.
-  ///
-  /// Returns true if the settings could be opened, otherwise false.
   Future<bool> openPermissionSettings() => openAppSettings();
 }

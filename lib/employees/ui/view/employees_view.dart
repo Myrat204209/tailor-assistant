@@ -55,12 +55,15 @@ class EmployeesView extends StatelessWidget {
                         return SewerTile(
                           name: employee.employeeName,
                           onTap: () {
-                            context.read<ReportsBloc>().add(
-                                  ReportEmployeeSelected(
-                                    employeeCode: employee.employeeCode,
-                                    employeeName: employee.employeeName,
-                                  ),
-                                );
+                            context
+                                .read<ReportsBloc>()
+                                .add(ReportEmployeeAdded(employee));
+                            // context.read<ReportsBloc>().add(
+                            //       ReportEmployeeSelected(
+                            //         employeeCode: employee.employeeCode,
+                            //         employeeName: employee.employeeName,
+                            //       ),
+                            //     );
                             Navigator.of(context).push(
                               ProfilePage.route(employee),
                             );

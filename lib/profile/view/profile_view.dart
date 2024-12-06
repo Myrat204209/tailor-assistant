@@ -104,11 +104,10 @@ class ProfileView extends HookWidget {
                     itemBuilder: (context, index) {
                       final productName = orders![index];
                       final product = allOrders.firstWhere(
-                        (product) => product.itemCode == productName.keys.first,
-                        
+                        (product) => product.itemCode == productName.key,
                       );
                       return ProductTile(
-                        title:  product.itemName,
+                        title: product.itemName,
                         onDeleteTap: () {
                           // context
                           //     .read<ProfileCubit>()

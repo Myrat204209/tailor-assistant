@@ -170,6 +170,7 @@ class ReportBoxClient {
     }
     
   }
+  
 
   // Clear all reports in the box
   void clearAllReports() => _reportsBox.clear();

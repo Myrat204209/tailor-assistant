@@ -39,6 +39,8 @@ class EmployeesView extends StatelessWidget {
                   'Отправить отчёт?',
                   'Отправить',
                   () {
+                    context.select((ReportBoxClient repo) => repo);
+                    
                     //TODO: Provide with functionality
                   },
                 );

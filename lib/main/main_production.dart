@@ -29,7 +29,9 @@ void main() {
     Hive
       ..registerAdapter(OperationMapAdapter())
       ..registerAdapter(OrderMapAdapter());
-    // final reportsClient = ReportsClient(httpClient: httpClient);
+    final reportsClient = ReportsClient(httpClient: httpClient);
+
+    final reportsRepository = ReportsRepository(reportsClient: reportsClient);
     final userReportsBox =
         await Hive.openBox<List<OrderMap>>(HiveBoxKeys.userReportsBoxKey);
 
@@ -54,6 +56,7 @@ void main() {
     final userRepository = UserRepository();
 
     return App(
+      reportsRepository: reportsRepository,
       storageRepository: storageRepository,
       reportBoxClient: reportBoxClient,
       ordersRepository: ordersRepository,

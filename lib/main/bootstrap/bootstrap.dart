@@ -9,7 +9,6 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
 typedef AppBuilder = FutureOr<Widget> Function();
-
 Future<void> bootstrap(AppBuilder builder) async {
   await runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -21,8 +20,9 @@ Future<void> bootstrap(AppBuilder builder) async {
     if (kDebugMode) {
       await HydratedBloc.storage.clear();
     }
-     /// Hive Box
-      await Hive.initFlutter();
+
+    /// Hive Box
+    await Hive.initFlutter();
 
     Bloc.observer = blocObserver;
     runApp(

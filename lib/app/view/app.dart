@@ -8,6 +8,7 @@ import 'package:dap_foreman_assis/orders/orders.dart';
 import 'package:dap_foreman_assis/profile/cubit/profile_cubit.dart';
 import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:dap_foreman_assis/theme_selector/theme_selector.dart';
+import 'package:data_provider/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
@@ -19,12 +20,12 @@ class App extends StatelessWidget {
     required OperationRepository operationRepository,
     required EmployeesRepository employeesRepository,
     required OrdersRepository ordersRepository,
-    required ReportsRepository reportsRepository,
+    required ReportBoxClient reportBoxClient,
     required StorageRepository storageRepository,
     super.key,
   })  : _authRepository = authRepository,
         _employeesRepository = employeesRepository,
-        _reportsRepository = reportsRepository,
+        _reportsBoxRepository = reportBoxClient,
         _storageRepository = storageRepository,
         _operationRepository = operationRepository,
         _ordersRepository = ordersRepository,
@@ -35,7 +36,7 @@ class App extends StatelessWidget {
   final EmployeesRepository _employeesRepository;
   final OperationRepository _operationRepository;
   final OrdersRepository _ordersRepository;
-  final ReportsRepository _reportsRepository;
+  final ReportBoxClient _reportsBoxRepository;
   final StorageRepository _storageRepository;
   @override
   Widget build(BuildContext context) {
@@ -55,13 +56,13 @@ class App extends StatelessWidget {
     final editCubit = EditCubit();
     final profileCubit = ProfileCubit();
     final themeModeBloc = ThemeModeBloc();
-    final reportsBloc = ReportsBloc(reportsRepository: _reportsRepository);
+    final reportsBloc = ReportsBloc(reportsBox: _reportsBoxRepository);
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: _authRepository),
         RepositoryProvider.value(value: _ordersRepository),
         RepositoryProvider.value(value: _userRepository),
-        RepositoryProvider.value(value: _reportsRepository),
+        RepositoryProvider.value(value: _reportsBoxRepository),
         RepositoryProvider.value(value: _storageRepository),
         RepositoryProvider.value(value: _operationRepository),
         RepositoryProvider.value(value: _employeesRepository),

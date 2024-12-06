@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController();
-  int _selectedIndex = 0; // Keeps track of selected button index
+  int _selectedIndex = 1; 
 
   // Get theme-aware colors
   late Color selectedColor;

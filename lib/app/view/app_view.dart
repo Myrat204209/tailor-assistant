@@ -1,10 +1,8 @@
-
 import 'package:app_ui/app_ui.dart';
 import 'package:auth_repository/auth_repository.dart';
 
 import 'package:dap_foreman_assis/auth/auth.dart';
 import 'package:dap_foreman_assis/home/home.dart';
-import 'package:dap_foreman_assis/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,7 +34,8 @@ class _AppViewState extends State<AppView> {
                 if (state.status == AuthStatus.authenticated) {
                   return const HomePage();
                 } else {
-                  return const LoginPage();
+                  //TODO: change to LoginPage
+                  return const HomePage();
                 }
               },
             ),

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"> <!-- Added tools namespace -->
+    xmlns:tools="http://schemas.android.com/tools">    <!-- Added tools namespace -->
 
     <!-- Permissions for accessing the internet and network state -->
     <uses-permission android:name="android.permission.INTERNET"/>

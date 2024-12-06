@@ -61,11 +61,11 @@ class OrdersView extends StatelessWidget {
                       orderName: order.itemName,
                       orderId: order.docNumber!,
                       contents: {
-                        'Цвет': order.attrColor,
-                        'Коллекция': [order.attrCollection],
-                        'Вышивка': order.attrVyshyvka,
-                        'Ткань': order.attrTextile,
-                        'Принт': order.attrPrint,
+                        'Цвет': order.attrColor!,
+                        'Коллекция': [order.attrCollection!],
+                        'Вышивка': order.attrVyshyvka!,
+                        'Ткань': order.attrTextile!,
+                        'Принт': order.attrPrint!,
                       },
                       colorScheme: colorScheme,
                     );

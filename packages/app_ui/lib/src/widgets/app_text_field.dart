@@ -16,6 +16,7 @@ class AppTextField extends StatelessWidget {
     this.errorText,
     this.onChanged,
     this.onRemove,
+    this.onSubmitted,
   });
   final Key? textFieldKey;
   final bool isClose;
@@ -26,6 +27,8 @@ class AppTextField extends StatelessWidget {
   final String? errorText;
   // ignore: inference_failure_on_function_return_type
   final Function(String)? onChanged;
+  // ignore: inference_failure_on_function_return_type
+  final Function(String)? onSubmitted;
   final VoidCallback? onRemove;
   @override
   Widget build(BuildContext context) {
@@ -60,6 +63,7 @@ class AppTextField extends StatelessWidget {
               ),
               const SizedBox(height: 14),
               TextField(
+                onSubmitted: onSubmitted,
                 key: textFieldKey,
                 onChanged: onChanged,
                 controller: controller,

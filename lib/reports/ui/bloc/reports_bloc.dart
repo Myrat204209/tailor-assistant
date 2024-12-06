@@ -1,16 +1,16 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
-import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:equatable/equatable.dart';
 
 part 'reports_event.dart';
 part 'reports_state.dart';
 
-final class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
-  ReportsBloc({required ReportsRepository reportsRepository})
-      : _reportsRepository = reportsRepository,
+class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
+  ReportsBloc({required ReportBoxClient reportsBox})
+      : _reportsBox = reportsBox,
         super(const ReportsState.initial()) {
-    on<ReportEmployeeAdded>(_onReportEmployeeAdded);
     on<ReportOrdersRequested>(_onReportOrdersRequested);
     on<ReportOrderAdded>(_onReportOrderAdded);
     on<ReportOperationsRequested>(_onReportOperationsRequested);
@@ -18,79 +18,74 @@ final class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
     on<ReportsCleared>(_onReportsCleared);
   }
 
-  final ReportsRepository _reportsRepository;
-
-  // Add an employee and trigger the fetching of orders
-  Future<void> _onReportEmployeeAdded(
-    ReportEmployeeAdded event,
-    Emitter<ReportsState> emit,
-  ) async {
-    emit(state.copyWith(status: ReportsStatus.loading));
-    try {
-      await _reportsRepository.addEmployee(event.employee);
-      emit(
-        state.copyWith(
-          status: ReportsStatus.success,
-          employee: event.employee,
-        ),
-      );
-      // After adding employee, fetch their orders
-      add(ReportOrdersRequested(event.employee));
-    } catch (error) {
-      addError(error);
-      emit(state.copyWith(status: ReportsStatus.failure));
-    }
-  }
+  final ReportBoxClient _reportsBox;
 
   // Fetch orders for the given employee
   Future<void> _onReportOrdersRequested(
     ReportOrdersRequested event,
     Emitter<ReportsState> emit,
   ) async {
+    log('_onReportOrdersRequested event stateFetching : ${state.isFetching}');
+
     emit(state.copyWith(status: ReportsStatus.loading));
+
     try {
-      final orders = await _reportsRepository.getOrders(event.employee);
-      emit(state.copyWith(status: ReportsStatus.success, orders: orders));
-    } catch (error) {
-      addError(error);
+      final orders = await _reportsBox.getOrders(employee: event.employee);
+      emit(state.copyWith(
+        status: ReportsStatus.success,
+        orders: orders,
+      ));
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
       emit(state.copyWith(status: ReportsStatus.failure));
     }
   }
 
-  // Add a new order for the employee and refresh orders
   Future<void> _onReportOrderAdded(
     ReportOrderAdded event,
     Emitter<ReportsState> emit,
   ) async {
+    log('_onReportOrderAdded event stateFetching : ${state.isFetching}');
+
     emit(state.copyWith(status: ReportsStatus.loading));
+
     try {
-      await _reportsRepository.addOrder(event.employee, event.order);
+      await _reportsBox.addOrder(employee: event.employee, order: event.order);
       emit(state.copyWith(status: ReportsStatus.success));
-      // After adding the order, trigger a refresh of orders
-      add(ReportOrdersRequested(event.employee));
-    } catch (error) {
-      addError(error);
+      add(ReportOrdersRequested(employee: event.employee));
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
       emit(state.copyWith(status: ReportsStatus.failure));
     }
   }
 
-  // Fetch operations for the given employee and order
   Future<void> _onReportOperationsRequested(
     ReportOperationsRequested event,
     Emitter<ReportsState> emit,
   ) async {
-    emit(state.copyWith(status: ReportsStatus.loading));
+    log('_onReportOperationsRequested event stateFetching : ${state.isFetching}');
+    //if (state.isFetching) return;
+
+    emit(
+      state.copyWith(
+        status: ReportsStatus.loading,
+      ),
+    );
+
     try {
-      final operations =
-          await _reportsRepository.getOperations(event.employee, event.order);
+      final operations = await _reportsBox.getOperations(
+        employee: event.employee,
+        order: event.order,
+      );
+
       emit(
         state.copyWith(
           status: ReportsStatus.success,
           operations: operations,
         ),
       );
-    } catch (error) {
-      addError(error);
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
       emit(state.copyWith(status: ReportsStatus.failure));
     }
   }
@@ -100,19 +95,32 @@ final class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
     ReportOperationAdded event,
     Emitter<ReportsState> emit,
   ) async {
-    emit(state.copyWith(status: ReportsStatus.loading));
+    log('_onReportOperationAdded event stateFetching : ${state.isFetching}');
+    //if (state.isFetching) return;
+
+    emit(
+      state.copyWith(
+        status: ReportsStatus.loading,
+      ),
+    );
+
     try {
-      await _reportsRepository.addOperation(
-        event.employee,
-        event.order,
-        event.operation,
-        event.quantity,
+      await _reportsBox.addOperation(
+        employee: event.employee,
+        order: event.order,
+        operation: event.operation,
+        quantity: event.quantity,
       );
+
       emit(state.copyWith(status: ReportsStatus.success));
-      // After adding the operation, refresh operations
-      add(ReportOperationsRequested(event.employee, event.order));
-    } catch (error) {
-      addError(error);
+      add(
+        ReportOperationsRequested(
+          employee: event.employee,
+          order: event.order,
+        ),
+      );
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
       emit(state.copyWith(status: ReportsStatus.failure));
     }
   }
@@ -122,12 +130,15 @@ final class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
     ReportsCleared event,
     Emitter<ReportsState> emit,
   ) async {
+    //if (state.isFetching) return; // Prevent redundant calls
+
     emit(state.copyWith(status: ReportsStatus.loading));
+
     try {
-      _reportsRepository.clearAllReports();
-      emit(state.copyWith(status: ReportsStatus.success));
-    } catch (error) {
-      addError(error);
+      _reportsBox.clearAllReports();
+      emit(state.copyWith(status: ReportsStatus.success, isFetching: false));
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
       emit(state.copyWith(status: ReportsStatus.failure));
     }
   }

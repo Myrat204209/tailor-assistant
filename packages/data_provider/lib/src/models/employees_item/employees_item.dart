@@ -1,11 +1,10 @@
 import 'package:data_provider/data_provider.dart';
-import 'package:hive/hive.dart';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'employees_item.g.dart'; 
 
 @JsonSerializable()
-@HiveType(typeId: 0) 
 class EmployeesItem {
   const EmployeesItem({
     required this.employeeCode,
@@ -15,11 +14,9 @@ class EmployeesItem {
   factory EmployeesItem.fromJson(JsonType json) =>
       _$EmployeesItemFromJson(json);
 
-  @HiveField(0) 
   @JsonKey(name: 'employee_code')
   final String employeeCode;
 
-  @HiveField(1) 
   @JsonKey(name: 'employee_name')
   final String employeeName;
 

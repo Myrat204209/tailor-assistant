@@ -13,8 +13,8 @@ import 'package:user_repository/user_repository.dart';
 
 void main() {
   bootstrap(() async {
-    const defaultBaseUrl = 'http://192.168.0.161:3000';
-    // const defaultBaseUrl = 'http://95.85.117.102:8545';
+    // const defaultBaseUrl = 'http://192.168.0.161:3000';
+    const defaultBaseUrl = 'http://95.85.117.102:8545';
     final httpClient = Http(
       defaultBaseUrl: defaultBaseUrl,
     );
@@ -27,19 +27,13 @@ void main() {
         StorageRepository(permissionClient: permissionClient);
 
     Hive
-      ..registerAdapter(EmployeesItemAdapter())
-      ..registerAdapter(OperationItemAdapter())
-      ..registerAdapter(OrderItemAdapter());
-
+      ..registerAdapter(OperationMapAdapter())
+      ..registerAdapter(OrderMapAdapter());
     // final reportsClient = ReportsClient(httpClient: httpClient);
-
     final userReportsBox =
         await Hive.openBox<List<OrderMap>>(HiveBoxKeys.userReportsBoxKey);
 
     final reportBoxClient = ReportBoxClient(reportsBox: userReportsBox);
-
-    final reportsRepository =
-        ReportsRepository(reportBoxClient: reportBoxClient);
 
     final employeesClient = EmployeesClient(httpClient: httpClient);
 
@@ -61,7 +55,7 @@ void main() {
 
     return App(
       storageRepository: storageRepository,
-      reportsRepository: reportsRepository,
+      reportBoxClient: reportBoxClient,
       ordersRepository: ordersRepository,
       authRepository: authRepository,
       userRepository: userRepository,

@@ -30,9 +30,9 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ordersList =
         context.select((OrdersBloc bloc) => bloc.state.orders).toList();
-    context.read<ReportsBloc>().add(ReportOrdersRequested(profileName));
-    // ..read<ProfileCubit>().setProducts(ordersList)
-    // ..read<ProfileCubit>().clearProduct();
+    context
+      ..read<ReportsBloc>().add(ReportOrdersRequested(employee: profileName))
+      ..read<ProfileCubit>().setProducts(ordersList);
 
     return Scaffold(
       body: ProfileView(employee: profileName),

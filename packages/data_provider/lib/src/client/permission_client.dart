@@ -9,8 +9,10 @@ class PermissionClient {
   /// Initialize method to check and request permissions when the app starts.
   /// It will ask for permissions that are not already granted.
   Future<void> init() async {
+    //TODO: Check permissions
     await _checkAndRequestPermission(Permission.storage);
-    await _checkAndRequestPermission(Permission.manageExternalStorage);
+    // await _checkAndRequestPermission(Permission.manageExternalStorage);
+    
     // Add other permissions here as needed
   }
 

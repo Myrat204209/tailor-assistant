@@ -2,6 +2,7 @@
 
 import 'package:app_ui/app_ui.dart';
 import 'package:dap_foreman_assis/operation/operation.dart';
+import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,11 +10,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class OperationView extends HookWidget {
   const OperationView({
-    required this.name,
+    required this.orderItem,
     required this.sewer,
     super.key,
   });
-  final OrderItem name;
+  final OrderItem orderItem;
   final EmployeesItem sewer;
 
   @override
@@ -37,25 +38,16 @@ class OperationView extends HookWidget {
                 AppIconButton(
                   foregroundColor: colorScheme.onSurface,
                   backgroundColor: colorScheme.surface,
-                  onIconPressed: () => Navigator.pop(context),
+                  onIconPressed: () {
+                    context
+                        .read<ReportsBloc>()
+                        .add(ReportOrdersRequested(employee: sewer));
+                    Navigator.pop(context);
+                  },
                   icon: Icons.west_rounded,
                 ),
                 FilledButton(
-                  onPressed: () async {
-                    // Save all controller values when the button is pressed
-                    for (final operation in state.selectedOperations) {
-                      for (final fieldId in ['quantity']) {
-                        // Add any other fieldIds as needed
-                        final value = context
-                            .read<EditCubit>()
-                            .getController(operation, fieldId)
-                            .text;
-                        context
-                            .read<EditCubit>()
-                            .updateFieldValue(operation, fieldId, value);
-                      }
-                    }
-                  },
+                  onPressed: () async {},
                   child: Text(
                     'Сохранить',
                     style: const AppTextStyle.text().pageTitle(),
@@ -64,7 +56,7 @@ class OperationView extends HookWidget {
               ],
             ).paddingSymmetric(horizontal: 20),
             Text(
-              name.itemName,
+              orderItem.itemName,
               softWrap: true,
               style: const AppTextStyle.text().pageTitle(),
             ).paddingSymmetric(horizontal: 20, vertical: 24),
@@ -78,17 +70,23 @@ class OperationView extends HookWidget {
                       final query = controller.text.toLowerCase();
                       return state.operations
                           .where(
-                            (operation) =>
-                                operation.toLowerCase().contains(query),
+                            (operation) => operation.workName
+                                .toLowerCase()
+                                .contains(query),
                           )
                           .map(
                             (operation) => ListTile(
-                              title: Text(operation),
+                              title: Text(operation.workName),
                               onTap: () {
-                                context
-                                    .read<EditCubit>()
-                                    .addOperation(operation);
-                                controller.closeView(operation);
+                                context.read<ReportsBloc>().add(
+                                      ReportOperationAdded(
+                                        employee: sewer,
+                                        order: orderItem,
+                                        operation: operation,
+                                        quantity: 0,
+                                      ),
+                                    );
+                                controller.closeView(operation.workName);
                                 resetSearch();
                               },
                             ),
@@ -116,45 +114,39 @@ class OperationView extends HookWidget {
                 ),
               ],
             ).paddingOnly(bottom: 24),
-            Expanded(
-              child: ListView.builder(
-                itemCount: state.selectedOperations.length,
-                itemBuilder: (context, index) {
-                  final operation = state.selectedOperations[index];
-                  const fieldId = 'quantity'; // Adjust based on your needs
-
-                  // Get or create controller for this operation and field
-                  final controller = context
-                      .read<EditCubit>()
-                      .getController(operation, fieldId);
-
-                  // Get the saved value for the operation and field
-                  final fieldValue =
-                      state.operationValues[operation]?[fieldId] ?? '';
-
-                  // Set the controller text to the saved value
-                  controller.text = fieldValue;
-
-                  return AppTextField(
-                    colorScheme: colorScheme,
-                    titleText: operation,
-                    controller: controller,
-                    isClose: true,
-                    textFieldKey: Key('operationKey$operation$fieldId'),
-                    onChanged: (value) {
-                      
-                      context.read<EditCubit>().updateFieldValue(
-                            operation,
-                            fieldId,
-                            value,
-                          );
+            BlocBuilder<ReportsBloc, ReportsState>(
+              builder: (context, state) {
+                final blocOperations = state.operations;
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: blocOperations?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      final workCode = blocOperations?[index].key;
+                      final controller = TextEditingController();
+                      final operation = context
+                          .read<EditCubit>()
+                          .findOperationByWorkCode(workCode!);
+                      return AppTextField(
+                        colorScheme: colorScheme,
+                        titleText: 'operation',
+                        onSubmitted: (quantity) {
+                          context.read<ReportsBloc>().add(ReportOperationAdded(
+                              employee: sewer,
+                              order: orderItem,
+                              operation: operation!,
+                              quantity: int.parse(controller.text)));
+                        },
+                        controller: controller,
+                        isClose: true,
+                        // textFieldKey: Key('operationKey$operation$'),
+                        onChanged: (value) {},
+                        onRemove: () => () {},
+                        hintText: 'Введите количество',
+                      );
                     },
-                    onRemove: () =>
-                        context.read<EditCubit>().removeOperation(operation),
-                    hintText: 'Введите количество',
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
             const Padding(padding: EdgeInsets.only(bottom: 20)),
           ],

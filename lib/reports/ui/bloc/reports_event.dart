@@ -11,13 +11,8 @@ sealed class ReportBoxEvent {
   const ReportBoxEvent();
 }
 
-final class ReportEmployeeAdded extends ReportBoxEvent {
-  const ReportEmployeeAdded(this.employee);
-  final EmployeesItem employee;
-}
-
 final class ReportOrdersRequested extends ReportBoxEvent {
-  const ReportOrdersRequested(this.employee);
+  const ReportOrdersRequested({required this.employee});
   final EmployeesItem employee;
 }
 
@@ -28,7 +23,8 @@ final class ReportOrderAdded extends ReportBoxEvent {
 }
 
 final class ReportOperationsRequested extends ReportBoxEvent {
-  const ReportOperationsRequested(this.employee, this.order);
+  const ReportOperationsRequested(
+      {required this.employee, required this.order});
   final EmployeesItem employee;
   final OrderItem order;
 }

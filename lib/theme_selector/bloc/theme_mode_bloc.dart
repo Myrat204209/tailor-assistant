@@ -16,5 +16,5 @@ class ThemeModeBloc extends HydratedBloc<ThemeModeEvent, ThemeMode> {
       ThemeMode.values[json['theme_mode'] as int];
 
   @override
-  Map<String, int> toJson(ThemeMode state) => {'theme_mode': state.index};
+  Map<String,int> toJson(ThemeMode state) => {'theme_mode': state.index};
 }

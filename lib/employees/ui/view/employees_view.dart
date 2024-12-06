@@ -57,13 +57,8 @@ class EmployeesView extends StatelessWidget {
                           onTap: () {
                             context
                                 .read<ReportsBloc>()
-                                .add(ReportEmployeeAdded(employee));
-                            // context.read<ReportsBloc>().add(
-                            //       ReportEmployeeSelected(
-                            //         employeeCode: employee.employeeCode,
-                            //         employeeName: employee.employeeName,
-                            //       ),
-                            //     );
+                                .add(ReportOrdersRequested(employee: employee));
+
                             Navigator.of(context).push(
                               ProfilePage.route(employee),
                             );

@@ -20,6 +20,7 @@ class ProfileView extends HookWidget {
 
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
+        final allOrders = state.products;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -102,8 +103,12 @@ class ProfileView extends HookWidget {
                     itemCount: orders?.length ?? 0,
                     itemBuilder: (context, index) {
                       final productName = orders![index];
+                      final product = allOrders.firstWhere(
+                        (product) => product.itemCode == productName.keys.first,
+                        
+                      );
                       return ProductTile(
-                        title: productName.keys.first.toString(),
+                        title:  product.itemName,
                         onDeleteTap: () {
                           // context
                           //     .read<ProfileCubit>()
@@ -116,7 +121,7 @@ class ProfileView extends HookWidget {
                           // );
                           Navigator.of(context).push(
                             OperationPage.route(
-                              order: productName.keys.first,
+                              order: product,
                               sewer: employee,
                             ),
                           );

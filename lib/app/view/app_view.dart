@@ -23,9 +23,9 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    Hive.close();
     WidgetsBinding.instance.removeObserver(this);
     // Close Hive boxes if needed
-    Hive.close();
     super.dispose();
   }
 
@@ -84,7 +84,7 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
     );
   }
 
-  void _navigateTo(Route<void> route) {
+   void _navigateTo(Route<void> route) {
     _navigator.pushAndRemoveUntil<void>(route, (route) => false);
   }
 }

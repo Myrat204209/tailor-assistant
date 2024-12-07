@@ -1,5 +1,6 @@
 import 'dart:developer' show log;
 import 'package:bloc/bloc.dart';
+import 'package:dap_foreman_assis/operation/operation.dart';
 import 'package:dap_foreman_assis/reports/reports.dart';
 
 class AppBlocObserver extends BlocObserver {
@@ -21,7 +22,7 @@ class AppBlocObserver extends BlocObserver {
     Bloc<dynamic, dynamic> bloc,
     Transition<dynamic, dynamic> transition,
   ) {
-    if (bloc is ReportsBloc) {
+    if (bloc is ReportsBloc || bloc is EditCubit) {
       // Only log if the bloc is ReportsBloc
       final stopwatch = Stopwatch()..start();
       super.onTransition(bloc, transition);
@@ -32,7 +33,7 @@ class AppBlocObserver extends BlocObserver {
 
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
-    if (bloc is ReportsBloc) {
+    if (bloc is ReportsBloc || bloc is EditCubit) {
       // Only log if the bloc is ReportsBloc
       super.onError(bloc, error, stackTrace);
       log('onError(${bloc.runtimeType}, $error, $stackTrace)\n');

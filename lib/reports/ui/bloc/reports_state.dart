@@ -23,6 +23,17 @@ final class ReportsState extends Equatable {
   @override
   List<Object?> get props => [status, operations, orders, employee];
 
+  String getQuantity(String workCode) {
+    return operations
+            ?.firstWhere(
+              (element) => element.key == workCode,
+              orElse: () => OperationMap(key: '', value: 0),
+            )
+            .value
+            .toString() ??
+        '0';
+  }
+
   ReportsState copyWith({
     ReportsStatus? status,
     List<OperationMap>? operations,
@@ -37,7 +48,7 @@ final class ReportsState extends Equatable {
       orders: orders ?? orders,
       employee: employee ?? this.employee,
       isFetching: isFetching ?? this.isFetching,
-      reports: reports?? this.reports,
+      reports: reports ?? this.reports,
     );
   }
 

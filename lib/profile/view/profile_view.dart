@@ -118,6 +118,9 @@ class ProfileView extends HookWidget {
                           // context.read<ReportsBloc>().add(
                           //       ReportProductSelected(product: productName),
                           // );
+                          context.read<ReportsBloc>().add(
+                              ReportOperationsRequested(
+                                  employee: employee, order: product));
                           Navigator.of(context).push(
                             OperationPage.route(
                               order: product,

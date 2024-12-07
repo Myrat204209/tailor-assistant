@@ -105,11 +105,7 @@ class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
     log('_onReportOperationAdded event stateFetching : ${state.isFetching}');
     //if (state.isFetching) return;
 
-    emit(
-      state.copyWith(
-        status: ReportsStatus.loading,
-      ),
-    );
+    emit(state.copyWith(status: ReportsStatus.loading));
 
     try {
       await _reportsBox.addOperation(
@@ -162,9 +158,9 @@ class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
         operations: event.operationsFull,
       );
       log('Reports: $reports');
-      await 
-      _reportsRepository.sendReports(reports);
+      await _reportsRepository.sendReports(reports);
       emit(state.copyWith(status: ReportsStatus.success, reports: reports));
+      add(const ReportsCleared());
     } catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(state.copyWith(status: ReportsStatus.failure));

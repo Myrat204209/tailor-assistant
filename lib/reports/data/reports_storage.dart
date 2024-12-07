@@ -35,7 +35,7 @@ class ReportsStorage {
       final directory = await _getStorageDirectory();
       final file = File('${directory.path}/$filename');
 
-      if (await file.exists()) {
+      if (await file.exists() == true) {
         return await file.readAsString();
       } else {
         return null;

@@ -31,17 +31,29 @@ class OperationPage extends StatelessWidget {
         .select((OperationBloc bloc) => bloc.state.operations)
         .map((e) => e)
         .toList();
-    context
-      ..read<ReportsBloc>().add(
-        ReportOperationsRequested(
-          employee: sewer,
-          order: order,
-        ),
-      )
-      ..read<EditCubit>().setOperations(operationsList);
+    context.read<ReportsBloc>().add(
+          ReportOperationsRequested(
+            employee: sewer,
+            order: order,
+          ),
+        );
+    final orderOperations =
+        context.select((ReportsBloc bloc) => bloc.state.operations);
+    context.read<EditCubit>().clearOperations();
+    if (orderOperations != null) {
+      for (final e in orderOperations) {
+        // Find the corresponding OperationItem from operationsList
+        final operationItem = operationsList.firstWhere(
+          (element) => element.workCode == e.key,
+        );
+
+        context.read<EditCubit>().addOperation(operationItem);
+      }
+    }
     // ..clearOperations();
     return Scaffold(
       body: OperationView(
+        operationList: operationsList,
         orderItem: order,
         sewer: sewer,
       ),

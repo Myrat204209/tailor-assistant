@@ -151,7 +151,6 @@ class ReportBoxClient {
     }
   }
 
-  // Add an operation to an order
   Future<void> addOperation({
     required EmployeesItem employee,
     required OrderItem order,
@@ -161,15 +160,39 @@ class ReportBoxClient {
     try {
       log('BoxClient - addOperation Employee - $employee; order: $order - $operation');
 
-      // Create the new OperationMap
-      final newOperation = OperationMap(key: operation.workCode, value: quantity);
+      // Fetch current orders for the employee
+      final employeeOrders = await getOrders(employee: employee);
 
-      // Update the order with only the new operation
-      await addOrder(
-        employee: employee,
-        order: order,
-        operations: [newOperation],
-      );
+      // Find the specific order
+      final existingOrderIndex = employeeOrders
+          .indexWhere((orderMap) => orderMap.key == order.itemCode);
+
+      if (existingOrderIndex != -1) {
+        // Order exists, check if operation already exists
+        final existingOperationIndex = employeeOrders[existingOrderIndex]
+            .operationMaps
+            .indexWhere((opMap) => opMap.key == operation.workCode);
+
+        if (existingOperationIndex != -1) {
+          // If operation exists, update its quantity
+          employeeOrders[existingOrderIndex]
+                  .operationMaps[existingOperationIndex] =
+              OperationMap(key: operation.workCode, value: quantity);
+        } else {
+          // If operation doesn't exist, add new operation
+          employeeOrders[existingOrderIndex]
+              .operationMaps
+              .add(OperationMap(key: operation.workCode, value: quantity));
+        }
+      } else {
+        // If order doesn't exist, create a new order with the operation
+        employeeOrders.add(OrderMap(key: order.itemCode, operationMaps: [
+          OperationMap(key: operation.workCode, value: quantity)
+        ]));
+      }
+
+      // Save updated orders
+      await addEmployee(employee: employee, orders: employeeOrders);
 
       log('Operation added successfully for ${employee.employeeName}');
     } catch (error, stackTrace) {
@@ -179,29 +202,6 @@ class ReportBoxClient {
     }
   }
 
-  Future<OperationMap> getQuantities({
-    required EmployeesItem employee,
-    required OrderItem order,
-    required OperationItem operation,
-  }) async {
-    try {
-      log('BoxClient - getQuantities Employee - $employee; order: $order - $operation');
-      final orderOperations = await getOperations(
-        employee: employee,
-        order: order,
-      );
-      for (final operationMap in orderOperations) {
-        if (operationMap.key == operation.workCode) {
-          return operationMap;
-        }
-      }
-      return OperationMap(key: operation.workCode, value: 0);
-    } catch (error, stackTrace) {
-      throw Exception(
-        'BoxClient - Error getting quantities for employee - ${employee.employeeName} exception: $error, stacktrace: $stackTrace ',
-      );
-    }
-  }
 
   /// Constructs and returns a list of ReportItem based on the provided employees, orders, and operations.
   Future<List<ReportItem>> sendReportItems({

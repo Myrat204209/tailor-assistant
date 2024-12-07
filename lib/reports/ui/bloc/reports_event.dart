@@ -45,3 +45,14 @@ final class ReportOperationAdded extends ReportBoxEvent {
 final class ReportsCleared extends ReportBoxEvent {
   const ReportsCleared();
 }
+
+final class ReportsSendRequested extends ReportBoxEvent {
+  const ReportsSendRequested({
+    required this.employeesFull,
+    required this.ordersFull,
+    required this.operationsFull,
+  });
+  final List<EmployeesItem> employeesFull;
+  final List<OrderItem> ordersFull;
+  final List<OperationItem> operationsFull;
+}

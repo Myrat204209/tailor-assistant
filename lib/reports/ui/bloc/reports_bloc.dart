@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:equatable/equatable.dart';
 
@@ -8,17 +10,22 @@ part 'reports_event.dart';
 part 'reports_state.dart';
 
 class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
-  ReportsBloc({required ReportBoxClient reportsBox})
-      : _reportsBox = reportsBox,
+  ReportsBloc({
+    required ReportBoxClient reportsBox,
+    required ReportsRepository reportsRepository,
+  })  : _reportsRepository = reportsRepository,
+        _reportsBox = reportsBox,
         super(const ReportsState.initial()) {
     on<ReportOrdersRequested>(_onReportOrdersRequested);
     on<ReportOrderAdded>(_onReportOrderAdded);
     on<ReportOperationsRequested>(_onReportOperationsRequested);
     on<ReportOperationAdded>(_onReportOperationAdded);
+    on<ReportsSendRequested>(_onSendReportsRequested);
     on<ReportsCleared>(_onReportsCleared);
   }
 
   final ReportBoxClient _reportsBox;
+  final ReportsRepository _reportsRepository;
 
   // Fetch orders for the given employee
   Future<void> _onReportOrdersRequested(
@@ -137,6 +144,27 @@ class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
     try {
       _reportsBox.clearAllReports();
       emit(state.copyWith(status: ReportsStatus.success, isFetching: false));
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
+      emit(state.copyWith(status: ReportsStatus.failure));
+    }
+  }
+
+  FutureOr<void> _onSendReportsRequested(
+    ReportsSendRequested event,
+    Emitter<ReportsState> emit,
+  ) async {
+    try {
+      emit(state.copyWith(status: ReportsStatus.loading));
+      final reports = await _reportsBox.sendReportItems(
+        employees: event.employeesFull,
+        orders: event.ordersFull,
+        operations: event.operationsFull,
+      );
+      log('Reports: $reports');
+      await 
+      _reportsRepository.sendReports(reports);
+      emit(state.copyWith(status: ReportsStatus.success, reports: reports));
     } catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(state.copyWith(status: ReportsStatus.failure));

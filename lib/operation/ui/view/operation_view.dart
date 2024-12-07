@@ -128,12 +128,12 @@ class OperationView extends HookWidget {
                           .findOperationByWorkCode(workCode!);
                       return AppTextField(
                         colorScheme: colorScheme,
-                        titleText: 'operation',
+                        titleText: operation!.workName,
                         onSubmitted: (quantity) {
                           context.read<ReportsBloc>().add(ReportOperationAdded(
                               employee: sewer,
                               order: orderItem,
-                              operation: operation!,
+                              operation: operation,
                               quantity: int.parse(controller.text)));
                         },
                         controller: controller,

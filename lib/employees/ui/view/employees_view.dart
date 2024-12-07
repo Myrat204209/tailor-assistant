@@ -5,6 +5,9 @@ class EmployeesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orders = context.select((OrdersBloc bloc) => bloc.state.orders);
+    final operations =
+        context.select((OperationBloc bloc) => bloc.state.operations);
     final colorScheme = Theme.of(context).colorScheme;
     return BlocBuilder<EmployeesBloc, EmployeesState>(
       buildWhen: (previous, current) =>
@@ -39,9 +42,12 @@ class EmployeesView extends StatelessWidget {
                   'Отправить отчёт?',
                   'Отправить',
                   () {
-                    context.select((ReportBoxClient repo) => repo);
-                    
-                    //TODO: Provide with functionality
+                    context.read<ReportsBloc>().add(ReportsSendRequested(
+                          employeesFull: employeesList,
+                          ordersFull: orders,
+                          operationsFull: operations,
+                        ));
+                    Navigator.pop(context);
                   },
                 );
               },

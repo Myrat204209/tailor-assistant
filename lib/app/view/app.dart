@@ -7,7 +7,6 @@ import 'package:dap_foreman_assis/operation/operation.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
 import 'package:dap_foreman_assis/profile/cubit/profile_cubit.dart';
 import 'package:dap_foreman_assis/reports/reports.dart';
-import 'package:dap_foreman_assis/reports/ui/bloc/reports_network_bloc.dart';
 import 'package:dap_foreman_assis/theme_selector/theme_selector.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:flutter/material.dart';
@@ -60,9 +59,9 @@ class App extends StatelessWidget {
     final editCubit = EditCubit();
     final profileCubit = ProfileCubit();
     final themeModeBloc = ThemeModeBloc();
-    final reportsBloc = ReportsBloc(reportsBox: _reportsBoxRepository);
-    final reportsNetworkBloc =
-        ReportsNetworkBloc(reportsRepository: _reportsRepository);
+    final reportsBloc = ReportsBloc(
+        reportsBox: _reportsBoxRepository,
+        reportsRepository: _reportsRepository);
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: _authRepository),
@@ -84,7 +83,6 @@ class App extends StatelessWidget {
           BlocProvider.value(value: reportsBloc),
           BlocProvider.value(value: editCubit),
           BlocProvider.value(value: profileCubit),
-          BlocProvider.value(value: reportsNetworkBloc),
         ],
         child: const AppView(),
       ),

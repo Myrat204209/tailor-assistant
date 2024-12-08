@@ -18,8 +18,10 @@ class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
         super(const ReportsState.initial()) {
     on<ReportOrdersRequested>(_onReportOrdersRequested);
     on<ReportOrderAdded>(_onReportOrderAdded);
+    on<ReportOrderRemoved>(_onReportOrderRemoved);
     on<ReportOperationsRequested>(_onReportOperationsRequested);
     on<ReportOperationAdded>(_onReportOperationAdded);
+    on<ReportOperationRemoved>(_onReportOperationRemoved);
     on<ReportsSendRequested>(_onSendReportsRequested);
     on<ReportsCleared>(_onReportsCleared);
   }
@@ -161,6 +163,56 @@ class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
       await _reportsRepository.sendReports(reports);
       emit(state.copyWith(status: ReportsStatus.success, reports: reports));
       add(const ReportsCleared());
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
+      emit(state.copyWith(status: ReportsStatus.failure));
+    }
+  }
+
+  FutureOr<void> _onReportOperationRemoved(
+    ReportOperationRemoved event,
+    Emitter<ReportsState> emit,
+  ) async {
+    //if (state.isFetching) return;
+
+    emit(state.copyWith(status: ReportsStatus.loading));
+
+    try {
+      await _reportsBox.removeOperation(
+        employee: event.employee,
+        order: event.order,
+        operation: event.operation,
+      );
+
+      emit(state.copyWith(status: ReportsStatus.success));
+      add(
+        ReportOperationsRequested(
+          employee: event.employee,
+          order: event.order,
+        ),
+      );
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
+      emit(state.copyWith(status: ReportsStatus.failure));
+    }
+  }
+
+  FutureOr<void> _onReportOrderRemoved(
+    ReportOrderRemoved event,
+    Emitter<ReportsState> emit,
+  ) async {
+    emit(state.copyWith(status: ReportsStatus.loading));
+
+    try {
+      await _reportsBox.removeOrder(
+        employee: event.employee,
+        order: event.order,
+      );
+
+      emit(state.copyWith(status: ReportsStatus.success));
+      add(
+        ReportOrdersRequested(employee: event.employee),
+      );
     } catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(state.copyWith(status: ReportsStatus.failure));

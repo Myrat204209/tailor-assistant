@@ -10,9 +10,8 @@ class OrdersView extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            OrdersAppBar(
-              quantity: state.orders.length,
-            ),
+            OrdersAppBar(quantity: state.orders.length),
+            
             if (state.status == OrdersStatus.loading)
               const Align(
                 child: Center(child: CircularProgressIndicator.adaptive()),

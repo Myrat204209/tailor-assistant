@@ -136,17 +136,24 @@ class OperationView extends HookWidget {
                         onSubmitted: (quantity) {
                           log('Operation is saving to box ${operation.workName} $quantity,');
                           context.read<ReportsBloc>().add(ReportOperationAdded(
-                              employee: sewer,
-                              order: orderItem,
-                              operation: operation,
-                              quantity: int.parse(controller.text)));
+                                employee: sewer,
+                                order: orderItem,
+                                operation: operation,
+                                quantity: int.parse(controller.text),
+                              ));
                         },
                         controller: controller,
                         isClose: true,
                         // textFieldKey: Key('operationKey$operation$'),
                         onChanged: (value) {},
                         onRemove: () => () {
-                          context.read<EditCubit>().removeOperation(operation);
+                          context
+                            ..read<ReportsBloc>().add(ReportOperationRemoved(
+                              employee: sewer,
+                              order: orderItem,
+                              operation: operation,
+                            ))
+                            ..read<EditCubit>().removeOperation(operation);
                         },
                         hintText: 'Введите количество',
                       );

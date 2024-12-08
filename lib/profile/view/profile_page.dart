@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:app_ui/app_ui.dart';
 import 'package:dap_foreman_assis/operation/operation.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
-import 'package:dap_foreman_assis/profile/cubit/profile_cubit.dart';
 import 'package:dap_foreman_assis/profile/profile.dart';
 import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:data_provider/data_provider.dart';
@@ -16,13 +14,13 @@ class ProfilePage extends StatelessWidget {
   const ProfilePage({
     required this.profileName,
     super.key,
+    this.reportRoot = false,
   });
+  final bool reportRoot;
   final EmployeesItem profileName;
-  static Route<void> route(EmployeesItem name) {
+  static Route<void> route(EmployeesItem name, {bool reportRoot = false}) {
     return MaterialPageRoute<void>(
-      builder: (_) => ProfilePage(
-        profileName: name,
-      ),
+      builder: (_) => ProfilePage(profileName: name, reportRoot: reportRoot),
     );
   }
 
@@ -30,9 +28,11 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ordersList =
         context.select((OrdersBloc bloc) => bloc.state.orders).toList();
-    context
-      ..read<ReportsBloc>().add(ReportOrdersRequested(employee: profileName))
-      ..read<ProfileCubit>().setProducts(ordersList);
+    if (!reportRoot) {
+      context
+        ..read<ReportsBloc>().add(ReportOrdersRequested(employee: profileName))
+        ..read<ProfileCubit>().setProducts(ordersList);
+    } else {}
 
     return Scaffold(
       body: ProfileView(employee: profileName),

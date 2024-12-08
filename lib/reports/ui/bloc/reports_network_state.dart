@@ -26,4 +26,11 @@ class ReportsNetworkState extends Equatable {
       reports: reports ?? this.reports,
     );
   }
+
+  int getReportCount(String employeeCode) {
+    return reports
+        .where((report) => report.employeeCode == employeeCode)
+        .toList()
+        .length;
+  }
 }

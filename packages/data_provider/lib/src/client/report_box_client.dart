@@ -127,6 +127,33 @@ class ReportBoxClient {
       );
     }
   }
+  Future<void> removeOrder({
+    required EmployeesItem employee,
+    required OrderItem order, 
+  }) async {
+    try {
+      log('BoxClient - removeOrder Employee - ${employee.employeeName}; order: $order');
+
+      // Fetch current orders before update
+      final employeeOrders = await getOrders(employee: employee);
+
+      // Find the specific order to remove
+      final existingOrderIndex = employeeOrders
+          .indexWhere((orderMap) => orderMap.key == order.itemCode);  
+
+      if (existingOrderIndex != -1) {
+        employeeOrders.removeAt(existingOrderIndex);
+      }
+
+      await addEmployee(employee: employee, orders: employeeOrders);  
+
+      log('Order removed successfully for ${employee.employeeName}'); 
+    } catch (error, stackTrace) {
+      throw Exception(
+        'BoxClient - Error removing order - ${employee.employeeName} exception: $error, stacktrace: $stackTrace',
+      );
+    }
+      }
 
   Future<List<OperationMap>> getOperations({
     required EmployeesItem employee,
@@ -200,6 +227,45 @@ class ReportBoxClient {
         'BoxClient - Error adding operation - ${employee.employeeName} exception: $error, stacktrace : $stackTrace',
       );
     }
+  }
+  Future<void> removeOperation(
+      {required EmployeesItem employee,
+      required OrderItem order,
+      required OperationItem operation,}
+  )async{
+    try {
+      log('BoxClient - removeOperation Employee - $employee; order: $order - $operation');
+
+      // Fetch current orders for the employee  
+      final employeeOrders = await getOrders(employee: employee);
+      // Find the specific order
+      final existingOrderIndex = employeeOrders
+          .indexWhere((orderMap) => orderMap.key == order.itemCode);
+
+      if (existingOrderIndex != -1) {
+        // Order exists, check if operation already exists
+        final existingOperationIndex = employeeOrders[existingOrderIndex]
+            .operationMaps
+            .indexWhere((opMap) => opMap.key == operation.workCode);
+
+        if (existingOperationIndex != -1) {
+          // If operation exists, remove it
+          employeeOrders[existingOrderIndex]  
+              .operationMaps
+              .removeAt(existingOperationIndex);
+        }
+      }
+
+      // Save updated orders
+      await addEmployee(employee: employee, orders: employeeOrders);
+
+      log('Operation removed successfully for ${employee.employeeName}');
+    } catch (error, stackTrace) {
+      throw Exception(
+        'BoxClient - Error removing operation - ${employee.employeeName} exception: $error, stacktrace : $stackTrace',
+      );
+    }
+    
   }
 
 

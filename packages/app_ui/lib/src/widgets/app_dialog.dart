@@ -35,9 +35,7 @@ class AppDialog extends StatelessWidget {
             children: [
               Expanded(
                 child: InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: () => Navigator.pop(context),
                   child: SizedBox(
                     height: 60,
                     child: Text(
@@ -71,20 +69,18 @@ class AppDialog extends StatelessWidget {
   }
 }
 
-void showAppDialog(
-  BuildContext context,
+Future<void> showAppDialog(
+  BuildContext dialogContext,
   String message,
   String buttonText,
-  void Function() onTap,
-) {
-  showDialog<AppDialog>(
-    context: context,
-    builder: (BuildContext context) {
-      return AppDialog(
-        title: message,
-        buttonText: buttonText,
-        onTap: onTap,
-      );
-    },
-  ).then(Navigator.of(context).pop);
+  VoidCallback onTap,
+) async {
+  await showDialog<AppDialog>(
+    context: dialogContext,
+    builder: (_) => AppDialog(
+      title: message,
+      buttonText: buttonText,
+      onTap: onTap,
+    ),
+  );
 }

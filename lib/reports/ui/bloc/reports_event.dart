@@ -21,6 +21,11 @@ final class ReportOrderAdded extends ReportBoxEvent {
   final EmployeesItem employee;
   final OrderItem order;
 }
+final class ReportOrderRemoved extends ReportBoxEvent {
+  const ReportOrderRemoved(this.employee, this.order);
+  final EmployeesItem employee;
+  final OrderItem order;
+}
 
 final class ReportOperationsRequested extends ReportBoxEvent {
   const ReportOperationsRequested(
@@ -40,6 +45,16 @@ final class ReportOperationAdded extends ReportBoxEvent {
   final OrderItem order;
   final OperationItem operation;
   final int quantity;
+}
+final class ReportOperationRemoved extends ReportBoxEvent {
+  const ReportOperationRemoved({
+    required this.employee,
+    required this.order,
+    required this.operation,
+  });
+  final EmployeesItem employee;
+  final OrderItem order;
+  final OperationItem operation;
 }
 
 final class ReportsCleared extends ReportBoxEvent {

@@ -29,15 +29,18 @@ void main() {
     Hive
       ..registerAdapter(OperationMapAdapter())
       ..registerAdapter(OrderMapAdapter());
-    final reportsClient = ReportsClient(httpClient: httpClient);
-
-    final reportsRepository = ReportsRepository(reportsClient: reportsClient);
 
     final userReportsBox =
         await Hive.openBox<List<OrderMap>>(HiveBoxKeys.userReportsBoxKey);
 
-    final reportBoxClient =
-        ReportBoxClient(reportsBox: userReportsBox);
+    ///Network client for the reports
+    final reportsClient = ReportsClient(httpClient: httpClient);
+    
+    final reportsRepository = ReportsRepository(reportsClient: reportsClient);
+
+    ///Box client for the reports
+
+    final reportBoxClient = ReportBoxClient(reportsBox: userReportsBox);
 
     final employeesClient = EmployeesClient(httpClient: httpClient);
 

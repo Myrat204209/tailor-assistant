@@ -59,6 +59,8 @@ class App extends StatelessWidget {
     final editCubit = EditCubit();
     final profileCubit = ProfileCubit();
     final themeModeBloc = ThemeModeBloc();
+    final reportsNetworkBloc =
+        ReportsNetworkBloc(reportsRepository: _reportsRepository);
     final reportsBloc = ReportsBloc(
         reportsBox: _reportsBoxRepository,
         reportsRepository: _reportsRepository);
@@ -81,6 +83,7 @@ class App extends StatelessWidget {
           BlocProvider.value(value: ordersBloc),
           BlocProvider.value(value: themeModeBloc),
           BlocProvider.value(value: reportsBloc),
+          BlocProvider.value(value: reportsNetworkBloc),
           BlocProvider.value(value: editCubit),
           BlocProvider.value(value: profileCubit),
         ],

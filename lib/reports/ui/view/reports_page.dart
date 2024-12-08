@@ -7,7 +7,7 @@ class ReportsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: DatePageView(),
+      body: ReportsView(),
     );
   }
 }

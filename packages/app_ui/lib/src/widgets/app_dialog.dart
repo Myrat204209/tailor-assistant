@@ -86,5 +86,5 @@ void showAppDialog(
         onTap: onTap,
       );
     },
-  );
+  ).then(Navigator.of(context).pop);
 }

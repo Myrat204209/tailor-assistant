@@ -24,12 +24,18 @@ class ReportsNetworkBloc
     try {
       emit(state.copyWith(status: ReportsNetworkStatus.loading));
       final reports = await _reportsRepository.getReports();
-      emit(
-        state.copyWith(
-          status: ReportsNetworkStatus.success,
-          reports: reports ?? [],
-        ),
-      );
+
+      final selectedDate = event.date;
+      final filteredReports = reports
+              ?.where((report) => report.reportDate!
+                  .startsWith(selectedDate.toIso8601String().split('T').first))
+              .toList() ??
+          [];
+
+      emit(state.copyWith(
+        status: ReportsNetworkStatus.success,
+        reports: filteredReports,
+      ));
     } catch (error, stackTrace) {
       emit(state.copyWith(status: ReportsNetworkStatus.failure));
       addError(error, stackTrace);

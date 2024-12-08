@@ -1,38 +1,48 @@
+// ignore_for_file:  sort_constructors_first, lines_longer_than_80_chars
 // ignore_for_file: public_member_api_docs
 
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
-/// App Ui AppBar
+class UiAppBarIcon {
+  UiAppBarIcon({required this.icon, required this.onTap});
+
+  final IconData icon;
+  final VoidCallback onTap;
+}
+
 class UiAppBar extends StatelessWidget {
   /// Constructor
   const UiAppBar({
     required this.title,
-    required this.quantity,
-    required this.firstOnTap,
-    required this.firstIcon,
-    required this.secondOnTap,
-    required this.secondIcon,
-    required this.thirdOnTap,
-    required this.thirdIcon,
-    required this.colorScheme, // Pass the entire ColorScheme
+    required this.icons,
+    required this.colorScheme,
     super.key,
+    this.quantity,
   });
 
-  final String title;
   final int? quantity;
-  final VoidCallback firstOnTap;
-  final IconData? firstIcon;
-  final VoidCallback secondOnTap;
-  final IconData? secondIcon;
-  final VoidCallback thirdOnTap;
-  final IconData? thirdIcon;
+  final String title;
+  final List<UiAppBarIcon?> icons;
 
-  /// The active theme's ColorScheme
   final ColorScheme colorScheme;
 
   @override
   Widget build(BuildContext context) {
+    final colorMap = [
+      {
+        'bC': colorScheme.secondary,
+        'fC': colorScheme.onSecondary,
+      },
+      {
+        'bC': colorScheme.tertiary,
+        'fC': colorScheme.onTertiary,
+      },
+      {
+        'bC': colorScheme.primary,
+        'fC': colorScheme.onPrimary,
+      },
+    ];
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -45,39 +55,23 @@ class UiAppBar extends StatelessWidget {
         if (quantity != null)
           Text(
             '$quantity',
-            style: const AppTextStyle.text().description().withColor(
-                  Colors.white,
-                ),
+            style:
+                const AppTextStyle.text().description().withColor(Colors.white),
           )
               .paddingSymmetric(vertical: 5, horizontal: 14)
-              .colorize(
-                colorScheme.onError,
-              )
+              .colorize(colorScheme.onError)
               .clipper(15),
         const Spacer(),
-        if (firstIcon != null)
-          AppIconButton(
-            icon: firstIcon!,
-            foregroundColor: colorScheme.onSecondary,
-            backgroundColor: colorScheme.secondary,
-            onIconPressed: firstOnTap,
-          ),
-        if (secondIcon != null)
-          AppIconButton(
-            icon: secondIcon!,
-            foregroundColor: colorScheme.onTertiary,
-            backgroundColor: colorScheme.tertiary,
-            onIconPressed: secondOnTap,
-          ),
-        if (thirdIcon != null)
-          AppIconButton(
-            icon: thirdIcon!,
-            foregroundColor: colorScheme.onPrimary,
-            backgroundColor: colorScheme.primary,
-            onIconPressed: thirdOnTap,
-          ).paddingOnly(
-            right: 10,
-          ),
+        ...icons.map((icon) {
+          if (icon == null) return const SizedBox.shrink();
+          return AppIconButton(
+            icon: icon.icon,
+            foregroundColor: colorMap[icons.indexOf(icon)]['fC']!,
+            backgroundColor: colorMap[icons.indexOf(icon)]['bC']!,
+            onIconPressed: icon.onTap,
+          );
+        }),
+        const Padding(padding: EdgeInsets.only(right: 10)),
       ],
     ).paddingOnly(top: 30, bottom: 24);
   }

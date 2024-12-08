@@ -7,5 +7,8 @@ sealed class ReportsNetworkEvent extends Equatable {
   List<Object> get props => [];
 }
 
+final class ReportsNetworkRequested extends ReportsNetworkEvent {
+  const ReportsNetworkRequested({required this.date});
 
-final class ReportsNetworkRequested extends ReportsNetworkEvent {}
+  final DateTime date;
+}

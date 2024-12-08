@@ -5,10 +5,6 @@ class EmployeesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final orders = context.select((OrdersBloc bloc) => bloc.state.orders);
-    final operations =
-        context.select((OperationBloc bloc) => bloc.state.operations);
-    final colorScheme = Theme.of(context).colorScheme;
     return BlocBuilder<EmployeesBloc, EmployeesState>(
       buildWhen: (previous, current) =>
           previous.employees.length != current.employees.length,
@@ -16,42 +12,8 @@ class EmployeesView extends StatelessWidget {
         final employeesList = state.employees;
         return Column(
           children: [
-            UiAppBar(
-              title: 'Швеи',
+            EmployeeAppBar(
               quantity: employeesList.length,
-              firstIcon: Icons.cached_rounded,
-              secondIcon: Icons.history_rounded,
-              thirdIcon: Icons.send_rounded,
-              firstOnTap: () {
-                showAppDialog(
-                  context,
-                  'После обновления будут стёрты заполненные данные?',
-                  'Обновить',
-                  () {
-                    context.read<EmployeesBloc>().add(EmployeesRequested());
-                    Navigator.pop(context);
-                  },
-                );
-              },
-              secondOnTap: () {
-                Navigator.of(context).push(HistoryPage.route());
-              },
-              thirdOnTap: () {
-                showAppDialog(
-                  context,
-                  'Отправить отчёт?',
-                  'Отправить',
-                  () {
-                    context.read<ReportsBloc>().add(ReportsSendRequested(
-                          employeesFull: employeesList,
-                          ordersFull: orders,
-                          operationsFull: operations,
-                        ));
-                    Navigator.pop(context);
-                  },
-                );
-              },
-              colorScheme: colorScheme,
             ),
             Expanded(
               child: employeesList.isEmpty
@@ -60,7 +22,7 @@ class EmployeesView extends StatelessWidget {
                       itemCount: employeesList.length,
                       itemBuilder: (context, index) {
                         final employee = employeesList[index];
-                        return SewerTile(
+                        return EmployeeTile(
                           name: employee.employeeName,
                           onTap: () {
                             context

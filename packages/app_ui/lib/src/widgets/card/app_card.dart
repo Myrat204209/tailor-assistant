@@ -81,7 +81,9 @@ class AppCard extends StatelessWidget {
                 .contentTitle()
                 .withColor(colorScheme.onSurface),
           ).paddingSymmetric(vertical: 15),
-          ...contents.entries.where((e) => e.value.isNotEmpty).map(
+          ...contents.entries
+              .where((e) => e.value.isNotEmpty)
+              .map(
                 (e) => AppCardRichText(
                   title: e.key,
                   values: e.value,

@@ -11,7 +11,7 @@ class AppCardRichText extends StatelessWidget {
   });
 
   final String title;
-  final List<String> values;
+  final List<String?> values;
   final ColorScheme colorScheme; // Dynamic text color
 
   @override

@@ -7,29 +7,23 @@ part of 'order_item.dart';
 // **************************************************************************
 
 OrderItem _$OrderItemFromJson(Map<String, dynamic> json) => OrderItem(
-      json['doc_number'] as String?,
-      json['date_create_date'] as String?,
-      json['start_order'] as String?,
-      json['finish_order'] as String?,
+      json['doc_number'] as String,
+      json['date_create_date'] as String,
+      json['start_order'] as String,
+      json['finish_order'] as String,
       json['item_code'] as String,
       json['item_name'] as String,
-      (json['attr_color'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      (json['attr_size'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      json['attr_collection'] as String?,
-      (json['attr_order'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      (json['attr_print'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      (json['attr_vyshyvka'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      (json['attr_textile'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      (json['attr_lekalo'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      (json['attr_nombp'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      (json['attr_color'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['attr_size'] as List<dynamic>).map((e) => e as String).toList(),
+      json['attr_collection'] as String,
+      (json['attr_order'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['attr_print'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['attr_vyshyvka'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['attr_textile'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['attr_lekalo'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['attr_nombp'] as List<dynamic>).map((e) => e as String).toList(),
       (json['quantity'] as num).toDouble(),
-      (json['item_measure'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
+      (json['item_measure'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$OrderItemToJson(OrderItem instance) => <String, dynamic>{

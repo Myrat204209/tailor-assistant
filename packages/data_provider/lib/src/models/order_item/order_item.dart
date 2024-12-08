@@ -28,16 +28,16 @@ class OrderItem {
   factory OrderItem.fromJson(JsonType json) => _$OrderItemFromJson(json);
 
   @JsonKey(name: 'doc_number')
-  final String? docNumber;
+  final String docNumber;
 
   @JsonKey(name: 'date_create_date')
-  final String? dateCreate;
+  final String dateCreate;
 
   @JsonKey(name: 'start_order')
-  final String? startOrder;
+  final String startOrder;
 
   @JsonKey(name: 'finish_order')
-  final String? finishOrder;
+  final String finishOrder;
 
   @JsonKey(name: 'item_code')
   final String itemCode;
@@ -46,37 +46,37 @@ class OrderItem {
   final String itemName;
 
   @JsonKey(name: 'attr_color')
-  final List<String>? attrColor;
+  final List<String> attrColor;
 
   @JsonKey(name: 'attr_size')
-  final List<String>? attrSize;
+  final List<String> attrSize;
 
   @JsonKey(name: 'attr_collection')
-  final String? attrCollection;
+  final String attrCollection;
 
   @JsonKey(name: 'attr_order')
-  final List<String>? attrOrder;
+  final List<String> attrOrder;
 
   @JsonKey(name: 'attr_print')
-  final List<String>? attrPrint;
+  final List<String> attrPrint;
 
   @JsonKey(name: 'attr_vyshyvka')
-  final List<String>? attrVyshyvka;
+  final List<String> attrVyshyvka;
 
   @JsonKey(name: 'attr_textile')
-  final List<String>? attrTextile;
+  final List<String> attrTextile;
 
   @JsonKey(name: 'attr_lekalo')
-  final List<String>? attrLekalo;
+  final List<String> attrLekalo;
 
   @JsonKey(name: 'attr_nombp')
-  final List<String>? attrNombp;
+  final List<String> attrNombp;
 
   @JsonKey(name: 'quantity')
   final double quantity;
 
   @JsonKey(name: 'item_measure')
-  final List<String>? itemMeasure;
+  final List<String> itemMeasure;
 
   JsonType toJson() => _$OrderItemToJson(this);
 

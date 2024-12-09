@@ -3,6 +3,8 @@ import 'package:auth_repository/auth_repository.dart';
 
 import 'package:dap_foreman_assis/auth/auth.dart';
 import 'package:dap_foreman_assis/home/home.dart';
+import 'package:dap_foreman_assis/login/view/login_page.dart';
+import 'package:dap_foreman_assis/theme_selector/theme_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -43,46 +45,35 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            navigatorKey: _navigatorKey,
-            themeMode: ThemeMode.light,
-            theme: const AppTheme().themeData,
-            darkTheme: const AppDarkTheme().themeData,
-            home: BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                if (state.status == AuthStatus.authenticated) {
-                  return const HomePage();
-                } else {
-                  //TODO: change to LoginPage
-                  return const HomePage();
-                }
-              },
-            ),
-            // builder: (context, child) {
-            //   return BlocListener<AuthBloc, AuthState>(
-            //     listenWhen: (previous, current) =>
-            //         previous.status != current.status,
-            //     listener: (context, authState) {
-            //       log('AuthState:  ${authState.status}');
-            //       if (authState.status == AuthStatus.authenticated) {
-            //         _navigateTo(HomePage.route());
-            //       } else if (authState.status == AuthStatus.unauthenticated) {
-            //         _navigateTo(LoginPage.route());
-            //       }
-            //     },
-            //     child: child,
-            //   );
-            // },
-            // onGenerateRoute: (_) => SplashPage.route(),
-          );
-        },
-      ),
-    );
-  }
+  return SafeArea(
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        return BlocSelector<ThemeModeBloc, ThemeMode, ThemeMode>(
+          selector: (state) => state,
+          builder: (context, themeMode) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              navigatorKey: _navigatorKey,
+              themeMode: themeMode,
+              theme: const AppTheme().themeData,
+              darkTheme: const AppDarkTheme().themeData,
+              home: BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if (state.status == AuthStatus.unauthenticated) {
+                    return const LoginPage();
+                  } else {
+                    return const HomePage();
+                  }
+                },
+              ),
+            );
+          },
+        );
+      },
+    ),
+  );
+}
+
 
    void _navigateTo(Route<void> route) {
     _navigator.pushAndRemoveUntil<void>(route, (route) => false);

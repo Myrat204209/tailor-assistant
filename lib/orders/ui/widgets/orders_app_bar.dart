@@ -48,11 +48,8 @@ class OrdersAppBar extends HookWidget {
             icon: themeBloc == ThemeMode.dark
                 ? Icons.light_mode_rounded
                 : Icons.dark_mode_rounded,
-            onTap: () {
-              context
-                  .read<ThemeModeBloc>()
-                  .add(const ThemeModeChanged(ThemeMode.dark));
-            }),
+            onTap: () =>
+                context.read<ThemeModeBloc>().add(const ThemeModeChanged())),
       ],
     );
   }

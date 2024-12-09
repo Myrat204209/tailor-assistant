@@ -8,7 +8,13 @@ part 'theme_mode_event.dart';
 class ThemeModeBloc extends HydratedBloc<ThemeModeEvent, ThemeMode> {
   /// Create a new object
   ThemeModeBloc() : super(ThemeMode.system) {
-    on<ThemeModeChanged>((event, emit) => emit(event.themeMode ?? state));
+    on<ThemeModeChanged>((event, emit) {
+      if (state == ThemeMode.dark) {
+        emit(ThemeMode.light);
+      } else {
+        emit(ThemeMode.dark);
+      }
+    });
   }
 
   @override
@@ -16,5 +22,5 @@ class ThemeModeBloc extends HydratedBloc<ThemeModeEvent, ThemeMode> {
       ThemeMode.values[json['theme_mode'] as int];
 
   @override
-  Map<String,int> toJson(ThemeMode state) => {'theme_mode': state.index};
+  Map<String, int> toJson(ThemeMode state) => {'theme_mode': state.index};
 }

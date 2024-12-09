@@ -21,8 +21,11 @@ class LoginView extends StatelessWidget {
             child: AppIconButton(
               foregroundColor: AppColors.secondAccent,
               backgroundColor: AppColors.mainAccent,
-              onIconPressed: () => context.read<ThemeModeBloc>().add(ThemeModeChanged(themeMode)),
-              icon: Icons.dark_mode_rounded,
+              onIconPressed: () =>
+                  context.read<ThemeModeBloc>().add(const ThemeModeChanged()),
+              icon: themeMode == ThemeMode.dark
+                  ? Icons.light_mode_rounded
+                  : Icons.dark_mode_rounded,
             ).paddingOnly(right: 10, top: 30),
           ),
           SizedBox.square(

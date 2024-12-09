@@ -6,10 +6,9 @@ abstract class ThemeModeEvent extends Equatable {
 
 /// The app's [ThemeMode] has been changed
 class ThemeModeChanged extends ThemeModeEvent {
-  const ThemeModeChanged(this.themeMode);
+  const ThemeModeChanged();
 
-  final ThemeMode? themeMode;
 
   @override
-  List<Object?> get props => [themeMode];
+  List<Object?> get props => [];
 }

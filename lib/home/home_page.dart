@@ -23,11 +23,6 @@ class HomePage extends HookWidget {
     final selectedIndex = useState(0);
     final pageController = usePageController();
 
-    // Handle page changes and button tap actions
-    void onPageChange(int index) {
-      selectedIndex.value = index;
-    }
-
     void onButtonTap(int index) {
       pageController.animateToPage(
         index,
@@ -52,7 +47,7 @@ class HomePage extends HookWidget {
           children: [
             PageView(
               controller: pageController,
-              onPageChanged: onPageChange,
+              physics: const NeverScrollableScrollPhysics(),
               children: const [
                 OrdersPage(),
                 EmployeesPage(),

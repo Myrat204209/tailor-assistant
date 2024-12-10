@@ -20,8 +20,7 @@ class OrdersBloc extends HydratedBloc<OrdersEvent, OrdersState> {
     OrdersRequested event,
     Emitter<OrdersState> emit,
   ) async {
-    if (state.status == OrdersStatus.loading ||
-        state.status == OrdersStatus.success) {
+    if (state.status == OrdersStatus.loading) {
       return;
     }
     emit(state.copyWith(status: OrdersStatus.loading));

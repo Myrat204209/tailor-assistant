@@ -14,6 +14,7 @@ class AppDialog extends StatelessWidget {
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SimpleDialog(
       alignment: Alignment.center,
       contentPadding: EdgeInsets.zero,
@@ -43,7 +44,7 @@ class AppDialog extends StatelessWidget {
                       'Отмена',
                       style: const AppTextStyle.text()
                           .title()
-                          .withColor(AppColors.majorAccent),
+                          .withColor(colorScheme.secondary),
                     ).centralize(),
                   ),
                 ),
@@ -60,13 +61,13 @@ class AppDialog extends StatelessWidget {
                       buttonText,
                       style: const AppTextStyle.text()
                           .title()
-                          .withColor(AppColors.bgSecond),
+                          .withColor(colorScheme.surface),
                     ).centralize(),
-                  ).colorize(AppColors.mainAccent).clipperOnly(15),
+                  ).colorize(colorScheme.primary).clipperOnly(15),
                 ),
               ),
             ],
-          ).colorize(AppColors.majorLightAccent).clipperSymmetric(15),
+          ).colorize(colorScheme.onSecondary).clipperSymmetric(15),
         ),
       ],
     ).paddingSymmetric(horizontal: 56);

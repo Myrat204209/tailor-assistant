@@ -15,7 +15,11 @@ class LoginForm extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(content: Text('Authentication Failure')),
+              SnackBar(
+                  content: Text(
+                'Неверный логин или пароль',
+                style: const AppTextStyle.text().description(),
+              )),
             );
         }
       },
@@ -50,13 +54,16 @@ class _UsernameInput extends StatelessWidget {
       (LoginBloc bloc) => bloc.state.username.displayError,
     );
     return AppTextField(
+      isNext: true,
       colorScheme: Theme.of(context).colorScheme,
       key: const Key('loginForm_usernameInput_textField'),
-      onChanged: (username) =>
+      onSubmitted: (username) =>
           context.read<LoginBloc>().add(LoginUsernameChanged(username)),
+      // onChanged: (username) =>
+      //     context.read<LoginBloc>().add(LoginUsernameChanged(username)),
       hintText: 'Login',
       titleText: 'Логин',
-      errorText: displayError != null ? 'invalid username' : null,
+      errorText: displayError != null ? 'Неверный логин' : null,
     );
   }
 }
@@ -72,10 +79,11 @@ class _PasswordInput extends StatelessWidget {
       key: const Key('loginForm_passwordInput_textField'),
       hintText: 'pass123',
       titleText: 'Пароль',
-      onChanged: (password) {
+      
+      onSubmitted: (password) {
         context.read<LoginBloc>().add(LoginPasswordChanged(password));
       },
-      errorText: displayError != null ? 'invalid password' : null,
+      errorText: displayError != null ? 'Некорректный пароль' : null,
       colorScheme: Theme.of(context).colorScheme,
       // isClose: true,
     );

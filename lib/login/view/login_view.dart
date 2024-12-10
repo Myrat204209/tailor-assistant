@@ -29,10 +29,10 @@ class LoginView extends StatelessWidget {
             ).paddingOnly(right: 10, top: 30),
           ),
           SizedBox.square(
-            dimension: height * 0.44,
+            dimension: height * 0.35,
             child: Image.asset(
               'assets/auth.png',
-              fit: BoxFit.fill,
+              fit: BoxFit.contain,
             ).paddingOnly(right: 45, left: 67),
           ),
           // const Expanded(child: LoginForm()),

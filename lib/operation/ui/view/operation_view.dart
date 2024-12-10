@@ -146,7 +146,7 @@ class OperationView extends HookWidget {
                         isClose: true,
                         // textFieldKey: Key('operationKey$operation$'),
                         onChanged: (value) {},
-                        onRemove: () => () {
+                        onRemove: () {
                           context
                             ..read<ReportsBloc>().add(ReportOperationRemoved(
                               employee: sewer,

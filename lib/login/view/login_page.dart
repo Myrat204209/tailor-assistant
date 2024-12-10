@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:dap_foreman_assis/login/login.dart';
 import 'package:flutter/material.dart';
@@ -8,18 +9,42 @@ class LoginPage extends StatelessWidget {
 
   static Route<void> route() {
     return MaterialPageRoute<void>(
-        builder: (_) => const LoginPage(),
-        settings: const RouteSettings(name: '/login'),);
+      builder: (_) => const LoginPage(),
+      settings: const RouteSettings(name: '/login'),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocProvider(
-        create: (context) =>
-            LoginBloc(authRepository: context.read<AuthRepository>()),
-        child: const LoginView(),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          return;
+        } else {
+          await _onWillPop(context);
+        }
+      },
+      child: Scaffold(
+        body: BlocProvider(
+          create: (context) =>
+              LoginBloc(authRepository: context.read<AuthRepository>()),
+          child: const LoginView(),
+        ),
       ),
     );
   }
+}
+
+Future<void> _onWillPop(BuildContext context) async {
+  await showDialog<bool>(
+    context: context,
+    builder: (BuildContext context) => AppDialog(
+      buttonText: 'Да',
+      title: 'Вы хотите выйти из приложения?',
+      onTap: () {
+        Navigator.of(context).pop();
+      },
+    ),
+  );
 }

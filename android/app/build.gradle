@@ -97,17 +97,17 @@ android {
         production {
             dimension "flavor"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName: "Dap Foreman Assis"]
+            manifestPlaceholders = [appName: "Tikinçi"]
         }
         staging {
             dimension "flavor"
             applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "[STG] Dap Foreman Assis"]
+            manifestPlaceholders = [appName: "[STG] Tikinçi"]
         }
         development {
             dimension "flavor"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "[DEV] Dap Foreman Assis"]
+            manifestPlaceholders = [appName: "[DEV] Tikinçi"]
         }
     }
 

@@ -29,6 +29,11 @@ class AuthRepository {
       const Duration(milliseconds: 300),
       () async {
         final prefs = await SharedPreferences.getInstance();
+        if (username != 'dap-admin' || password != '2444dap') {
+          _controller.add(AuthStatus.unauthenticated);
+          throw Exception('Invalid credentials');
+        }
+
         await prefs.setBool(_authKey, true);
         _controller.add(AuthStatus.authenticated);
       },

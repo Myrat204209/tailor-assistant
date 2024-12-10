@@ -7,7 +7,7 @@ part 'theme_mode_event.dart';
 /// Keeps track of and allows changing the application's [ThemeMode].
 class ThemeModeBloc extends HydratedBloc<ThemeModeEvent, ThemeMode> {
   /// Create a new object
-  ThemeModeBloc() : super(ThemeMode.system) {
+  ThemeModeBloc() : super(ThemeMode.dark) {
     on<ThemeModeChanged>((event, emit) {
       if (state == ThemeMode.dark) {
         emit(ThemeMode.light);

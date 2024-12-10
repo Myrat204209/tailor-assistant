@@ -39,7 +39,6 @@ class EmployeeAppBar extends HookWidget {
               'Обновить',
               () {
                 context.read<EmployeesBloc>().add(EmployeesRequested());
-                Navigator.pop(context);
               },
             );
           },
@@ -61,7 +60,6 @@ class EmployeeAppBar extends HookWidget {
                         ordersFull: orders,
                         operationsFull: operations,
                       ));
-                  Navigator.pop(context);
                 },
               );
             }),

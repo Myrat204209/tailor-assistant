@@ -15,8 +15,9 @@ class AppTextField extends StatelessWidget {
     this.controller,
     this.errorText,
     this.onChanged,
-    this.onRemove,
     this.onSubmitted,
+    this.onRemove,
+    this.isNext = false,
   });
   final Key? textFieldKey;
   final bool isClose;
@@ -30,6 +31,7 @@ class AppTextField extends StatelessWidget {
   // ignore: inference_failure_on_function_return_type
   final Function(String)? onSubmitted;
   final VoidCallback? onRemove;
+  final bool isNext;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -66,6 +68,8 @@ class AppTextField extends StatelessWidget {
                 onSubmitted: onSubmitted,
                 key: textFieldKey,
                 onChanged: onChanged,
+                textInputAction:
+                    isNext ? TextInputAction.next : TextInputAction.done,
                 controller: controller,
                 keyboardType:
                     isClose ? TextInputType.number : TextInputType.text,

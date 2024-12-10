@@ -1,10 +1,10 @@
 import 'package:animated_button_bar/animated_button_bar.dart';
 import 'package:app_ui/app_ui.dart';
+import 'package:dap_foreman_assis/auth/auth.dart';
 import 'package:dap_foreman_assis/employees/employees.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
-import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class HomePage extends HookWidget {
@@ -56,14 +56,15 @@ class HomePage extends HookWidget {
               children: const [
                 OrdersPage(),
                 EmployeesPage(),
-                ReportsPage(),
+                // ReportsPage(),
               ],
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: SizedBox(
-                width: 260,
-                height: 85,
+                // width: 260,
+                width: 155,
+                height: 80,
                 child: AnimatedButtonBar(
                   radius: 50,
                   backgroundColor: selectedColor,
@@ -83,13 +84,13 @@ class HomePage extends HookWidget {
                       isSelected: selectedIndex.value == 1,
                       onTap: () => onButtonTap(1),
                     ),
-                    _buildButton(
-                      icon: Icons.notes_rounded,
-                      selectedColor: selectedColor,
-                      unSelectedColor: unSelectedColor,
-                      isSelected: selectedIndex.value == 2,
-                      onTap: () => onButtonTap(2),
-                    ),
+                    // _buildButton(
+                    //   icon: Icons.notes_rounded,
+                    //   selectedColor: selectedColor,
+                    //   unSelectedColor: unSelectedColor,
+                    //   isSelected: selectedIndex.value == 2,
+                    //   onTap: () => onButtonTap(2),
+                    // ),
                   ],
                 ),
               ).paddingOnly(bottom: 40),
@@ -101,30 +102,16 @@ class HomePage extends HookWidget {
   }
 
   Future<void> _onWillPop(BuildContext context) async {
-    final shouldExit = await showDialog<bool>(
+    await showDialog<bool>(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Confirm Exit'),
-        content: const Text('Do you really want to exit the app?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('No'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-              SystemNavigator.pop();
-            },
-            child: const Text('Yes'),
-          ),
-        ],
+      builder: (BuildContext context) => AppDialog(
+        buttonText: 'Выход',
+        title: 'Выйти из аккаунта?',
+        onTap: () {
+          context.read<AuthBloc>().add(AuthLogoutRequested());
+        },
       ),
     );
-
-    if (shouldExit ?? true) {
-      await SystemNavigator.pop();
-    }
   }
 
   // Button builder

@@ -23,7 +23,7 @@ class BaseUrl extends FormzInput<String, BaseUrlValidationError> {
   BaseUrlValidationError? validator(String value) {
     if (value.isEmpty) return BaseUrlValidationError.empty;
 
-    final uri = Uri.tryParse(value);
+    final uri = Uri.tryParse('http://$value');
     final isUrl = uri != null && uri.hasScheme && uri.host.isNotEmpty;
 
     if (!isUrl) return BaseUrlValidationError.invalid;

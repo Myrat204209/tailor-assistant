@@ -2,8 +2,9 @@
 
 import 'package:app_ui/app_ui.dart';
 import 'package:dap_foreman_assis/login/login.dart';
+import 'package:dap_foreman_assis/settings/settings.dart';
 import 'package:dap_foreman_assis/theme_selector/bloc/theme_mode_bloc.dart';
-import 'package:data_provider/data_provider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +15,16 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
     final themeMode = context.select((ThemeModeBloc bloc) => bloc.state);
-    final controller = TextEditingController();
+    final baseUrl = context.select((SettingsBloc bloc) => bloc.state.baseUrl);
+
+    const labelText = 'IP адрес сервера';
+    // final controller = TextEditingController();
+    final baseUrlValue = baseUrl.value;
+    final regExp = RegExp(r'^(?:https?:\/\/)?([^\/:]+(?:\:\d+)?)');
+    final Match? match = regExp.firstMatch(baseUrlValue);
+
+    final initialValue = match != null ? match.group(1)! : '';
+
     return Scaffold(
       body: ListView(
         children: [
@@ -26,7 +36,22 @@ class LoginView extends StatelessWidget {
                   ..hideCurrentSnackBar()
                   ..showSnackBar(const SnackBar(
                       content: Text('Вы включили режим разработчика'))),
-                const BaseUrlField(),
+                showTextFieldDialog(
+                  context: context,
+                  onSuccess: (value) async {
+                    context
+                        .read<SettingsBloc>()
+                        .add(SettingsBaseUrlChanged('http://$value'));
+                  },
+                  validator: (value) =>
+                      switch (baseUrl.validator(value ?? '')) {
+                    BaseUrlValidationError.empty => 'Запольните поле',
+                    BaseUrlValidationError.invalid => 'Не правильный IP адрес',
+                    _ => null,
+                  },
+                  initialValue: initialValue,
+                  labelText: labelText,
+                )
                 // showAdaptiveDialog<String>(
                 //   context: context,
                 //   builder: (context) => SimpleDialog(

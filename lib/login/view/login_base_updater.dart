@@ -12,7 +12,7 @@ Future<void> showTextFieldDialog({
 
   final errorText = ValueNotifier<String?>(null);
 
-  checkConfirmAvailability(String? v, [isFirstTime = false]) {
+  void checkConfirmAvailability(String? v, [isFirstTime = false]) {
     if (validator != null) {
       errorText.value = validator(v);
       // confirmEnabled.value = formKey.currentState?.validate() ?? fa;
@@ -45,6 +45,7 @@ Future<void> showTextFieldDialog({
                     validator: validator,
                     decoration: InputDecoration(
                       labelText: labelText,
+                      prefixText: 'http://',
                       errorText: error,
                     ),
                   );

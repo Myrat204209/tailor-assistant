@@ -28,7 +28,13 @@ dependencies:
   open_file: ^3.5.10
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
+  persistent_storage:
+    path: ./packages/storage/persistent_storage
+  secure_storage:
+    path: ./packages/storage/secure_storage
   shared_preferences: ^2.3.3
+  storage:
+    path: ./packages/storage/storage
   syncfusion_flutter_xlsio: ^27.2.4
   user_repository:
     path: packages/user_repository

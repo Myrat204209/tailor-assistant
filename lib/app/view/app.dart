@@ -7,6 +7,8 @@ import 'package:dap_foreman_assis/operation/operation.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
 import 'package:dap_foreman_assis/profile/cubit/profile_cubit.dart';
 import 'package:dap_foreman_assis/reports/reports.dart';
+import 'package:dap_foreman_assis/settings/bloc/settings_bloc.dart';
+import 'package:dap_foreman_assis/settings/domain/domain.dart';
 import 'package:dap_foreman_assis/theme_selector/theme_selector.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +25,10 @@ class App extends StatelessWidget {
     required ReportsRepository reportsRepository,
     required ReportBoxClient reportBoxClient,
     required StorageRepository storageRepository,
+    required SettingsRepository settingsRepository,
     super.key,
   })  : _authRepository = authRepository,
+        _settingsRepository = settingsRepository,
         _employeesRepository = employeesRepository,
         _reportsBoxRepository = reportBoxClient,
         _storageRepository = storageRepository,
@@ -37,6 +41,7 @@ class App extends StatelessWidget {
   final AuthRepository _authRepository;
   final ReportsRepository _reportsRepository;
   final EmployeesRepository _employeesRepository;
+  final SettingsRepository _settingsRepository;
   final OperationRepository _operationRepository;
   final OrdersRepository _ordersRepository;
   final ReportBoxClient _reportsBoxRepository;
@@ -47,6 +52,7 @@ class App extends StatelessWidget {
       authRepository: _authRepository,
       userRepository: _userRepository,
     )..add(AuthSubscriptionRequested());
+    final settingsBloc = SettingsBloc(settingsRepository: _settingsRepository);
     final operationBloc =
         OperationBloc(operationRepository: _operationRepository)
           ..add(const OperationRequested());
@@ -67,6 +73,7 @@ class App extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: _authRepository),
+        RepositoryProvider.value(value: _settingsRepository),
         RepositoryProvider.value(value: _ordersRepository),
         RepositoryProvider.value(value: _userRepository),
         RepositoryProvider.value(value: _reportsBoxRepository),
@@ -83,6 +90,7 @@ class App extends StatelessWidget {
           BlocProvider.value(value: ordersBloc),
           BlocProvider.value(value: themeModeBloc),
           BlocProvider.value(value: reportsBloc),
+          BlocProvider.value(value: settingsBloc),
           BlocProvider.value(value: reportsNetworkBloc),
           BlocProvider.value(value: editCubit),
           BlocProvider.value(value: profileCubit),

@@ -15,8 +15,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     required AuthRepository authRepository,
   })  : _authRepository = authRepository,
         super(const LoginState()) {
-    on<LoginUsernameChanged>(_onUsernameChanged);
-    on<LoginPasswordChanged>(_onPasswordChanged);
+    // on<LoginUsernameChanged>(_onUsernameChanged);
+    // on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onSubmitted);
   }
   final AuthRepository _authRepository;
@@ -51,17 +51,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginSubmitted event,
     Emitter<LoginState> emit,
   ) async {
-    if (state.isValid) {
-      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-      try {
-        await _authRepository.logIn(
-          username: state.username.value,
-          password: state.password.value,
-        );
-        emit(state.copyWith(status: FormzSubmissionStatus.success));
-      } catch (_) {
-        emit(state.copyWith(status: FormzSubmissionStatus.failure));
-      }
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    try {
+      await _authRepository.logIn(
+        username: event.login,
+        password: event.password,
+      );
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
+    } catch (_) {
+      emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
+    // if (state.isValid) {
+    //   emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    //   try {
+    //     await _authRepository.logIn(
+    //       username: state.username.value,
+    //       password: state.password.value,
+    //     );
+    //     emit(state.copyWith(status: FormzSubmissionStatus.success));
+    //   } catch (_) {
+    //     emit(state.copyWith(status: FormzSubmissionStatus.failure));
+    //   }
+    // }
   }
 }

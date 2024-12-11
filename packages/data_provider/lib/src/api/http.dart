@@ -1,8 +1,6 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 /// Dio extended custom Http Client
@@ -39,13 +37,13 @@ class Http extends DioForNative {
   }
 }
 
-Future<List<dynamic>?> getJsonList(String url) async {
-  final response = await rootBundle.loadString(url);
+// Future<List<dynamic>?> getJsonList(String url) async {
+//   final response = await rootBundle.loadString(url);
 
-  final jsonData = jsonDecode(response);
-  if (jsonData is List<dynamic>) {
-    return jsonData;
-  } else {
-    return null;
-  }
-}
+//   final jsonData = jsonDecode(response);
+//   if (jsonData is List<dynamic>) {
+//     return jsonData;
+//   } else {
+//     return null;
+//   }
+// }

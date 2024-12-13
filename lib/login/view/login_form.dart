@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:app_ui/app_ui.dart';
 import 'package:dap_foreman_assis/login/login.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +31,10 @@ class LoginForm extends HookWidget {
       },
       child: Column(
         children: [
-          _UsernameInput(
+          UsernameInput(
             controller: loginController,
           ),
-          _PasswordInput(
+          PasswordInput(
             controller: passwordController,
           ),
           Row(
@@ -48,7 +50,7 @@ class LoginForm extends HookWidget {
             ],
           ).paddingOnly(right: 20),
           // const Expanded(child: SizedBox.shrink()),
-          _LoginButton(
+          LoginButton(
             passwordController: passwordController,
             loginController: loginController,
           ),
@@ -58,9 +60,10 @@ class LoginForm extends HookWidget {
   }
 }
 
-class _UsernameInput extends StatelessWidget {
-  const _UsernameInput({
+class UsernameInput extends StatelessWidget {
+  const UsernameInput({
     required this.controller,
+    super.key,
   });
 
   final TextEditingController controller;
@@ -71,6 +74,12 @@ class _UsernameInput extends StatelessWidget {
     // );
     return AppTextField(
       controller: controller,
+      onSubmitted: (p0) {
+        log('OnSubmitted $p0');
+      },
+      onChanged: (value){
+        log('OnChanged $value');
+      },
       isNext: true,
       colorScheme: Theme.of(context).colorScheme,
       // key: const Key('loginForm_usernameInput_textField'),
@@ -85,8 +94,8 @@ class _UsernameInput extends StatelessWidget {
   }
 }
 
-class _PasswordInput extends StatelessWidget {
-  const _PasswordInput({required this.controller});
+class PasswordInput extends StatelessWidget {
+  const PasswordInput({required this.controller, super.key});
 
   final TextEditingController controller;
   @override
@@ -99,7 +108,13 @@ class _PasswordInput extends StatelessWidget {
       // key: const Key('loginForm_passwordInput_textField'),
       hintText: 'Введите ваш пароль',
       titleText: 'Пароль',
-
+      onSubmitted: (p0) {
+        log('OnSubmitted $p0');
+      },
+      onChanged: (value){
+        log('OnChanged $value');
+      },
+      controller: controller,
       // onSubmitted: (password) {
       //   context.read<LoginBloc>().add(LoginPasswordChanged(password));
       // },
@@ -110,10 +125,11 @@ class _PasswordInput extends StatelessWidget {
   }
 }
 
-class _LoginButton extends StatelessWidget {
-  const _LoginButton({
+class LoginButton extends StatelessWidget {
+  const LoginButton({
     required this.passwordController,
     required this.loginController,
+    super.key,
   });
 
   final TextEditingController passwordController;

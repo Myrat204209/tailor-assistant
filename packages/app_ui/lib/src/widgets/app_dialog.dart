@@ -2,6 +2,22 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
+Future<void> showAppDialog(
+  BuildContext dialogContext,
+  String message,
+  String buttonText,
+  VoidCallback onTap,
+) async {
+  await showDialog<AppDialog>(
+    context: dialogContext,
+    builder: (_) => AppDialog(
+      title: message,
+      buttonText: buttonText,
+      onTap: onTap,
+    ),
+  );
+}
+
 class AppDialog extends StatelessWidget {
   const AppDialog({
     required this.title,
@@ -72,20 +88,4 @@ class AppDialog extends StatelessWidget {
       ],
     ).paddingSymmetric(horizontal: 56);
   }
-}
-
-Future<void> showAppDialog(
-  BuildContext dialogContext,
-  String message,
-  String buttonText,
-  VoidCallback onTap,
-) async {
-  await showDialog<AppDialog>(
-    context: dialogContext,
-    builder: (_) => AppDialog(
-      title: message,
-      buttonText: buttonText,
-      onTap: onTap,
-    ),
-  );
 }

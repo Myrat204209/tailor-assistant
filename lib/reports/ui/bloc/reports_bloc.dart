@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:dap_foreman_assis/excel/excel.dart';
 import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:equatable/equatable.dart';
@@ -158,6 +159,7 @@ class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
       log('Reports: $reports');
       await _reportsRepository.sendReports(reports);
       emit(state.copyWith(status: ReportsStatus.success, reports: reports));
+      await exportReportItemsToExcel(reports);
       add(const ReportsCleared());
     } catch (error, stackTrace) {
       addError(error, stackTrace);

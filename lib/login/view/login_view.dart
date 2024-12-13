@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:app_ui/app_ui.dart';
+import 'package:dap_foreman_assis/employees/employees.dart';
 import 'package:dap_foreman_assis/login/login.dart';
+import 'package:dap_foreman_assis/operation/operation.dart';
+import 'package:dap_foreman_assis/orders/orders.dart';
 import 'package:dap_foreman_assis/settings/settings.dart';
 import 'package:dap_foreman_assis/theme_selector/bloc/theme_mode_bloc.dart';
 
@@ -36,12 +39,16 @@ class LoginView extends StatelessWidget {
                   ..hideCurrentSnackBar()
                   ..showSnackBar(const SnackBar(
                       content: Text('Вы включили режим разработчика'))),
+                
                 showTextFieldDialog(
                   context: context,
                   onSuccess: (value) async {
                     context
-                        .read<SettingsBloc>()
-                        .add(SettingsBaseUrlChanged('http://$value'));
+                      ..read<SettingsBloc>()
+                          .add(SettingsBaseUrlChanged('http://$value'))
+                      ..read<EmployeesBloc>().add(EmployeesRequested())
+                      ..read<OperationBloc>().add(const OperationRequested())
+                      ..read<OrdersBloc>().add(const OrdersRequested());
                   },
                   validator: (value) =>
                       switch (baseUrl.validator(value ?? '')) {

@@ -32,27 +32,37 @@ class EmployeesView extends StatelessWidget {
               EmployeeAppBar(
                 quantity: employeesList.length,
               ),
-              Expanded(
-                child: employeesList.isEmpty
-                    ? const SizedBox.shrink()
-                    : ListView.builder(
-                        itemCount: employeesList.length,
-                        itemBuilder: (context, index) {
-                          final employee = employeesList[index];
-                          return EmployeeTile(
-                            name: employee.employeeName,
-                            onTap: () {
-                              context.read<ReportsBloc>().add(
-                                  ReportOrdersRequested(employee: employee));
+              if (state.status == EmployeesStatus.loading)
+                const Align(
+                    child: Center(child: CircularProgressIndicator.adaptive()))
+              else if (state.status == EmployeesStatus.success)
+                Expanded(
+                  child: employeesList.isEmpty
+                      ? const SizedBox.shrink()
+                      : ListView.builder(
+                          itemCount: employeesList.length,
+                          itemBuilder: (context, index) {
+                            final employee = employeesList[index];
+                            return EmployeeTile(
+                              name: employee.employeeName,
+                              onTap: () {
+                                context.read<ReportsBloc>().add(
+                                    ReportOrdersRequested(employee: employee));
 
-                              Navigator.of(context).push(
-                                ProfilePage.route(employee),
-                              );
-                            },
-                          ).paddingSymmetric(horizontal: 20, vertical: 7);
-                        },
-                      ),
-              ),
+                                Navigator.of(context).push(
+                                  ProfilePage.route(employee),
+                                );
+                              },
+                            ).paddingSymmetric(horizontal: 20, vertical: 7);
+                          },
+                        ),
+                )
+              else
+                Center(
+                    child: Text(
+                  'Ошибка в списке сотрудников',
+                  style: const AppTextStyle.text().pageTitle(),
+                )),
             ],
           ),
         );

@@ -11,12 +11,11 @@ class OrdersView extends StatelessWidget {
         return Column(
           children: [
             OrdersAppBar(quantity: state.orders.length),
-            
             if (state.status == OrdersStatus.loading)
               const Align(
                 child: Center(child: CircularProgressIndicator.adaptive()),
               )
-            else
+            else if (state.status == OrdersStatus.success)
               Expanded(
                 child: ListView.builder(
                   itemCount: state.orders.length,
@@ -44,7 +43,13 @@ class OrdersView extends StatelessWidget {
                     );
                   },
                 ),
-              ),
+              )
+            else
+              Center(
+                  child: Text('Ошибка в загрузке',
+                      style: const AppTextStyle.text()
+                          .pageTitle()
+                          .withColor(colorScheme.error))),
           ],
         );
       },

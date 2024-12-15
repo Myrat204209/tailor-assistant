@@ -18,7 +18,7 @@ class ReportsView extends StatelessWidget {
         const ReportsDateTab(),
         BlocBuilder<ReportsNetworkBloc, ReportsNetworkState>(
           builder: (context, state) {
-            final reportsList = state.reports;
+            // final reportsList = state.reports;
             return Expanded(
               child: employeesList.isEmpty
                   ? const SizedBox.shrink()

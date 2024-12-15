@@ -102,7 +102,7 @@ class StorageRepository {
       final file = File('${directory.path}/$filename');
 
       // Read the content of the file.
-      if (await file.exists()) {
+      if (file.existsSync()) {
         return await file.readAsString();
       } else {
         throw FileNotFoundException('File not found');

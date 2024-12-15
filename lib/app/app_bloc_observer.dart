@@ -24,10 +24,9 @@ class AppBlocObserver extends BlocObserver {
   ) {
     // if (bloc is ReportsBloc || bloc is EditCubit) {
     // Only log if the bloc is ReportsBloc
-    final stopwatch = Stopwatch()..start();
+
     super.onTransition(bloc, transition);
-    stopwatch.stop();
-    log('onTransition(${bloc.runtimeType}, $transition) took ${stopwatch.elapsedMilliseconds}ms\n');
+    log('onTransition(${bloc.runtimeType}, $transition) ');
     // }
   }
 

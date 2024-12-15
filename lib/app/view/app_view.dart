@@ -41,7 +41,7 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
 
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
-  NavigatorState get _navigator => _navigatorKey.currentState!;
+  // NavigatorState get _navigator => _navigatorKey.currentState!;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
 }
 
 
-   void _navigateTo(Route<void> route) {
-    _navigator.pushAndRemoveUntil<void>(route, (route) => false);
-  }
+  //  void _navigateTo(Route<void> route) {
+  //   _navigator.pushAndRemoveUntil<void>(route, (route) => false);
+  // }
 }

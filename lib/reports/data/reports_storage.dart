@@ -35,7 +35,7 @@ class ReportsStorage {
       final directory = await _getStorageDirectory();
       final file = File('${directory.path}/$filename');
 
-      if (await file.exists() == true) {
+      if (file.existsSync() == true) {
         return await file.readAsString();
       } else {
         return null;
@@ -50,7 +50,7 @@ class ReportsStorage {
     try {
       final directory = await _getStorageDirectory();
       final file = File('${directory.path}/$filename');
-      if (await file.exists()) {
+      if (file.existsSync()) {
         await file.delete();
       }
     } catch (error, stackTrace) {

@@ -13,6 +13,7 @@ dependencies:
   auth_repository:
     path: packages/auth_repository
   bloc: ^8.1.4
+  connectivity_plus: ^6.1.1
   data_provider:
     path: packages/data_provider
   equatable: ^2.0.7

@@ -22,15 +22,13 @@ Future<List<File>> listExcelFiles() async {
 /// Function to open a selected file
 Future<void> openExcelFile(String filePath) async {
   final result = await OpenFile.open(filePath);
-  if (result.type != ResultType.done) {
-    print('Error opening file: ${result.message}');
-  }
+  if (result.type != ResultType.done) {}
 }
 
 /// Example usage to display a file picker and open a selected Excel file
 Future<void> browseAndOpenExcelFile() async {
   // Browse and list all Excel files
-  final excelFiles = await listExcelFiles();
+  // final excelFiles = await listExcelFiles();
 
   // Use FilePicker or a custom UI to allow the user to select one
   final selectedPath = await FilePicker.platform
@@ -44,7 +42,5 @@ Future<void> browseAndOpenExcelFile() async {
   // Open the selected file
   if (selectedPath != null) {
     await openExcelFile(selectedPath);
-  } else {
-    print('No file selected.');
   }
 }

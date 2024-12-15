@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:app_ui/app_ui.dart';
 import 'package:dap_foreman_assis/excel/excel.dart';
 import 'package:dap_foreman_assis/history/history.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,7 @@ class HistoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    // final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

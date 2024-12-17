@@ -39,7 +39,7 @@ class ProductTile extends StatelessWidget {
                       softWrap: true,
                       style: const AppTextStyle.text()
                           .description()
-                          .withColor(colorScheme.shadow),
+                          .withColor(colorScheme.primary),
                     ),
                     Text(
                       title,
@@ -47,7 +47,7 @@ class ProductTile extends StatelessWidget {
                       style: const AppTextStyle.text().contentTitle(),
                     ).paddingOnly(bottom: 10),
                   ],
-                ),
+                ).paddingSymmetric(horizontal: 10),
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,

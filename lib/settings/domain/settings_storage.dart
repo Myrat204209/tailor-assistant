@@ -28,7 +28,6 @@ class SettingsStorage {
       );
 
   /// Fetches the app base url
-  Future<String?> fetchAppBaseUrl() async =>
+  Future<String?> fetchAppBaseUrl() =>
       _storage.read(key: SettingsStorageKeys.appSettingsBaseUrl);
-
 }

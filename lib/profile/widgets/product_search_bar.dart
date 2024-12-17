@@ -23,6 +23,7 @@ class ProductSearchBar extends HookWidget {
     void resetSearch() {
       searchController.clear();
     }
+
     final colorScheme = Theme.of(useContext()).colorScheme;
 
     return Row(
@@ -46,6 +47,12 @@ class ProductSearchBar extends HookWidget {
                         controller.closeView(product.itemName);
                         resetSearch();
                       },
+                      trailing: Text(
+                        product.docNumber,
+                        style: const AppTextStyle.text()
+                            .description()
+                            .withColor(colorScheme.primary),
+                      ),
                     ),
                   )
                   .toList();

@@ -9,11 +9,13 @@ class ProductTile extends StatelessWidget {
     required this.onDeleteTap,
     required this.onEditTap,
     required this.title,
+    required this.docNumber,
     super.key,
   });
   final ColorScheme colorScheme;
   final VoidCallback onDeleteTap;
   final VoidCallback onEditTap;
+  final String docNumber;
   final String title;
 
   @override
@@ -28,11 +30,24 @@ class ProductTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: Text(
-                  title,
-                  softWrap: true,
-                  style: const AppTextStyle.text().contentTitle(),
-                ).paddingAll(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 10,
+                  children: [
+                    Text(
+                      docNumber,
+                      softWrap: true,
+                      style: const AppTextStyle.text()
+                          .description()
+                          .withColor(colorScheme.shadow),
+                    ),
+                    Text(
+                      title,
+                      softWrap: true,
+                      style: const AppTextStyle.text().contentTitle(),
+                    ).paddingOnly(bottom: 10),
+                  ],
+                ),
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,

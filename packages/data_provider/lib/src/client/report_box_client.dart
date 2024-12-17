@@ -104,7 +104,7 @@ class ReportBoxClient {
 
       var orderExists = false;
       for (final empOrder in employeeOrders) {
-        if (empOrder.key == order.itemCode) {
+        if (empOrder.key == order.docNumber) {
           // Check by key directly
           orderExists = true;
           empOrder.operationMaps.addAll(operations ?? <OperationMap>[]);
@@ -114,7 +114,7 @@ class ReportBoxClient {
       if (!orderExists) {
         // If order doesn't exist, add a new order
         employeeOrders.add(OrderMap(
-            key: order.itemCode,
+            key: order.docNumber,
             operationMaps: operations ?? <OperationMap>[]));
       }
 
@@ -139,7 +139,7 @@ class ReportBoxClient {
 
       // Find the specific order to remove
       final existingOrderIndex = employeeOrders
-          .indexWhere((orderMap) => orderMap.key == order.itemCode);  
+          .indexWhere((orderMap) => orderMap.key == order.docNumber);  
 
       if (existingOrderIndex != -1) {
         employeeOrders.removeAt(existingOrderIndex);
@@ -164,7 +164,7 @@ class ReportBoxClient {
 
       final employeeOrders = await getOrders(employee: employee);
       for (final orderMap in employeeOrders) {
-        if (orderMap.key == order.itemCode) {
+        if (orderMap.key == order.docNumber) {
           // Access key directly
           return orderMap
               .operationMaps; // Return the list of operations directly
@@ -192,7 +192,7 @@ class ReportBoxClient {
 
       // Find the specific order
       final existingOrderIndex = employeeOrders
-          .indexWhere((orderMap) => orderMap.key == order.itemCode);
+          .indexWhere((orderMap) => orderMap.key == order.docNumber);
 
       if (existingOrderIndex != -1) {
         // Order exists, check if operation already exists
@@ -213,7 +213,7 @@ class ReportBoxClient {
         }
       } else {
         // If order doesn't exist, create a new order with the operation
-        employeeOrders.add(OrderMap(key: order.itemCode, operationMaps: [
+        employeeOrders.add(OrderMap(key: order.docNumber, operationMaps: [
           OperationMap(key: operation.workCode, value: quantity)
         ]));
       }
@@ -240,7 +240,7 @@ class ReportBoxClient {
       final employeeOrders = await getOrders(employee: employee);
       // Find the specific order
       final existingOrderIndex = employeeOrders
-          .indexWhere((orderMap) => orderMap.key == order.itemCode);
+          .indexWhere((orderMap) => orderMap.key == order.docNumber);
 
       if (existingOrderIndex != -1) {
         // Order exists, check if operation already exists
@@ -283,7 +283,7 @@ class ReportBoxClient {
     };
 
     final orderMap = <String, OrderItem>{
-      for (final order in orders) order.itemCode: order,
+      for (final order in orders) order.docNumber: order,
     };
 
     final operationMap = <String, OperationItem>{

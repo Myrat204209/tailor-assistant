@@ -42,7 +42,7 @@ class OrderMap extends HiveObject {
 
   @override
   @HiveField(0)
-  final String key; // Corresponds to itemCode
+  final String key; // Corresponds to docNumber
 
   @HiveField(1)
   List<OperationMap> operationMaps;

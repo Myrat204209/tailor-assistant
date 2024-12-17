@@ -33,10 +33,11 @@ class ProfileView extends HookWidget {
                     itemBuilder: (context, index) {
                       final productName = orders![index];
                       final product = allOrders.firstWhere(
-                        (product) => product.itemCode == productName.key,
+                        (product) => product.docNumber == productName.key,
                       );
                       return ProductTile(
                         title: product.itemName,
+                        docNumber: product.docNumber,
                         onDeleteTap: () {
                           context
                               .read<ReportsBloc>()

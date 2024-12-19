@@ -23,10 +23,6 @@ class OrdersAppBar extends HookWidget {
     final colorScheme = Theme.of(useContext()).colorScheme;
     final baseUrl = context.select((SettingsBloc bloc) => bloc.state.baseUrl);
     const labelText = 'IP адрес сервера';
-<<<<<<< HEAD
-=======
-    // final controller = TextEditingController();
->>>>>>> ba368eea2927bffb3f52d4532bf3f98668e156b5
     final baseUrlValue = baseUrl.value;
     final regExp = RegExp(r'^(?:https?:\/\/)?([^\/:]+(?:\:\d+)?)');
     final Match? match = regExp.firstMatch(baseUrlValue);
@@ -69,11 +65,7 @@ class OrdersAppBar extends HookWidget {
                   context
                     ..read<SettingsBloc>()
                         .add(SettingsBaseUrlChanged('http://$value'))
-<<<<<<< HEAD
                     ..read<EmployeesBloc>().add(const EmployeesRequested())
-=======
-                    ..read<EmployeesBloc>().add(EmployeesRequested())
->>>>>>> ba368eea2927bffb3f52d4532bf3f98668e156b5
                     ..read<OperationBloc>().add(const OperationRequested())
                     ..read<OrdersBloc>().add(const OrdersRequested());
                 },

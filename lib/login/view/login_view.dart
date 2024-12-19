@@ -39,20 +39,12 @@ class LoginView extends StatelessWidget {
                   ..hideCurrentSnackBar()
                   ..showSnackBar(const SnackBar(
                       content: Text('Вы включили режим разработчика'))),
-<<<<<<< HEAD
-=======
-
->>>>>>> ba368eea2927bffb3f52d4532bf3f98668e156b5
                 showTextFieldDialog(
                   context: context,
                   onSuccess: (value) async {
                     context
                         .read<SettingsBloc>()
                         .add(SettingsBaseUrlChanged('http://$value'));
-<<<<<<< HEAD
-=======
-                    
->>>>>>> ba368eea2927bffb3f52d4532bf3f98668e156b5
                   },
                   validator: (value) =>
                       switch (baseUrl.validator(value ?? '')) {
@@ -62,7 +54,6 @@ class LoginView extends StatelessWidget {
                   },
                   initialValue: initialValue,
                   labelText: labelText,
-<<<<<<< HEAD
                 ).whenComplete(
                   () {
                     context
@@ -71,31 +62,6 @@ class LoginView extends StatelessWidget {
                       ..read<OrdersBloc>().add(const OrdersRequested());
                   },
                 )
-=======
-                ).whenComplete(() {
-                  context
-                      ..read<EmployeesBloc>().add(EmployeesRequested())
-                      ..read<OperationBloc>().add(const OperationRequested())
-                      ..read<OrdersBloc>().add(const OrdersRequested());
-                },)
-                // showAdaptiveDialog<String>(
-                //   context: context,
-                //   builder: (context) => SimpleDialog(
-                //     title: const Text('Режим разработчика'),
-                //     children: [
-                //       AppTextField(
-                //         controller: controller,
-                //         titleText: 'Изменить IP адрес',
-                //         colorScheme: Theme.of(context).colorScheme,
-                //         hintText: '192.168.1.1',
-                //         onSubmitted: (value) {
-
-                //         },
-                //       )
-                //     ],
-                //   ),
-                // )
->>>>>>> ba368eea2927bffb3f52d4532bf3f98668e156b5
               },
               child: AppIconButton(
                 foregroundColor: AppColors.secondAccent,

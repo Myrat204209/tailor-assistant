@@ -34,33 +34,33 @@ class OperationView extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 30),
+        AppIconButton(
+          foregroundColor: colorScheme.onSurface,
+          backgroundColor: colorScheme.surface,
+          onIconPressed: () {
+            context
+                .read<ReportsBloc>()
+                .add(ReportOrdersRequested(employee: sewer));
+            Navigator.pop(context);
+          },
+          icon: Icons.west_rounded,
+        ).paddingSymmetric(horizontal: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppIconButton(
-              foregroundColor: colorScheme.onSurface,
-              backgroundColor: colorScheme.surface,
-              onIconPressed: () {
-                context
-                    .read<ReportsBloc>()
-                    .add(ReportOrdersRequested(employee: sewer));
-                Navigator.pop(context);
-              },
-              icon: Icons.west_rounded,
+            Text(
+              orderItem.itemName,
+              softWrap: true,
+              style: const AppTextStyle.text().pageTitle(),
             ),
-            FilledButton(
-              onPressed: () async {},
-              child: Text(
-                'Сохранить',
-                style: const AppTextStyle.text().pageTitle(),
-              ).paddingSymmetric(horizontal: 20, vertical: 14),
+            Text(
+              orderItem.docNumber,
+              softWrap: true,
+              style: const AppTextStyle.text()
+                  .description()
+                  .withColor(colorScheme.primary),
             ),
           ],
-        ).paddingSymmetric(horizontal: 20),
-        Text(
-          orderItem.itemName,
-          softWrap: true,
-          style: const AppTextStyle.text().pageTitle(),
         ).paddingSymmetric(horizontal: 20, vertical: 24),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

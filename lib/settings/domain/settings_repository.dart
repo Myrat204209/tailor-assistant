@@ -9,12 +9,12 @@ sealed class SettingsException implements Exception {
 /// UpdateBaseUrlFailure
 
 final class UpdateBaseUrlFailure extends SettingsException {
-  UpdateBaseUrlFailure(super.error);
+  const UpdateBaseUrlFailure(super.error);
 }
 
 /// GetBaseUrlFailure
 final class GetBaseUrlFailure extends SettingsException {
-  GetBaseUrlFailure(super.error);
+  const GetBaseUrlFailure(super.error);
 }
 
 final class SettingsRepository {
@@ -25,7 +25,7 @@ final class SettingsRepository {
   })  : _defaultBaseUrl = defaultBaseUrl,
         _settingsStorage = settingsStorage,
         _settingsClient = settingsClient {
-    getBaseUrl().then(updateBaseUrl);
+    // getBaseUrl().then(updateBaseUrl);
   }
 
   final String _defaultBaseUrl;

@@ -5,11 +5,13 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 class UiAppBarIcon {
-  UiAppBarIcon({required this.icon, required this.onTap});
+  UiAppBarIcon({required this.icon, required this.onTap,this.onLongPress});
 
   final IconData icon;
   final VoidCallback onTap;
+  final VoidCallback? onLongPress;
 }
+
 
 class UiAppBar extends StatelessWidget {
   /// Constructor
@@ -17,6 +19,7 @@ class UiAppBar extends StatelessWidget {
     required this.title,
     required this.icons,
     required this.colorScheme,
+    
     super.key,
     this.quantity,
   });
@@ -66,6 +69,7 @@ class UiAppBar extends StatelessWidget {
           if (icon == null) return const SizedBox.shrink();
           return AppIconButton(
             icon: icon.icon,
+            onLongPressed: icon.onLongPress,
             foregroundColor: colorMap[icons.indexOf(icon)]['fC']!,
             backgroundColor: colorMap[icons.indexOf(icon)]['bC']!,
             onIconPressed: icon.onTap,

@@ -22,7 +22,7 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
     Emitter<EmployeesState> emit,
   ) {
     if (state.status != EmployeesStatus.initial) return;
-    add(EmployeesRequested());
+    add(const EmployeesRequested());
   }
 
   FutureOr<void> _onRequested(

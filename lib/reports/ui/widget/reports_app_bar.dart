@@ -21,7 +21,7 @@ class ReportsAppBar extends HookWidget {
               context,
               'После обновления будут стёрты заполненные данные?',
               'Обновить',
-              () => context.read<EmployeesBloc>().add(EmployeesRequested()),
+              () => context.read<EmployeesBloc>().add(const EmployeesRequested()),
             );
           },
         ),

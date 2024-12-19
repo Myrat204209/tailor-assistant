@@ -38,7 +38,11 @@ class EmployeeAppBar extends HookWidget {
               'После обновления будут стёрты заполненные данные?',
               'Обновить',
               () {
-                context.read<EmployeesBloc>().add(EmployeesRequested());
+                context
+                  ..read<EmployeesBloc>().add(const EmployeesRequested())
+                  ..read<EmployeesBloc>().add(const EmployeesRequested())
+                  ..read<OperationBloc>()
+                      .add(const OperationRefreshRequested());
               },
             );
           },

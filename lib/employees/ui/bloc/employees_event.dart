@@ -9,4 +9,6 @@ sealed class EmployeesEvent extends Equatable {
 
 final class EmployeesInitRequested extends EmployeesEvent {}
 
-final class EmployeesRequested extends EmployeesEvent {}
+final class EmployeesRequested extends EmployeesEvent {
+  const EmployeesRequested();
+}

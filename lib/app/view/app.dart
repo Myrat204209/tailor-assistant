@@ -54,13 +54,10 @@ class App extends StatelessWidget {
     )..add(AuthSubscriptionRequested());
     final settingsBloc = SettingsBloc(settingsRepository: _settingsRepository);
     final operationBloc =
-        OperationBloc(operationRepository: _operationRepository)
-          ..add(const OperationRequested());
-    final ordersBloc = OrdersBloc(ordersRepository: _ordersRepository)
-      ..add(const OrdersRequested());
+        OperationBloc(operationRepository: _operationRepository);
+    final ordersBloc = OrdersBloc(ordersRepository: _ordersRepository);
     final employeesBloc =
-        EmployeesBloc(employeesRepository: _employeesRepository)
-          ..add(EmployeesInitRequested());
+        EmployeesBloc(employeesRepository: _employeesRepository);
     // final themeCubit = ThemeCubit()..loadTheme();
     final editCubit = EditCubit();
     final profileCubit = ProfileCubit();

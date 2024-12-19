@@ -23,8 +23,8 @@ class ProductSearchBar extends HookWidget {
     void resetSearch() {
       searchController.clear();
     }
-    final colorScheme = Theme.of(useContext()).colorScheme;
 
+    final colorScheme = Theme.of(useContext()).colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -46,6 +46,12 @@ class ProductSearchBar extends HookWidget {
                         controller.closeView(product.itemName);
                         resetSearch();
                       },
+                      trailing: Text(
+                        product.docNumber,
+                        style: const AppTextStyle.text()
+                            .description()
+                            .withColor(colorScheme.primary),
+                      ),
                     ),
                   )
                   .toList();
@@ -71,12 +77,12 @@ class ProductSearchBar extends HookWidget {
             ),
           ).paddingOnly(left: 20, right: 14),
         ),
-        AppIconButton(
-          foregroundColor: colorScheme.surface,
-          backgroundColor: colorScheme.primary,
-          onIconPressed: resetSearch,
-          icon: Icons.add_rounded,
-        ),
+        // AppIconButton(
+        //   foregroundColor: colorScheme.surface,
+        //   backgroundColor: colorScheme.primary,
+        //   onIconPressed: resetSearch,
+        //   icon: Icons.add_rounded,
+        // ),
       ],
     ).paddingOnly(bottom: 24);
   }

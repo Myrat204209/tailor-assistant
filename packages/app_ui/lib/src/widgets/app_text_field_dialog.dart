@@ -25,7 +25,7 @@ Future<void> showTextFieldDialog({
     builder: (context) => SimpleDialog(
       alignment: Alignment.center,
       contentPadding: EdgeInsets.zero,
-      titlePadding: const EdgeInsets.all(14),
+      titlePadding: const EdgeInsets.symmetric(horizontal: 14,vertical: 24),
       title: Row(
         children: [
           Expanded(

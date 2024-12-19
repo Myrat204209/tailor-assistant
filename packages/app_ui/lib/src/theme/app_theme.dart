@@ -26,12 +26,13 @@ abstract class AppBaseTheme {
           borderSide: const BorderSide(color: AppColors.border),
         ),
         labelStyle: TextStyle(color: colorScheme.onSurface),
-        hintStyle: TextStyle(color: colorScheme.onSurface.withOpacity(0.7)),
+        hintStyle:
+            TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.7)),
       );
 
   /// Shared Divider Theme
   DividerThemeData get dividerTheme => DividerThemeData(
-        color: colorScheme.onSurface.withOpacity(0.5),
+        color: colorScheme.onSurface.withValues(alpha: 0.5),
         thickness: 2,
       );
 

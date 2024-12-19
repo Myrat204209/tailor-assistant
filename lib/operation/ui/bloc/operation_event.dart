@@ -11,4 +11,6 @@ final class OperationRequested extends OperationEvent {
   const OperationRequested();
 }
 
-final class OperationRefreshRequested extends OperationEvent {}
+final class OperationRefreshRequested extends OperationEvent {
+  const OperationRefreshRequested();
+}

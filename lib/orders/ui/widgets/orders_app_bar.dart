@@ -2,7 +2,10 @@
 import 'package:app_ui/app_ui.dart';
 
 import 'package:dap_foreman_assis/auth/auth.dart';
+import 'package:dap_foreman_assis/employees/employees.dart';
+import 'package:dap_foreman_assis/operation/operation.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
+import 'package:dap_foreman_assis/settings/settings.dart';
 import 'package:dap_foreman_assis/theme_selector/theme_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +21,13 @@ class OrdersAppBar extends HookWidget {
   Widget build(BuildContext context) {
     final themeBloc = context.select((ThemeModeBloc bloc) => bloc.state);
     final colorScheme = Theme.of(useContext()).colorScheme;
+    final baseUrl = context.select((SettingsBloc bloc) => bloc.state.baseUrl);
+    const labelText = 'IP адрес сервера';
+    final baseUrlValue = baseUrl.value;
+    final regExp = RegExp(r'^(?:https?:\/\/)?([^\/:]+(?:\:\d+)?)');
+    final Match? match = regExp.firstMatch(baseUrlValue);
+
+    final initialValue = match != null ? match.group(1)! : '';
     return UiAppBar(
       title: 'Изделия',
       quantity: quantity,
@@ -30,7 +40,10 @@ class OrdersAppBar extends HookWidget {
               context,
               'После обновления будут стёрты заполненные данные?',
               'Обновить',
-              () => context.read<OrdersBloc>().add(const OrdersRequested()),
+              () => context
+                ..read<EmployeesBloc>().add(const EmployeesRequested())
+                ..read<OrdersBloc>().add(const OrdersRequested())
+                ..read<OperationBloc>().add(const OperationRefreshRequested()),
             );
           },
         ),
@@ -45,6 +58,26 @@ class OrdersAppBar extends HookWidget {
           },
         ),
         UiAppBarIcon(
+            onLongPress: () {
+              showTextFieldDialog(
+                context: context,
+                onSuccess: (value) async {
+                  context
+                    ..read<SettingsBloc>()
+                        .add(SettingsBaseUrlChanged('http://$value'))
+                    ..read<EmployeesBloc>().add(const EmployeesRequested())
+                    ..read<OperationBloc>().add(const OperationRequested())
+                    ..read<OrdersBloc>().add(const OrdersRequested());
+                },
+                validator: (value) => switch (baseUrl.validator(value ?? '')) {
+                  BaseUrlValidationError.empty => 'Запольните поле',
+                  BaseUrlValidationError.invalid => 'Не правильный IP адрес',
+                  _ => null,
+                },
+                initialValue: initialValue,
+                labelText: labelText,
+              );
+            },
             icon: themeBloc == ThemeMode.dark
                 ? Icons.light_mode_rounded
                 : Icons.dark_mode_rounded,

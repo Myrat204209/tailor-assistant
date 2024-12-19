@@ -21,9 +21,7 @@ class OperationBloc extends Bloc<OperationEvent, OperationState> {
     OperationRequested event,
     Emitter<OperationState> emit,
   ) async {
-     if (state.isFetching) return;
-
-    emit(state.copyWith(status: OperationStatus.loading, isFetching: true));
+    emit(state.copyWith(status: OperationStatus.loading));
 
     try {
       final operations = await _operationRepository.getOperations();
@@ -36,8 +34,6 @@ class OperationBloc extends Bloc<OperationEvent, OperationState> {
     } catch (error, stackTrace) {
       emit(state.copyWith(status: OperationStatus.failure));
       addError(error, stackTrace);
-    } finally {
-       emit(state.copyWith(isFetching: false));
     }
   }
 
@@ -45,8 +41,6 @@ class OperationBloc extends Bloc<OperationEvent, OperationState> {
     OperationRefreshRequested event,
     Emitter<OperationState> emit,
   ) {
-
-    emit(state.copyWith(status: OperationStatus.initial));
     add(const OperationRequested());
   }
 }

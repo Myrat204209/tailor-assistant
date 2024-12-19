@@ -23,6 +23,11 @@ class ProductSearchBar extends HookWidget {
     void resetSearch() {
       searchController.clear();
     }
+<<<<<<< HEAD
+=======
+
+    final colorScheme = Theme.of(useContext()).colorScheme;
+>>>>>>> ba368eea2927bffb3f52d4532bf3f98668e156b5
 
     final colorScheme = Theme.of(useContext()).colorScheme;
     return Row(

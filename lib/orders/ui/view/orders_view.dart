@@ -12,8 +12,8 @@ class OrdersView extends StatelessWidget {
           children: [
             OrdersAppBar(quantity: state.orders.length),
             if (state.status == OrdersStatus.loading)
-              const Align(
-                child: Center(child: CircularProgressIndicator.adaptive()),
+              Align(
+                child: const CircularProgressIndicator.adaptive().centralize(),
               )
             else if (state.status == OrdersStatus.success)
               Expanded(
@@ -45,11 +45,11 @@ class OrdersView extends StatelessWidget {
                 ),
               )
             else
-              Center(
-                  child: Text('Ошибка в загрузке',
+              Text('Ошибка в загрузке',
                       style: const AppTextStyle.text()
                           .pageTitle()
-                          .withColor(colorScheme.error))),
+                          .withColor(colorScheme.error))
+                  .centralize(),
           ],
         );
       },

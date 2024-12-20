@@ -58,7 +58,6 @@ class App extends StatelessWidget {
     final ordersBloc = OrdersBloc(ordersRepository: _ordersRepository);
     final employeesBloc =
         EmployeesBloc(employeesRepository: _employeesRepository);
-    // final themeCubit = ThemeCubit()..loadTheme();
     final editCubit = EditCubit();
     final profileCubit = ProfileCubit();
     final themeModeBloc = ThemeModeBloc();

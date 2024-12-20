@@ -17,9 +17,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsDefaultSettingsRestored>(_onDefaultSettingsRestored);
 
     // initialize, get base url from storage
-    _settingsRepository
-        .getBaseUrl()
-        .then((value) => add(SettingsBaseUrlChanged(value)));
+    // _settingsRepository
+    //     .getBaseUrl()
+    //     .then((value) => add(SettingsBaseUrlChanged(value)));
   }
 
   final SettingsRepository _settingsRepository;

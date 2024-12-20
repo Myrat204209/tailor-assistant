@@ -33,12 +33,15 @@ class EmployeesView extends StatelessWidget {
                 quantity: employeesList.length,
               ),
               if (state.status == EmployeesStatus.loading)
-                const Align(
-                    child: Center(child: CircularProgressIndicator.adaptive()))
+                const Align(child: CircularProgressIndicator.adaptive())
+                    .centralize()
               else if (state.status == EmployeesStatus.success)
                 Expanded(
                   child: employeesList.isEmpty
-                      ? const SizedBox.shrink()
+                      ? Text(
+                          'Пустой в список сотрудников',
+                          style: const AppTextStyle.text().pageTitle(),
+                        ).centralize()
                       : ListView.builder(
                           itemCount: employeesList.length,
                           itemBuilder: (context, index) {
@@ -58,11 +61,10 @@ class EmployeesView extends StatelessWidget {
                         ),
                 )
               else
-                Center(
-                    child: Text(
+                Text(
                   'Ошибка в списке сотрудников',
                   style: const AppTextStyle.text().pageTitle(),
-                )),
+                ).centralize(),
             ],
           ),
         );

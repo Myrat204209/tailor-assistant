@@ -27,7 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthSubscriptionRequested event,
     Emitter<AuthState> emit,
   ) {
-    return emit.onEach(
+    return emit.onEach<AuthStatus>(
       _authRepository.status,
       onData: (status) async {
         switch (status) {

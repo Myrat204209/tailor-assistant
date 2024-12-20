@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum AuthStatus { authenticated, unauthenticated, unknown }
 
 class AuthRepository {
-  static const _authKey = 'auth_status';
+  static const _authKey = '__auth_status__';
   final _controller = StreamController<AuthStatus>();
 
   AuthRepository() {

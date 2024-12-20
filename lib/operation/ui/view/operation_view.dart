@@ -116,8 +116,7 @@ class OperationView extends HookWidget {
               builder: (context, editState) {
                 final cubitOperation = editState.operations;
                 if (cubitOperation.isEmpty) {
-                  const Expanded(
-                      child: Center(child: Text('Добавьте операцию')));
+                  Expanded(child: const Text('Добавьте операцию').centralize());
                 }
 
                 return Expanded(

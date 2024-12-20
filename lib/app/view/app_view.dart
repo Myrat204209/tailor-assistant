@@ -31,6 +31,7 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final authState = context.watch<AuthBloc>().state;
     return SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -42,15 +43,12 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
                 themeMode: themeMode,
                 theme: const AppTheme().themeData,
                 darkTheme: const AppDarkTheme().themeData,
-                home: BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    if (state.status == AuthStatus.unauthenticated) {
-                      return const LoginPage();
-                    } else {
-                      return const HomePage();
-                    }
-                  },
-                ),
+                home: authState.status == AuthStatus.unknown
+                    ? const Scaffold(body: CircularProgressIndicator.adaptive())
+                        .centralize()
+                    : authState.status == AuthStatus.authenticated
+                        ? const HomePage()
+                        : const LoginPage(),
               );
             },
           );

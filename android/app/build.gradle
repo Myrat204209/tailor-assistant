@@ -32,7 +32,7 @@ android {
     namespace "com.arassanusga.dap_foreman_assis"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
-    // ndkVersion flutter.ndkVersi
+    // ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

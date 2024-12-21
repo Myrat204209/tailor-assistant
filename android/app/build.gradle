@@ -59,31 +59,31 @@ android {
     }
 
 
-    signingConfigs {
-        prod {
-            storeFile file("C:/Users/m.annamuhammedov/Flutter_Projects/my_projects/dap_foreman_assis/android/app/my-release-key.p12")
-            keyAlias "mykey"
-            keyPassword "arassanusga"
-            storePassword "arassanusga"
-            storeType "PKCS12"     
+    // signingConfigs {
+    //     prod {
+    //         storeFile file("C:/Users/m.annamuhammedov/Flutter_Projects/my_projects/dap_foreman_assis/android/app/my-release-key.p12")
+    //         keyAlias "mykey"
+    //         keyPassword "arassanusga"
+    //         storePassword "arassanusga"
+    //         storeType "PKCS12"     
 
-        }
-        if (System.getenv("ANDROID_KEYSTORE_PATH")) {
-            release {
-                storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
-                keyAlias System.getenv("ANDROID_KEYSTORE_ALIAS")
-                keyPassword System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
-                storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-            }
-        } else {
-            release {
-                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
-                storePassword keystoreProperties['storePassword']
-            }
-        }
-    }
+    //     }
+    //     if (System.getenv("ANDROID_KEYSTORE_PATH")) {
+    //         release {
+    //             storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
+    //             keyAlias System.getenv("ANDROID_KEYSTORE_ALIAS")
+    //             keyPassword System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+    //             storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+    //         }
+    //     } else {
+    //         release {
+    //             storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+    //             keyAlias keystoreProperties['keyAlias']
+    //             keyPassword keystoreProperties['keyPassword']
+    //             storePassword keystoreProperties['storePassword']
+    //         }
+    //     }
+    // }
 
     flavorDimensions "flavor"
     productFlavors { 

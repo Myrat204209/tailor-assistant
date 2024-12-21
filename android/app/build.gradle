@@ -40,7 +40,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
+        jvmTarget = "17"
     }
 
     sourceSets {
@@ -58,15 +58,8 @@ android {
         versionName flutterVersionName
     }
 
-    signingConfigs {
-        dev {
-            storeFile file("C:/Users/m.annamuhammedov/Flutter_Projects/my_projects/dap_foreman_assis/android/app/my-release-key.p12")
-            keyAlias "mykey"
-            keyPassword "arassanusga"
-            storePassword "arassanusga"
-            storeType "PKCS12"     
 
-        }
+    signingConfigs {
         prod {
             storeFile file("C:/Users/m.annamuhammedov/Flutter_Projects/my_projects/dap_foreman_assis/android/app/my-release-key.p12")
             keyAlias "mykey"
@@ -98,11 +91,6 @@ android {
             dimension "flavor"
             applicationIdSuffix ""
             manifestPlaceholders = [appName: "Tikinçi"]
-        }
-        staging {
-            dimension "flavor"
-            applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "[STG] Tikinçi"]
         }
         development {
             dimension "flavor"

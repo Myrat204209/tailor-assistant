@@ -25,14 +25,7 @@ class ReportBoxClient {
         return orders;
       } else if (data is List) {
         try {
-          return data.map<OrderMap>((item) {
-            if (item is OrderMap) {
-              return item;
-            } else {
-              throw Exception(
-                  'Invalid item type in orders list: ${item.runtimeType}');
-            }
-          }).toList();
+          return data.cast<OrderMap>();
         } catch (castError) {
           throw Exception('Error casting orders: $castError');
         }
@@ -54,7 +47,7 @@ class ReportBoxClient {
       if (_reportsBox.containsKey(employee.employeeCode) && orders.isEmpty) {
         return;
       }
-      await _reportsBox.put(employee.employeeCode, orders);
+      await _reportsBox.put(employee.employeeCode, orders.cast<OrderMap>());
     } catch (error, stackTrace) {
       throw Exception(
           'Error adding employee - ${employee.employeeName}: $error, stackTrace: $stackTrace');
@@ -244,18 +237,11 @@ class ReportBoxClient {
 
       if (data == null) {
         orderMaps = <OrderMap>[];
-        await _reportsBox.put(employeeCode, orderMaps);
+        await _reportsBox.put(employeeCode, orderMaps.cast<OrderMap>());
         log('Initialized empty orders for employeeCode: $employeeCode');
       } else if (data is List) {
         try {
-          orderMaps = data.map<OrderMap>((item) {
-            if (item is OrderMap) {
-              return item;
-            } else {
-              throw Exception(
-                  'Invalid item type in orders list: ${item.runtimeType}');
-            }
-          }).toList();
+          orderMaps = data.cast<OrderMap>();
         } catch (e) {
           log('Error casting orders for employeeCode $employeeCode: $e');
           continue;

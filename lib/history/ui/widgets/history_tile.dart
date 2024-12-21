@@ -35,6 +35,6 @@ class HistoryTile extends StatelessWidget {
       ).paddingOnly(right: 14),
       contentPadding: EdgeInsets.zero,
       shape: ShapeBorderX.roundedRectangle(15),
-    );
+    ).paddingSymmetric(horizontal: 14, vertical: 8);
   }
 }

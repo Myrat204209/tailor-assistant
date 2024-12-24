@@ -1,7 +1,12 @@
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
 
 /// Dio extended custom Http Client
 class Http extends DioForNative {
@@ -14,7 +19,8 @@ class Http extends DioForNative {
           BaseOptions(
             baseUrl: defaultBaseUrl,
             connectTimeout: const Duration(milliseconds: 20000),
-            receiveTimeout: const Duration(minutes: 2),
+            // receiveTimeout: const Duration(minutes: 2),
+            receiveTimeout: const Duration(minutes: 1),
           ),
         ) {
     interceptors.addAll([
@@ -37,13 +43,13 @@ class Http extends DioForNative {
   }
 }
 
-// Future<List<dynamic>?> getJsonList(String url) async {
-//   final response = await rootBundle.loadString(url);
+Future<List<dynamic>?> getJsonList(String url) async {
+  final response = await rootBundle.loadString(url);
 
-//   final jsonData = jsonDecode(response);
-//   if (jsonData is List<dynamic>) {
-//     return jsonData;
-//   } else {
-//     return null;
-//   }
-// }
+  final jsonData = jsonDecode(response);
+  if (jsonData is List<dynamic>) {
+    return jsonData;
+  } else {
+    return null;
+  }
+}

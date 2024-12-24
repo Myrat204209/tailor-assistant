@@ -2,6 +2,11 @@ import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+final kAppOutlinedBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(15),
+  borderSide: const BorderSide(color: AppColors.border),
+);
+
 /// Base App Theme
 abstract class AppBaseTheme {
   const AppBaseTheme();
@@ -17,23 +22,21 @@ abstract class AppBaseTheme {
 
   /// Shared Input Decoration Theme
   InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: AppColors.border),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: AppColors.border),
-        ),
+        border: kAppOutlinedBorder,
+        focusedBorder: kAppOutlinedBorder,
+        enabledBorder: kAppOutlinedBorder,
+        // TODO: Try to understand what they want from you
+        filled: true,
+        contentPadding: EdgeInsets.zero,
         labelStyle: TextStyle(color: colorScheme.onSurface),
         hintStyle:
             TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.7)),
       );
 
   /// Shared Divider Theme
-  DividerThemeData get dividerTheme => DividerThemeData(
-        color: colorScheme.onSurface.withValues(alpha: 0.5),
-        thickness: 2,
+  DividerThemeData get dividerTheme => const DividerThemeData(
+        color: AppColors.secondAccent,
+        thickness: 1,
       );
 
   /// Restores your original `AppTextStyle` for the `TextTheme`
@@ -87,6 +90,7 @@ class AppTheme extends AppBaseTheme {
       error: AppColors.alertLightAccent,
       onError: AppColors.alertAccent,
       onSurface: AppColors.textColor,
+      scrim: AppColors.bgMain,
       tertiary: AppColors.thirdAccent,
       onTertiary: AppColors.thirdLightAccent,
       outline: AppColors.textLight,
@@ -135,10 +139,12 @@ class AppDarkTheme extends AppBaseTheme {
       onError: AppColors.alertAccentDark,
       onSurface: AppColors.textColorDark,
       surface: AppColors.bgSecondDark,
+      scrim: AppColors.bgMainDark,
       tertiary: AppColors.thirdAccentDark,
       onTertiary: AppColors.thirdLightAccentDark,
       outline: AppColors.textLightDark,
       shadow: AppColors.textLightTitleDark,
+
     );
   }
 }

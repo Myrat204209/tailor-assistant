@@ -288,5 +288,20 @@ class ReportBoxClient {
     return reportItems;
   }
 
+  Future<int> getNumberOfOperations(EmployeesItem employee) async {
+    try {
+      final orders = await getOrders(employee: employee);
+      var operationCount = 0;
+      for (final order in orders) {
+        operationCount += order.operationMaps.length;
+      }
+      return operationCount;
+    } catch (error, stackTrace) {
+      log('Error getting number of operations for employeeCode ${employee.employeeCode}: $error, stackTrace: $stackTrace');
+      throw Exception(
+          'Error getting number of operations: $error\nStackTrace: $stackTrace');
+    }
+  }
+
   void clearAllReports() => _reportsBox.clear();
 }

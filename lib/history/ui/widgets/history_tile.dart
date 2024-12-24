@@ -29,7 +29,7 @@ class HistoryTile extends StatelessWidget {
           foregroundColor: colorScheme.tertiary,
           backgroundColor: colorScheme.onTertiary,
         ),
-        icon: const Icon(Icons.notes_rounded, size: 35)
+        icon: const Icon(Icons.article_rounded, size: 30)
             .paddingAll(12)
             .paddingOnly(bottom: 5),
       ).paddingOnly(right: 14),

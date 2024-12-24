@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-part of 'profile_page.dart';
+part of 'product_page.dart';
 
 class ProfileView extends HookWidget {
   const ProfileView({
@@ -13,7 +13,7 @@ class ProfileView extends HookWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return BlocBuilder<ProfileCubit, ProfileState>(
+    return BlocBuilder<ProductCubit, ProfileState>(
       builder: (context, state) {
         final allOrders = state.products;
         return Column(

@@ -3,6 +3,7 @@ import 'package:auth_repository/auth_repository.dart';
 import 'package:dap_foreman_assis/auth/auth.dart';
 import 'package:dap_foreman_assis/home/home.dart';
 import 'package:dap_foreman_assis/login/login.dart';
+import 'package:dap_foreman_assis/splash/splash.dart';
 import 'package:dap_foreman_assis/theme_selector/theme_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,9 +44,9 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
                 themeMode: themeMode,
                 theme: const AppTheme().themeData,
                 darkTheme: const AppDarkTheme().themeData,
+                //TODO: Change the Login Page to Loading Screen
                 home: authState.status == AuthStatus.unknown
-                    ? const Scaffold(body: CircularProgressIndicator.adaptive())
-                        .centralize()
+                    ? const SplashPage()
                     : authState.status == AuthStatus.authenticated
                         ? const HomePage()
                         : const LoginPage(),

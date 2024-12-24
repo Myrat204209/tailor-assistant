@@ -15,6 +15,9 @@ class LoginForm extends HookWidget {
   Widget build(BuildContext context) {
     final passwordController = useTextEditingController();
     final loginController = useTextEditingController();
+    final loginFocusNode = useFocusNode();
+    final passwordFocusNode = useFocusNode();
+
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.status.isFailure) {
@@ -29,32 +32,41 @@ class LoginForm extends HookWidget {
             );
         }
       },
-      child: Column(
-        children: [
-          UsernameInput(
-            controller: loginController,
-          ),
-          PasswordInput(
-            controller: passwordController,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Checkbox.adaptive(
-                value: true,
-                activeColor: AppColors.majorAccent,
-                checkColor: AppColors.majorLightAccent,
-                onChanged: (value) {},
-              ),
-              const Text('запомнить меня'),
-            ],
-          ).paddingOnly(right: 20),
-          // const Expanded(child: SizedBox.shrink()),
-          LoginButton(
-            passwordController: passwordController,
-            loginController: loginController,
-          ),
-        ],
+      child: SizedBox(
+        height: MediaQuery.sizeOf(context).height * 0.5,
+        child: Column(
+          children: [
+            UsernameInput(
+              controller: loginController,
+              focusNode: loginFocusNode,
+              nextFocusNode: passwordFocusNode,
+            ),
+            PasswordInput(
+              controller: passwordController,
+              focusNode: passwordFocusNode,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Checkbox.adaptive(
+                  value: true,
+                  activeColor: AppColors.majorAccent,
+                  checkColor: AppColors.majorLightAccent,
+                  onChanged: (value) {},
+                ),
+                const Text('запомнить меня'),
+              ],
+            ).paddingOnly(right: 20),
+
+            const Spacer(),
+            LoginButton(
+              passwordController: passwordController,
+              loginController: loginController,
+              loginFocusNode: loginFocusNode,
+              passwordFocusNode: passwordFocusNode,
+            ).paddingOnly(bottom: 24),
+          ],
+        ),
       ),
     );
   }
@@ -63,64 +75,60 @@ class LoginForm extends HookWidget {
 class UsernameInput extends StatelessWidget {
   const UsernameInput({
     required this.controller,
+    required this.focusNode,
+    required this.nextFocusNode,
     super.key,
   });
 
   final TextEditingController controller;
+  final FocusNode focusNode;
+  final FocusNode nextFocusNode;
+
   @override
   Widget build(BuildContext context) {
-    // final displayError = context.select(
-    //   (LoginBloc bloc) => bloc.state.username.displayError,
-    // );
     return AppTextField(
       controller: controller,
+      focusNode: focusNode,
       onSubmitted: (p0) {
         log('OnSubmitted $p0');
+        FocusScope.of(context).requestFocus(nextFocusNode);
       },
-      onChanged: (value){
+      onChanged: (value) {
         log('OnChanged $value');
       },
       isNext: true,
       colorScheme: Theme.of(context).colorScheme,
-      // key: const Key('loginForm_usernameInput_textField'),
-      // onSubmitted: (username) =>
-      //     context.read<LoginBloc>().add(LoginUsernameChanged(username)),
-      // onChanged: (username) =>
-      //     context.read<LoginBloc>().add(LoginUsernameChanged(username)),
       hintText: 'Введите ваш логин',
       titleText: 'Логин',
-      // errorText: displayError != null ? 'Неверный логин' : null,
     );
   }
 }
 
 class PasswordInput extends StatelessWidget {
-  const PasswordInput({required this.controller, super.key});
+  const PasswordInput({
+    required this.controller,
+    required this.focusNode,
+    super.key,
+  });
 
   final TextEditingController controller;
+  final FocusNode focusNode;
+
   @override
   Widget build(BuildContext context) {
-    // final displayError = context.select(
-    //   (LoginBloc bloc) => bloc.state.password.displayError,
-    // );
-
     return AppTextField(
-      // key: const Key('loginForm_passwordInput_textField'),
       hintText: 'Введите ваш пароль',
       titleText: 'Пароль',
       onSubmitted: (p0) {
         log('OnSubmitted $p0');
+        focusNode.unfocus();
       },
-      onChanged: (value){
+      onChanged: (value) {
         log('OnChanged $value');
       },
       controller: controller,
-      // onSubmitted: (password) {
-      //   context.read<LoginBloc>().add(LoginPasswordChanged(password));
-      // },
-      // errorText: displayError != null ? 'Некорректный пароль' : null,
+      focusNode: focusNode,
       colorScheme: Theme.of(context).colorScheme,
-      // isClose: true,
     );
   }
 }
@@ -129,20 +137,28 @@ class LoginButton extends StatelessWidget {
   const LoginButton({
     required this.passwordController,
     required this.loginController,
+    required this.loginFocusNode,
+    required this.passwordFocusNode,
     super.key,
   });
 
   final TextEditingController passwordController;
   final TextEditingController loginController;
+  final FocusNode loginFocusNode;
+  final FocusNode passwordFocusNode;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 60,
+      height: 52,
       child: FilledButton(
         key: const Key('loginForm_continue_raisedButton'),
         onPressed: () {
+          // Unfocus all focus nodes
+          loginFocusNode.unfocus();
+          passwordFocusNode.unfocus();
+
           // Access the text from the controllers
           final login = loginController.text.trim();
           final password = passwordController.text.trim();
@@ -163,6 +179,6 @@ class LoginButton extends StatelessWidget {
           style: const AppTextStyle.text().pageTitle(),
         ),
       ),
-    ).paddingSymmetric(horizontal: 20, vertical: 24);
+    ).paddingSymmetric(horizontal: 30);
   }
 }

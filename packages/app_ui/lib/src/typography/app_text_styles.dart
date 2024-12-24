@@ -213,7 +213,7 @@ extension AppTextStyleMaterialExtension on AppTextStyle {
 
   /// Page Title Bold Text Style
   AppTextStyle pageTitleBold() => _copyWith(
-        fontSize: 20,
+        fontSize: 22,
         fontWeight: AppFontWeight.bold,
       );
 }

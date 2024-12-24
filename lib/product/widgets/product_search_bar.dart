@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:app_ui/app_ui.dart';
-import 'package:dap_foreman_assis/profile/profile.dart';
+import 'package:dap_foreman_assis/product/profile.dart';
 import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:data_provider/data_provider.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class ProductSearchBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final allOrders =
-        context.select((ProfileCubit cubit) => cubit.state.products);
+        context.select((ProductCubit cubit) => cubit.state.products);
     final searchController = useSearchController();
 
     void resetSearch() {
@@ -59,14 +59,8 @@ class ProductSearchBar extends HookWidget {
             searchController: searchController,
             barTrailing: [
               IconButton(
-                icon: const Icon(Icons.close_rounded),
-                onPressed: resetSearch,
-              ),
-              IconButton(
-                icon: const Icon(Icons.arrow_downward_rounded),
-                onPressed: () {
-                  // Additional functionality can be added here
-                },
+                icon: const Icon(Icons.keyboard_arrow_down),
+                onPressed: searchController.openView,
               ),
             ],
             barElevation: const WidgetStatePropertyAll(0),
@@ -77,12 +71,6 @@ class ProductSearchBar extends HookWidget {
             ),
           ).paddingOnly(left: 20, right: 14),
         ),
-        // AppIconButton(
-        //   foregroundColor: colorScheme.surface,
-        //   backgroundColor: colorScheme.primary,
-        //   onIconPressed: resetSearch,
-        //   icon: Icons.add_rounded,
-        // ),
       ],
     ).paddingOnly(bottom: 24);
   }

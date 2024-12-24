@@ -16,8 +16,8 @@ class ProfileState {
   }
 }
 
-class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit() : super(ProfileState(products: []));
+class ProductCubit extends Cubit<ProfileState> {
+  ProductCubit() : super(ProfileState(products: []));
 
   void setProducts(List<OrderItem> products) {
     emit(state.copyWith(products: products));

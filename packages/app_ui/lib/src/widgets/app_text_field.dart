@@ -18,7 +18,9 @@ class AppTextField extends StatelessWidget {
     this.onSubmitted,
     this.onRemove,
     this.isNext = false,
+    this.focusNode,
   });
+
   final Key? textFieldKey;
   final bool isClose;
   final TextEditingController? controller;
@@ -32,6 +34,8 @@ class AppTextField extends StatelessWidget {
   final Function(String)? onSubmitted;
   final VoidCallback? onRemove;
   final bool isNext;
+  final FocusNode? focusNode;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,13 +75,15 @@ class AppTextField extends StatelessWidget {
                 textInputAction:
                     isNext ? TextInputAction.next : TextInputAction.done,
                 controller: controller,
+                focusNode: focusNode,
                 keyboardType:
                     isClose ? TextInputType.number : TextInputType.text,
                 textAlign: isClose ? TextAlign.end : TextAlign.start,
                 decoration: InputDecoration(
                   hintText: hintText,
                   errorText: errorText,
-                  contentPadding: const EdgeInsets.all(14),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide(

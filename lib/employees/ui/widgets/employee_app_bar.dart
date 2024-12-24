@@ -68,6 +68,6 @@ class EmployeeAppBar extends HookWidget {
               );
             }),
       ],
-    );
+    ).colorize(colorScheme.scrim);
   }
 }

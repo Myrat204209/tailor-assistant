@@ -5,7 +5,7 @@ import 'package:dap_foreman_assis/auth/auth.dart';
 import 'package:dap_foreman_assis/employees/employees.dart';
 import 'package:dap_foreman_assis/operation/operation.dart';
 import 'package:dap_foreman_assis/orders/orders.dart';
-import 'package:dap_foreman_assis/profile/cubit/profile_cubit.dart';
+import 'package:dap_foreman_assis/product/cubit/product_cubit.dart';
 import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:dap_foreman_assis/settings/bloc/settings_bloc.dart';
 import 'package:dap_foreman_assis/settings/domain/domain.dart';
@@ -52,7 +52,8 @@ class App extends StatelessWidget {
       authRepository: _authRepository,
       userRepository: _userRepository,
     )..add(AuthSubscriptionRequested());
-    final settingsBloc = SettingsBloc(settingsRepository: _settingsRepository);
+    final settingsBloc =
+        SettingsBloc(settingsRepository: _settingsRepository);
     final operationBloc =
         OperationBloc(operationRepository: _operationRepository)
           ..add(const OperationRequested());
@@ -62,7 +63,7 @@ class App extends StatelessWidget {
         EmployeesBloc(employeesRepository: _employeesRepository)
           ..add(const EmployeesRequested());
     final editCubit = EditCubit();
-    final profileCubit = ProfileCubit();
+    final profileCubit = ProductCubit();
     final themeModeBloc = ThemeModeBloc();
     final reportsNetworkBloc =
         ReportsNetworkBloc(reportsRepository: _reportsRepository);

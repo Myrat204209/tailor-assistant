@@ -22,7 +22,6 @@ class AppUtils {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          padding:  EdgeInsets.zero,
           content: Text(
             'Вы включили режим разработчика',
             textAlign: TextAlign.center,

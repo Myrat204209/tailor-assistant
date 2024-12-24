@@ -44,7 +44,7 @@ Future<void> showTextFieldDialog({
                     validator: validator,
                     decoration: InputDecoration(
                       labelText: labelText,
-                      prefixText: 'http://',
+                      prefixText: ' http://',
                       errorText: error,
                     ),
                   );

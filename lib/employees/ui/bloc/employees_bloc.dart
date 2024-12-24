@@ -12,18 +12,11 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
   EmployeesBloc({required EmployeesRepository employeesRepository})
       : _employeesRepository = employeesRepository,
         super(const EmployeesState.initial()) {
-    on<EmployeesInitRequested>(_onInitRequested);
     on<EmployeesRequested>(_onRequested);
   }
   final EmployeesRepository _employeesRepository;
 
-  void _onInitRequested(
-    EmployeesInitRequested event,
-    Emitter<EmployeesState> emit,
-  ) {
-    if (state.status != EmployeesStatus.initial) return;
-    add(const EmployeesRequested());
-  }
+
 
   FutureOr<void> _onRequested(
     EmployeesRequested event,

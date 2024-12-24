@@ -59,7 +59,7 @@ class ProductSearchBar extends HookWidget {
             searchController: searchController,
             barTrailing: [
               IconButton(
-                icon: const Icon(Icons.keyboard_arrow_down),
+                icon: const Icon(Icons.keyboard_arrow_down,color: ,),
                 onPressed: searchController.openView,
               ),
             ],

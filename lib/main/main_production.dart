@@ -40,9 +40,7 @@ void main() {
       settingsClient: settingsClient,
       settingsStorage: settingsStorage,
     );
-    Hive
-      ..registerAdapter(OperationMapAdapter())
-      ..registerAdapter(OrderMapAdapter());
+ 
 
     final userReportsBox =
         await Hive.openBox<List<OrderMap>>(HiveBoxKeys.userReportsBoxKey);

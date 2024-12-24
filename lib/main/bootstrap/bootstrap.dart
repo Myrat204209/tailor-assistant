@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:dap_foreman_assis/app/app.dart';
+import 'package:data_provider/data_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -23,7 +24,9 @@ Future<void> bootstrap(AppBuilder builder) async {
 
     /// Hive Box
     await Hive.initFlutter();
-
+    Hive
+      ..registerAdapter(OperationMapAdapter())
+      ..registerAdapter(OrderMapAdapter());
     Bloc.observer = blocObserver;
     runApp(
       await builder(),

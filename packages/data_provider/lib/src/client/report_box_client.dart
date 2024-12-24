@@ -16,21 +16,19 @@ class ReportBoxClient {
     try {
       log('BoxClient - Fetching orders for employee: ${employee.employeeName}');
 
-      final dynamic data = _reportsBox.get(employee.employeeCode);
-      log('BoxClient - Retrieved data type: ${data.runtimeType}');
+      // Because _reportsBox is typed as Box<List<OrderMap>>,
+      // this will be List<OrderMap>? (null if not found, otherwise a valid list)
+      final ordersInBox = _reportsBox.get(employee.employeeCode);
+      log('BoxClient - Retrieved data type: ${ordersInBox.runtimeType}');
 
-      if (data == null) {
+      // If the box has no data for the key, initialize with an empty list
+      if (ordersInBox == null) {
         final orders = <OrderMap>[];
         await addEmployee(employee: employee, orders: orders);
         return orders;
-      } else if (data is List) {
-        try {
-          return data.cast<OrderMap>();
-        } catch (castError) {
-          throw Exception('Error casting orders: $castError');
-        }
       } else {
-        throw Exception('Unexpected data type: ${data.runtimeType}');
+        // ordersInBox is already a List<OrderMap>, so just return it
+        return ordersInBox;
       }
     } catch (error, stackTrace) {
       log('BoxClient - Exception: $error, StackTrace: $stackTrace');
@@ -44,10 +42,13 @@ class ReportBoxClient {
     required List<OrderMap> orders,
   }) async {
     try {
+      // If the box already has data for this employee and
+      // the new list is empty, there's nothing to add
       if (_reportsBox.containsKey(employee.employeeCode) && orders.isEmpty) {
         return;
       }
-      await _reportsBox.put(employee.employeeCode, orders.cast<OrderMap>());
+      // No need to cast to <OrderMap> because 'orders' is already List<OrderMap>
+      await _reportsBox.put(employee.employeeCode, orders);
     } catch (error, stackTrace) {
       throw Exception(
           'Error adding employee - ${employee.employeeName}: $error, stackTrace: $stackTrace');
@@ -68,14 +69,19 @@ class ReportBoxClient {
       for (final empOrder in employeeOrders) {
         if (empOrder.key == order.docNumber) {
           orderExists = true;
+          // Add new operations if provided
           empOrder.operationMaps.addAll(operations ?? <OperationMap>[]);
         }
       }
 
+      // If order not found, create a new OrderMap
       if (!orderExists) {
-        employeeOrders.add(OrderMap(
+        employeeOrders.add(
+          OrderMap(
             key: order.docNumber,
-            operationMaps: operations ?? <OperationMap>[]));
+            operationMaps: operations ?? <OperationMap>[],
+          ),
+        );
       }
 
       await addEmployee(employee: employee, orders: employeeOrders);
@@ -148,18 +154,26 @@ class ReportBoxClient {
             .indexWhere((opMap) => opMap.key == operation.workCode);
 
         if (existingOperationIndex != -1) {
+          // Update the existing operation's quantity
           employeeOrders[existingOrderIndex]
                   .operationMaps[existingOperationIndex] =
               OperationMap(key: operation.workCode, value: quantity);
         } else {
+          // Add a new operation to the existing order
           employeeOrders[existingOrderIndex]
               .operationMaps
               .add(OperationMap(key: operation.workCode, value: quantity));
         }
       } else {
-        employeeOrders.add(OrderMap(key: order.docNumber, operationMaps: [
-          OperationMap(key: operation.workCode, value: quantity)
-        ]));
+        // Create a brand-new order if none exists for this docNumber
+        employeeOrders.add(
+          OrderMap(
+            key: order.docNumber,
+            operationMaps: [
+              OperationMap(key: operation.workCode, value: quantity),
+            ],
+          ),
+        );
       }
 
       await addEmployee(employee: employee, orders: employeeOrders);
@@ -221,6 +235,7 @@ class ReportBoxClient {
       for (final operation in operations) operation.workCode: operation,
     };
 
+    // Each employeeCode stored in the box
     final workers = _reportsBox.keys.cast<String>().toList();
 
     for (final employeeCode in workers) {
@@ -230,27 +245,18 @@ class ReportBoxClient {
         continue;
       }
 
-      final dynamic data = _reportsBox.get(employeeCode);
-      log('Fetched data for employeeCode $employeeCode: ${data.runtimeType}');
+      // Already typed as List<OrderMap>? 
+      var orderMaps = _reportsBox.get(employeeCode);
+      log('Fetched data for employeeCode $employeeCode: ${orderMaps.runtimeType}');
 
-      List<OrderMap> orderMaps;
-
-      if (data == null) {
+      // If no data, initialize empty
+      if (orderMaps == null) {
         orderMaps = <OrderMap>[];
-        await _reportsBox.put(employeeCode, orderMaps.cast<OrderMap>());
+        await _reportsBox.put(employeeCode, orderMaps);
         log('Initialized empty orders for employeeCode: $employeeCode');
-      } else if (data is List) {
-        try {
-          orderMaps = data.cast<OrderMap>();
-        } catch (e) {
-          log('Error casting orders for employeeCode $employeeCode: $e');
-          continue;
-        }
-      } else {
-        log('Unexpected data type for employeeCode $employeeCode: ${data.runtimeType}');
-        continue;
       }
 
+      // Build report items based on each OrderMap and its OperationMaps
       for (final orderMapItem in orderMaps) {
         final orderKey = orderMapItem.key;
         final orderItem = orderMap[orderKey];

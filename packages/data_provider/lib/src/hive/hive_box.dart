@@ -1,31 +1,33 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
-part 'hive_box_adapters.g.dart';
+typedef UserReportsBox = Box<List<dynamic>>;
 
-@HiveType(typeId: 0)
+/// Hive box keys for the [Hive].
+abstract class HiveBoxKeys {
+  /// User addresses.
+  static const String userReportsBoxKey = '__user_reports_key__';
+}
+
+// OperationMapAdapter
 class OperationMap extends HiveObject {
   OperationMap({required this.key, required this.value});
 
-  @HiveField(0)
   @override
   final String key; // Corresponds to workCode
 
-  @HiveField(1)
   int value; // Quantity, mutable to allow updates
 
   @override
   String toString() => 'OperationMap(key: $key, value: $value)';
 }
 
-@HiveType(typeId: 1)
+// OrderMapAdapter
 class OrderMap extends HiveObject {
   OrderMap({required this.key, required this.operationMaps});
 
   @override
-  @HiveField(0)
   final String key; // Corresponds to docNumber
 
-  @HiveField(1)
   List<OperationMap> operationMaps;
 
   @override

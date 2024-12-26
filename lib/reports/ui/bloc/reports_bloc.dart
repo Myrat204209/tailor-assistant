@@ -35,7 +35,6 @@ class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
     ReportOrdersRequested event,
     Emitter<ReportsState> emit,
   ) async {
-    log('_onReportOrdersRequested event stateFetching : ${state.isFetching}');
 
     emit(state.copyWith(status: ReportsStatus.loading));
 
@@ -55,7 +54,6 @@ class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
     ReportOrderAdded event,
     Emitter<ReportsState> emit,
   ) async {
-    log('_onReportOrderAdded event stateFetching : ${state.isFetching}');
 
     emit(state.copyWith(status: ReportsStatus.loading));
 
@@ -73,8 +71,6 @@ class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
     ReportOperationsRequested event,
     Emitter<ReportsState> emit,
   ) async {
-    log('_onReportOperationsRequested event stateFetching : ${state.isFetching}');
-    //if (state.isFetching) return;
 
     emit(state.copyWith(status: ReportsStatus.loading));
 
@@ -101,9 +97,7 @@ class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
     ReportOperationAdded event,
     Emitter<ReportsState> emit,
   ) async {
-    log('_onReportOperationAdded event stateFetching : ${state.isFetching}');
-    //if (state.isFetching) return;
-
+ 
     emit(state.copyWith(status: ReportsStatus.loading));
 
     try {
@@ -132,13 +126,12 @@ class ReportsBloc extends Bloc<ReportBoxEvent, ReportsState> {
     ReportsCleared event,
     Emitter<ReportsState> emit,
   ) async {
-    //if (state.isFetching) return; // Prevent redundant calls
 
     emit(state.copyWith(status: ReportsStatus.loading));
 
     try {
-      _reportsBox.clearAllReports();
-      emit(state.copyWith(status: ReportsStatus.success, isFetching: false));
+await      _reportsBox.clearAllReports();
+      emit(state.copyWith(status: ReportsStatus.success, reports: []));
     } catch (error, stackTrace) {
       addError(error, stackTrace);
       emit(state.copyWith(status: ReportsStatus.failure));

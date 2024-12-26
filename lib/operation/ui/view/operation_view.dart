@@ -30,10 +30,12 @@ class OperationView extends HookWidget {
           docNumber: orderItem.docNumber,
           title: orderItem.itemName,
           onIconClick: () {
-            context
+            context .read<ReportBoxClient>()
+                                        .getNumberOfOperations(sewer);
+             context
                 .read<ReportsBloc>()
                 .add(ReportOrdersRequested(employee: sewer));
-            Navigator.pop(context);
+            Navigator.pop(context,);
           },
         ),
         const OperationSearchBar(),

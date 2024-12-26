@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_await_in_return
+
 import 'dart:async';
 import 'dart:developer';
 
@@ -18,18 +20,14 @@ class ReportBoxClient {
 
       // Because _reportsBox is typed as Box<List<OrderMap>>,
       // this will be List<OrderMap>? (null if not found, otherwise a valid list)
-      final ordersInBox = _reportsBox.get(employee.employeeCode);
+      final boxData =
+          _reportsBox.get(employee.employeeCode, defaultValue: <OrderMap>[])!;
+      final ordersInBox = boxData.map((e) => e as OrderMap).toList();
       log('BoxClient - Retrieved data type: ${ordersInBox.runtimeType}');
 
       // If the box has no data for the key, initialize with an empty list
-      if (ordersInBox == null) {
-        final orders = <OrderMap>[];
-        await addEmployee(employee: employee, orders: orders);
-        return orders;
-      } else {
-        // ordersInBox is already a List<OrderMap>, so just return it
-        return ordersInBox;
-      }
+      // ordersInBox is already a List<OrderMap>, so just return it
+      return ordersInBox;
     } catch (error, stackTrace) {
       log('BoxClient - Exception: $error, StackTrace: $stackTrace');
       throw Exception('Error getting orders: $error\nStackTrace: $stackTrace');
@@ -48,7 +46,7 @@ class ReportBoxClient {
         return;
       }
       // No need to cast to <OrderMap> because 'orders' is already List<OrderMap>
-      await _reportsBox.put(employee.employeeCode, orders);
+      await _reportsBox.put(employee.employeeCode, orders.cast<OrderMap>());
     } catch (error, stackTrace) {
       throw Exception(
           'Error adding employee - ${employee.employeeName}: $error, stackTrace: $stackTrace');
@@ -70,7 +68,8 @@ class ReportBoxClient {
         if (empOrder.key == order.docNumber) {
           orderExists = true;
           // Add new operations if provided
-          empOrder.operationMaps.addAll(operations ?? <OperationMap>[]);
+          empOrder.operationMaps
+              .addAll(operations?.cast<OperationMap>() ?? <OperationMap>[]);
         }
       }
 
@@ -79,12 +78,13 @@ class ReportBoxClient {
         employeeOrders.add(
           OrderMap(
             key: order.docNumber,
-            operationMaps: operations ?? <OperationMap>[],
+            operationMaps: operations?.cast<OperationMap>() ?? <OperationMap>[],
           ),
         );
       }
 
-      await addEmployee(employee: employee, orders: employeeOrders);
+      await addEmployee(
+          employee: employee, orders: employeeOrders.cast<OrderMap>());
       log('Order added successfully for ${employee.employeeName}');
     } catch (error, stackTrace) {
       throw Exception(
@@ -125,7 +125,7 @@ class ReportBoxClient {
       final employeeOrders = await getOrders(employee: employee);
       for (final orderMap in employeeOrders) {
         if (orderMap.key == order.docNumber) {
-          return orderMap.operationMaps;
+          return orderMap.operationMaps.cast<OperationMap>();
         }
       }
       return <OperationMap>[];
@@ -176,7 +176,8 @@ class ReportBoxClient {
         );
       }
 
-      await addEmployee(employee: employee, orders: employeeOrders);
+      await addEmployee(
+          employee: employee, orders: employeeOrders.cast<OrderMap>());
       log('Operation added successfully for ${employee.employeeName}');
     } catch (error, stackTrace) {
       throw Exception(
@@ -245,16 +246,10 @@ class ReportBoxClient {
         continue;
       }
 
-      // Already typed as List<OrderMap>? 
-      var orderMaps = _reportsBox.get(employeeCode);
+      // Already typed as List<OrderMap>?
+      final boxDataMaps = _reportsBox.get(employeeCode)!;
+      final orderMaps = boxDataMaps.map((e) => e as OrderMap).toList();
       log('Fetched data for employeeCode $employeeCode: ${orderMaps.runtimeType}');
-
-      // If no data, initialize empty
-      if (orderMaps == null) {
-        orderMaps = <OrderMap>[];
-        await _reportsBox.put(employeeCode, orderMaps);
-        log('Initialized empty orders for employeeCode: $employeeCode');
-      }
 
       // Build report items based on each OrderMap and its OperationMaps
       for (final orderMapItem in orderMaps) {
@@ -309,5 +304,10 @@ class ReportBoxClient {
     }
   }
 
-  void clearAllReports() => _reportsBox.clear();
+  Future<void> clearAllReports() async => await _reportsBox.clear().then(
+        (value) {
+          final keys = _reportsBox.keys;
+          _reportsBox.deleteAll(keys);
+        },
+      );
 }

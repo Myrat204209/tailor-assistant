@@ -20,7 +20,12 @@ class ProfileView extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ProductAppBar(
-              onIconClick: () => Navigator.pop(context),
+              onIconClick: () {
+                context
+                                        .read<ReportBoxClient>()
+                                        .getNumberOfOperations(employee);
+                Navigator.pop(context);
+              },
               title: employee.employeeName,
             ),
             ProductSearchBar(employee: employee),

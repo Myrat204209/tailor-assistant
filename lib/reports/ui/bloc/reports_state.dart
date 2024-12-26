@@ -8,7 +8,6 @@ final class ReportsState extends Equatable {
     this.employee,
     this.operations,
     this.reports = const [],
-    this.isFetching = false,
     this.orders,
   });
 
@@ -19,7 +18,6 @@ final class ReportsState extends Equatable {
   final List<OrderMap>? orders;
   final EmployeesItem? employee;
   final List<ReportItem> reports;
-  final bool isFetching;
   @override
   List<Object?> get props => [status, operations, orders, employee];
 
@@ -47,7 +45,6 @@ final class ReportsState extends Equatable {
       operations: operations ?? this.operations,
       orders: orders ?? orders,
       employee: employee ?? this.employee,
-      isFetching: isFetching ?? this.isFetching,
       reports: reports ?? this.reports,
     );
   }

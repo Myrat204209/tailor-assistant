@@ -9,7 +9,7 @@ import 'package:dap_foreman_assis/orders/orders.dart';
 import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:dap_foreman_assis/settings/domain/domain.dart';
 import 'package:data_provider/data_provider.dart';
-import 'package:hive_flutter/hive_flutter.dart' show Hive;
+import 'package:hive_ce_flutter/hive_flutter.dart' show Hive, HiveX;
 import 'package:secure_storage/secure_storage.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -40,10 +40,12 @@ void main() {
       settingsClient: settingsClient,
       settingsStorage: settingsStorage,
     );
- 
+
+    await Hive.initFlutter();
+    Hive.registerAdapters();
 
     final userReportsBox =
-        await Hive.openBox<List<OrderMap>>(HiveBoxKeys.userReportsBoxKey);
+        await Hive.openBox<List<dynamic>>(HiveBoxKeys.userReportsBoxKey);
 
     ///Network client for the reports
     final reportsClient = ReportsClient(httpClient: httpClient);

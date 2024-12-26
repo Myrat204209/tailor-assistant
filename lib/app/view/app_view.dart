@@ -5,9 +5,10 @@ import 'package:dap_foreman_assis/home/home.dart';
 import 'package:dap_foreman_assis/login/login.dart';
 import 'package:dap_foreman_assis/splash/splash.dart';
 import 'package:dap_foreman_assis/theme_selector/theme_selector.dart';
+import 'package:data_provider/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class AppView extends StatefulWidget {
   const AppView({super.key});
@@ -19,6 +20,10 @@ class AppView extends StatefulWidget {
 class _AppViewState extends State<AppView> with WidgetsBindingObserver {
   @override
   void initState() {
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapters();
+    }
+
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }

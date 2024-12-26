@@ -25,7 +25,7 @@ final class SettingsRepository {
   })  : _defaultBaseUrl = defaultBaseUrl,
         _settingsStorage = settingsStorage,
         _settingsClient = settingsClient {
-    // getBaseUrl().then(updateBaseUrl);
+    getBaseUrl().then(updateBaseUrl);
   }
 
   final String _defaultBaseUrl;

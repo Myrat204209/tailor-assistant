@@ -1,9 +1,9 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'hive_box_adapters.dart';
+part of 'hive_adapters.dart';
 
 // **************************************************************************
-// TypeAdapterGenerator
+// AdaptersGenerator
 // **************************************************************************
 
 class OperationMapAdapter extends TypeAdapter<OperationMap> {
@@ -18,7 +18,7 @@ class OperationMapAdapter extends TypeAdapter<OperationMap> {
     };
     return OperationMap(
       key: fields[0] as String,
-      value: fields[1] as int,
+      value: (fields[1] as num).toInt(),
     );
   }
 

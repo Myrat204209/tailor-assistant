@@ -18,7 +18,6 @@ class EmployeesView extends StatelessWidget {
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(SnackBar(
-                  padding: EdgeInsets.zero,
                   content: Text(
                     'Отчеты успешно отправлены',
                     textAlign: TextAlign.center,

@@ -21,7 +21,7 @@ class OrdersBloc extends HydratedBloc<OrdersEvent, OrdersState> {
     OrdersRequested event,
     Emitter<OrdersState> emit,
   ) async {
-    if (state.status == OrdersStatus.loading) return;
+    if (state.status == OrdersStatus.loading || state.orders.isNotEmpty) return;
     
     emit(state.copyWith(status: OrdersStatus.loading));
     try {

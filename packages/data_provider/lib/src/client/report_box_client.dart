@@ -49,7 +49,7 @@ class ReportBoxClient {
       await _reportsBox.put(employee.employeeCode, orders.cast<OrderMap>());
     } catch (error, stackTrace) {
       throw Exception(
-          'Error adding employee - ${employee.employeeName}: $error, stackTrace: $stackTrace');
+          'Error adding employee - ${employee.employeeName}: $error, stack trace: $stackTrace');
     }
   }
 
@@ -298,10 +298,19 @@ class ReportBoxClient {
       }
       return operationCount;
     } catch (error, stackTrace) {
-      log('Error getting number of operations for employeeCode ${employee.employeeCode}: $error, stackTrace: $stackTrace');
+      log('Error getting number of operations for employeeCode ${employee.employeeCode}: $error, stack trace: $stackTrace');
       throw Exception(
           'Error getting number of operations: $error\nStackTrace: $stackTrace');
     }
+  }
+
+  Stream<int> watchNumberOfOperations(EmployeesItem employee) async* {
+    // Emit the initial number of operations
+    yield await getNumberOfOperations(employee);
+    // Watch for changes in the box
+    yield* _reportsBox.watch(key: employee.employeeCode).asyncMap((event) async {
+      return await getNumberOfOperations(employee);
+    });
   }
 
   Future<void> clearAllReports() async => await _reportsBox.clear().then(

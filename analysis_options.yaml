@@ -1,6 +1,7 @@
 analyzer:
   errors:
     require_trailing_commas: ignore
+    flutter_style_todos: ignore
 include: package:very_good_analysis/analysis_options.6.0.0.yaml
 linter:
   rules:

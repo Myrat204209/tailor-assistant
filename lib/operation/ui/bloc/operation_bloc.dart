@@ -21,7 +21,10 @@ class OperationBloc extends HydratedBloc<OperationEvent, OperationState> {
     OperationRequested event,
     Emitter<OperationState> emit,
   ) async {
-    if (state.status == OperationStatus.loading) return;
+    if (state.status == OperationStatus.loading ||
+        state.operations.isNotEmpty) {
+      return;
+    }
     emit(state.copyWith(status: OperationStatus.loading));
 
     try {

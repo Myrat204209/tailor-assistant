@@ -10,6 +10,7 @@ class EmployeesView extends StatelessWidget {
           previous.employees.length != current.employees.length,
       builder: (context, state) {
         final employeesList = state.employees;
+
         return BlocListener<ReportsBloc, ReportsState>(
           listenWhen: (previous, current) =>
               previous.reports != current.reports,
@@ -49,10 +50,10 @@ class EmployeesView extends StatelessWidget {
                                 itemCount: employeesList.length,
                                 itemBuilder: (context, index) {
                                   final employee = employeesList[index];
-                                  return FutureBuilder<int>(
-                                    future: context
+                                  return StreamBuilder<int>(
+                                    stream: context
                                         .read<ReportBoxClient>()
-                                        .getNumberOfOperations(employee),
+                                        .watchNumberOfOperations(employee),
                                     builder: (context, snapshot) {
                                       final quantity = snapshot.data ?? 0;
                                       return EmployeeTile(

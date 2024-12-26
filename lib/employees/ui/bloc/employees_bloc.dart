@@ -22,7 +22,10 @@ class EmployeesBloc extends HydratedBloc<EmployeesEvent, EmployeesState> {
     Emitter<EmployeesState> emit,
   ) async {
     try {
-      if (state.status == EmployeesStatus.loading) return;
+      if (state.status == EmployeesStatus.loading ||
+          state.employees.isNotEmpty) {
+        return;
+      }
       emit(state.copyWith(status: EmployeesStatus.loading));
       final employees = await _employeesRepository.getEmployees();
       emit(

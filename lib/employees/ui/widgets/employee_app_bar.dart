@@ -39,8 +39,8 @@ class EmployeeAppBar extends HookWidget {
               'Обновить',
               () {
                 context
-                  ..read<EmployeesBloc>().add(const EmployeesRequested())
-                  ..read<EmployeesBloc>().add(const EmployeesRequested())
+                  ..read<EmployeesBloc>().add(const EmployeesRefreshRequested())
+                  ..read<OrdersBloc>().add(const OrdersRequested())
                   ..read<OperationBloc>()
                       .add(const OperationRefreshRequested());
               },

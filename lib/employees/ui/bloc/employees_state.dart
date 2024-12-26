@@ -24,4 +24,21 @@ class EmployeesState extends Equatable {
       employees: employees ?? this.employees,
     );
   }
+
+  factory EmployeesState.fromJson(Map<String, dynamic> json) {
+    return EmployeesState(
+      status: EmployeesStatus.values[json['status'] as int],
+      employees: (json['employees'] as List<dynamic>)
+          .map((employeeJson) =>
+              EmployeesItem.fromJson(employeeJson as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'status': status.index,
+      'employees': employees.map((employee) => employee.toJson()).toList(),
+    };
+  }
 }

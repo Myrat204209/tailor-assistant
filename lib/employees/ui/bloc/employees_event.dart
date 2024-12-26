@@ -7,7 +7,10 @@ sealed class EmployeesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-
 final class EmployeesRequested extends EmployeesEvent {
   const EmployeesRequested();
+}
+
+final class EmployeesRefreshRequested extends EmployeesEvent {
+  const EmployeesRefreshRequested();
 }

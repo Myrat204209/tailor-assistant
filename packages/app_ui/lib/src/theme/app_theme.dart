@@ -25,7 +25,6 @@ abstract class AppBaseTheme {
         border: kAppOutlinedBorder,
         focusedBorder: kAppOutlinedBorder,
         enabledBorder: kAppOutlinedBorder,
-        // TODO: Try to understand what they want from you
         filled: true,
         contentPadding: EdgeInsets.zero,
         labelStyle: TextStyle(color: colorScheme.onSurface),
@@ -144,7 +143,6 @@ class AppDarkTheme extends AppBaseTheme {
       onTertiary: AppColors.thirdLightAccentDark,
       outline: AppColors.textLightDark,
       shadow: AppColors.textLightTitleDark,
-
     );
   }
 }

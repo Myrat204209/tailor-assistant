@@ -57,8 +57,8 @@ class ProductSearchBar extends HookWidget {
                   .toList();
             },
             searchController: searchController,
-            barTrailing: [
-              //TODO: Change the color to the grey
+            barTrailing: <IconButton>[
+              // TODO: Change the color to grey
               IconButton(
                 icon: const Icon(Icons.keyboard_arrow_down),
                 onPressed: searchController.openView,

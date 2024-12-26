@@ -49,7 +49,6 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
                 themeMode: themeMode,
                 theme: const AppTheme().themeData,
                 darkTheme: const AppDarkTheme().themeData,
-                //TODO: Change the Login Page to Loading Screen
                 home: authState.status == AuthStatus.unknown
                     ? const SplashPage()
                     : authState.status == AuthStatus.authenticated

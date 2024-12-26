@@ -42,7 +42,8 @@ class ReadFromStorageFailure extends StorageFailure {
 
 /// {@template storage_repository}
 /// A repository that manages file operations (read/write) to external storage.
-/// It requests permission to access the external storage before performing the operations.
+/// It requests permission to access the external 
+/// storage before performing the operations.
 /// {@endtemplate}
 class StorageRepository {
   StorageRepository({

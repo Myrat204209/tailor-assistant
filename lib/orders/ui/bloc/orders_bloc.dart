@@ -13,6 +13,7 @@ class OrdersBloc extends HydratedBloc<OrdersEvent, OrdersState> {
       : _ordersRepository = ordersRepository,
         super(const OrdersState.initial()) {
     on<OrdersRequested>(_onRequested);
+    on<OrdersRefreshRequested>(_onRefresh);
   }
   final OrdersRepository _ordersRepository;
 
@@ -20,9 +21,8 @@ class OrdersBloc extends HydratedBloc<OrdersEvent, OrdersState> {
     OrdersRequested event,
     Emitter<OrdersState> emit,
   ) async {
-    if (state.status == OrdersStatus.loading) {
-      return;
-    }
+    if (state.status == OrdersStatus.loading) return;
+    
     emit(state.copyWith(status: OrdersStatus.loading));
     try {
       final orders = await _ordersRepository.getOrders();
@@ -36,6 +36,12 @@ class OrdersBloc extends HydratedBloc<OrdersEvent, OrdersState> {
       emit(state.copyWith(status: OrdersStatus.failure));
       addError(error);
     }
+  }
+  void _onRefresh(
+    OrdersRefreshRequested event,
+    Emitter<OrdersState> emit,
+  ) {
+    add(const OrdersRequested());
   }
 
   @override

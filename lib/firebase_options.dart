@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'dap-foreman-assis.firebasestorage.app',
     iosBundleId: 'com.arassanusga.dap-foreman-assis',
   );
+
 }

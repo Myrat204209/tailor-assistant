@@ -10,3 +10,7 @@ sealed class OrdersEvent extends Equatable {
 final class OrdersRequested extends OrdersEvent {
   const OrdersRequested();
 }
+
+final class OrdersRefreshRequested extends OrdersEvent {
+  const OrdersRefreshRequested();
+}

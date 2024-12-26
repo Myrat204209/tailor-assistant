@@ -21,7 +21,8 @@ class ReportsAppBar extends HookWidget {
               context,
               'После обновления будут стёрты заполненные данные?',
               'Обновить',
-              () => context.read<EmployeesBloc>().add(const EmployeesRequested()),
+              () =>
+                  context.read<EmployeesBloc>().add(const EmployeesRequested()),
             );
           },
         ),
@@ -33,9 +34,7 @@ class ReportsAppBar extends HookWidget {
                 context,
                 'Отправить отчёт?',
                 'Отправить',
-                () {
-                  //TODO: Provide with functionality
-                },
+                () {},
               );
             })
       ],

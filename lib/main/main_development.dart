@@ -36,6 +36,7 @@
 //     final authRepository = AuthRepository();
 //     final userRepository = UserRepository();
 //     final reportsClient = ReportsClient(httpClient: httpClient);
+// ignore: lines_longer_than_80_chars
 //     final reportsRepository = ReportsRepository(reportsClient: reportsClient);
 //     return App(
 //       storageRepository: storageRepository,

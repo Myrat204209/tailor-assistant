@@ -17,6 +17,8 @@ class LoginForm extends HookWidget {
     final loginController = useTextEditingController();
     final loginFocusNode = useFocusNode();
     final passwordFocusNode = useFocusNode();
+    final isChecked = useState(false); 
+
 
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
@@ -49,10 +51,12 @@ class LoginForm extends HookWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Checkbox.adaptive(
-                  value: true,
+                  value: isChecked.value,
                   activeColor: AppColors.majorAccent,
                   checkColor: AppColors.majorLightAccent,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    isChecked.value = value!;
+                  },
                 ),
                 const Text('запомнить меня'),
               ],

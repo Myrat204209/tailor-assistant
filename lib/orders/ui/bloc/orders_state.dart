@@ -1,6 +1,6 @@
 part of 'orders_bloc.dart';
 
-enum OrdersStatus { initial, loading, success, failure }
+enum OrdersStatus { initial, loading, success, failure, refreshing }
 
 class OrdersState extends Equatable {
   const OrdersState({

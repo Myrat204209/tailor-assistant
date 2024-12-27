@@ -13,53 +13,57 @@ class OperationSearchBar extends HookWidget {
   Widget build(BuildContext context) {
     final allOperations =
         context.select((OperationBloc bloc) => bloc.state.operations);
+    final isLoading = context.select(
+        (OperationBloc bloc) => bloc.state.status == OperationStatus.loading);
     final searchController = useSearchController();
     void resetSearch() {
       searchController.clear();
     }
 
     // final colorScheme = Theme.of(useContext()).colorScheme;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: SearchAnchor.bar(
-            isFullScreen: false,
-            suggestionsBuilder: (context, controller) {
-              final query = controller.text.toLowerCase();
-              return allOperations
-                  .where(
-                    (operation) =>
-                        operation.workName.toLowerCase().contains(query),
-                  )
-                  .map(
-                    (operation) => ListTile(
-                      title: Text(operation.workName),
-                      onTap: () {
-                        context.read<EditCubit>().addOperation(operation);
-                        controller.closeView(operation.workName);
-                        resetSearch();
-                      },
+    return isLoading
+        ? const CircularProgressIndicator.adaptive().centralize()
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: SearchAnchor.bar(
+                  isFullScreen: false,
+                  suggestionsBuilder: (context, controller) {
+                    final query = controller.text.toLowerCase();
+                    return allOperations
+                        .where(
+                          (operation) =>
+                              operation.workName.toLowerCase().contains(query),
+                        )
+                        .map(
+                          (operation) => ListTile(
+                            title: Text(operation.workName),
+                            onTap: () {
+                              context.read<EditCubit>().addOperation(operation);
+                              controller.closeView(operation.workName);
+                              resetSearch();
+                            },
+                          ),
+                        )
+                        .toList();
+                  },
+                  searchController: searchController,
+                  barTrailing: [
+                    IconButton(
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      onPressed: searchController.openView,
                     ),
-                  )
-                  .toList();
-            },
-            searchController: searchController,
-            barTrailing: [
-              IconButton(
-                icon: const Icon(Icons.keyboard_arrow_down),
-                onPressed: searchController.openView,
+                  ],
+                  barElevation: const WidgetStatePropertyAll(0),
+                  barShape: const WidgetStatePropertyAll(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ).paddingOnly(left: 20, right: 14),
               ),
             ],
-            barElevation: const WidgetStatePropertyAll(0),
-            barShape: const WidgetStatePropertyAll(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-              ),
-            ),
-          ).paddingOnly(left: 20, right: 14),
-        ),
-      ],
-    ).paddingOnly(bottom: 24);
+          ).paddingOnly(bottom: 24);
   }
 }

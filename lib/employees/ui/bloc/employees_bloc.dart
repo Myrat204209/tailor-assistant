@@ -23,7 +23,8 @@ class EmployeesBloc extends HydratedBloc<EmployeesEvent, EmployeesState> {
   ) async {
     try {
       if (state.status == EmployeesStatus.loading ||
-          state.employees.isNotEmpty) {
+          (state.status != EmployeesStatus.refreshing &&
+              state.employees.isNotEmpty)) {
         return;
       }
       emit(state.copyWith(status: EmployeesStatus.loading));
@@ -44,6 +45,7 @@ class EmployeesBloc extends HydratedBloc<EmployeesEvent, EmployeesState> {
     EmployeesRefreshRequested event,
     Emitter<EmployeesState> emit,
   ) {
+    emit(state.copyWith(status: EmployeesStatus.refreshing));
     add(const EmployeesRequested());
   }
 

@@ -1,6 +1,6 @@
 part of 'operation_bloc.dart';
 
-enum OperationStatus { initial, loading, success, failure }
+enum OperationStatus { initial, loading, success, failure, refreshing }
 
 final class OperationState extends Equatable {
   const OperationState({

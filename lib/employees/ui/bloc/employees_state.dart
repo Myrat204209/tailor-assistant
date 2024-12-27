@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'employees_bloc.dart';
 
-enum EmployeesStatus { initial, loading, success, failure }
+enum EmployeesStatus { initial, loading, success, failure, refreshing }
 
 class EmployeesState extends Equatable {
   const EmployeesState({

@@ -6,8 +6,6 @@ class EmployeesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EmployeesBloc, EmployeesState>(
-      buildWhen: (previous, current) =>
-          previous.employees.length != current.employees.length,
       builder: (context, state) {
         final employeesList = state.employees;
 

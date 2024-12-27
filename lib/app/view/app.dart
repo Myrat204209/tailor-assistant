@@ -63,7 +63,7 @@ class App extends StatelessWidget {
         EmployeesBloc(employeesRepository: _employeesRepository)
           ..add(const EmployeesRequested());
     final editCubit = EditCubit();
-    final profileCubit = ProductCubit();
+    final productCubit = ProductCubit();
     final themeModeBloc = ThemeModeBloc();
     final reportsNetworkBloc =
         ReportsNetworkBloc(reportsRepository: _reportsRepository);
@@ -93,7 +93,7 @@ class App extends StatelessWidget {
           BlocProvider.value(value: settingsBloc),
           BlocProvider.value(value: reportsNetworkBloc),
           BlocProvider.value(value: editCubit),
-          BlocProvider.value(value: profileCubit),
+          BlocProvider.value(value: productCubit),
         ],
         child: const AppView(),
       ),

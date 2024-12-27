@@ -22,7 +22,8 @@ class OperationBloc extends HydratedBloc<OperationEvent, OperationState> {
     Emitter<OperationState> emit,
   ) async {
     if (state.status == OperationStatus.loading ||
-        state.operations.isNotEmpty) {
+        (state.status != OperationStatus.refreshing &&
+            state.operations.isNotEmpty)) {
       return;
     }
     emit(state.copyWith(status: OperationStatus.loading));
@@ -45,6 +46,7 @@ class OperationBloc extends HydratedBloc<OperationEvent, OperationState> {
     OperationRefreshRequested event,
     Emitter<OperationState> emit,
   ) {
+    emit(state.copyWith(status: OperationStatus.refreshing));
     add(const OperationRequested());
   }
 

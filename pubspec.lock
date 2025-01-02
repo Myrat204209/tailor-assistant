@@ -1048,26 +1048,26 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: "853069545b718aa13d466bfc3e7b4cfa2cadcbb3c06f531d0053177dc6f1a092"
+      sha256: aa526af3b07691a25ea2700991a6a333ef35abfb6e6679002a26d13d1baa138a
       url: "https://pub.dev"
     source: hosted
-    version: "28.1.36"
+    version: "28.1.37"
   syncfusion_flutter_xlsio:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_xlsio
-      sha256: "5e4833c1708cb6b3966a6f3d717d4ea2d9b1cb640b0a0bb007a4a7a739a2597d"
+      sha256: c829c7245cc65670bc7cd5c2fcf6443419a4eb483ca7d6d13712a331698081be
       url: "https://pub.dev"
     source: hosted
-    version: "28.1.36"
+    version: "28.1.37"
   syncfusion_officecore:
     dependency: transitive
     description:
       name: syncfusion_officecore
-      sha256: "4c765d6bf99bc56bd12378eab52d9570bdb7d027f0003022773737e8c4b634f6"
+      sha256: "230642db4565337457d3ee934b9ec1aff2133060d3f7f9a5b7f89e9e0e770385"
       url: "https://pub.dev"
     source: hosted
-    version: "28.1.36"
+    version: "28.1.37"
   synchronized:
     dependency: transitive
     description:

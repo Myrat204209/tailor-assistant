@@ -3,9 +3,9 @@ description: Dart package which manages the authentication domain.
 version: 1.0.0
 
 environment:
-  sdk: ^3.5.3
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  shared_preferences: ^2.3.3
+  shared_preferences: ^2.3.5
 
 dev_dependencies:

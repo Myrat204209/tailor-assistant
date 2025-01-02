@@ -287,10 +287,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: c2376a6aae82358a9f9ccdd7d1f4006d08faa39a2767cce01031d9f593a8bd3b
+      sha256: c904b4ab56d53385563c7c39d8e9fa9af086f91495dfc48717ad84a42c3cf204
       url: "https://pub.dev"
     source: hosted
-    version: "8.1.6"
+    version: "8.1.7"
   firebase_analytics:
     dependency: "direct main"
     description:
@@ -494,18 +494,18 @@ packages:
     dependency: "direct main"
     description:
       name: hive_ce
-      sha256: "2d66fa89a3e33e6d95edcf6c75409cf8f6442ab46229c9baf423af479f532e99"
+      sha256: f09558be773f3e6bfa242d2b52e31c3cf8ea4edeb2b26d3cf0121c33aff94ffb
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.0+2"
+    version: "2.8.0+3"
   hive_ce_flutter:
     dependency: "direct main"
     description:
       name: hive_ce_flutter
-      sha256: e74e11d3ed622630ff1ee758037dab21a59d2182fa7b61378726c673742d2ab9
+      sha256: "74c1d5f10d803446b4e7913bb272137e2724ba8a56465444f9e7713aeb60a877"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.2.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -916,10 +916,10 @@ packages:
     dependency: "direct main"
     description:
       name: shared_preferences
-      sha256: "3c7e73920c694a436afaf65ab60ce3453d91f84208d761fbd83fc21182134d93"
+      sha256: a752ce92ea7540fc35a0d19722816e04d0e72828a4200e83a98cf1a1eb524c9a
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.4"
+    version: "2.3.5"
   shared_preferences_android:
     dependency: transitive
     description:
@@ -1048,26 +1048,26 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: "853069545b718aa13d466bfc3e7b4cfa2cadcbb3c06f531d0053177dc6f1a092"
+      sha256: aa526af3b07691a25ea2700991a6a333ef35abfb6e6679002a26d13d1baa138a
       url: "https://pub.dev"
     source: hosted
-    version: "28.1.36"
+    version: "28.1.37"
   syncfusion_flutter_xlsio:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_xlsio
-      sha256: "5e4833c1708cb6b3966a6f3d717d4ea2d9b1cb640b0a0bb007a4a7a739a2597d"
+      sha256: c829c7245cc65670bc7cd5c2fcf6443419a4eb483ca7d6d13712a331698081be
       url: "https://pub.dev"
     source: hosted
-    version: "28.1.36"
+    version: "28.1.37"
   syncfusion_officecore:
     dependency: transitive
     description:
       name: syncfusion_officecore
-      sha256: "4c765d6bf99bc56bd12378eab52d9570bdb7d027f0003022773737e8c4b634f6"
+      sha256: "230642db4565337457d3ee934b9ec1aff2133060d3f7f9a5b7f89e9e0e770385"
       url: "https://pub.dev"
     source: hosted
-    version: "28.1.36"
+    version: "28.1.37"
   synchronized:
     dependency: transitive
     description:
@@ -1183,10 +1183,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "8b338d4486ab3fbc0ba0db9f9b4f5239b6697fcee427939a40e720cbb9ee0a69"
+      sha256: "154360849a56b7b67331c21f09a386562d88903f90a1099c5987afc1912e1f29"
       url: "https://pub.dev"
     source: hosted
-    version: "5.9.0"
+    version: "5.10.0"
   xdg_directories:
     dependency: transitive
     description:
@@ -1213,4 +1213,4 @@ packages:
     version: "3.1.3"
 sdks:
   dart: ">=3.6.0 <4.0.0"
-  flutter: ">=3.24.5"
+  flutter: ">=3.27.0"

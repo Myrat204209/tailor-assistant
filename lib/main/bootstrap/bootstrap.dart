@@ -14,10 +14,12 @@ Future<void> bootstrap(AppBuilder builder) async {
   await runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-);
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
     const blocObserver = AppBlocObserver();
+    Bloc.observer = blocObserver;
+
     HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory: await getApplicationSupportDirectory(),
     );
@@ -25,18 +27,19 @@ Future<void> bootstrap(AppBuilder builder) async {
       await HydratedBloc.storage.clear();
     }
 
-    /// Hive Box
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-    Bloc.observer = blocObserver;
     runApp(
       await builder(),
     );
   }, (exception, stackTrace) async {
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-     PlatformDispatcher.instance.onError = (error, stack) {
+    await FirebaseCrashlytics.instance.recordError(exception, stackTrace);
+    PlatformDispatcher.instance.onError = (error, stack) {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
       return true;
     };
+
     // FlutterError.onError = (details) {
     //   log(details.exceptionAsString(), stackTrace: details.stack);
     // };

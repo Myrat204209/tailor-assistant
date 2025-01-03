@@ -20,7 +20,7 @@ class HomePage extends HookWidget {
     final unSelectedColor = colorScheme.primary;
     final selectedIndex = useState(0);
     final pageController = usePageController();
-    
+
     void onButtonTap(int index) {
       pageController.animateToPage(
         index,
@@ -96,6 +96,7 @@ class HomePage extends HookWidget {
 
   Future<void> _onWillPop(BuildContext context) async {
     await showDialog<bool>(
+    barrierDismissible: false,
       context: context,
       builder: (BuildContext context) => AppDialog(
         buttonText: 'Выход',

@@ -8,7 +8,8 @@ Future<void> showAppDialog(
   String buttonText,
   VoidCallback onTap,
 ) async {
-  await showDialog<AppDialog>(
+  await showDialog<bool>(
+    barrierDismissible: false,
     context: dialogContext,
     builder: (_) => AppDialog(
       title: message,
@@ -32,6 +33,7 @@ class AppDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return SimpleDialog(
+    
       alignment: Alignment.center,
       contentPadding: EdgeInsets.zero,
       titlePadding: const EdgeInsets.all(14),
@@ -53,7 +55,7 @@ class AppDialog extends StatelessWidget {
             children: [
               Expanded(
                 child: InkWell(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () => Navigator.pop(context,false),
                   child: SizedBox(
                     height: 60,
                     child: Text(

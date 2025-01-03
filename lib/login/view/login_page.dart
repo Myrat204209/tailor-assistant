@@ -2,6 +2,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:dap_foreman_assis/login/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatelessWidget {
@@ -14,7 +15,6 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-    
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -39,13 +39,12 @@ class LoginPage extends StatelessWidget {
 
 Future<void> _onWillPop(BuildContext context) async {
   await showDialog<bool>(
+    barrierDismissible: false,
     context: context,
-    builder: (BuildContext context) => AppDialog(
+    builder: (BuildContext context) => const AppDialog(
       buttonText: 'Да',
       title: 'Вы хотите выйти из приложения?',
-      onTap: () {
-        Navigator.of(context).pop();
-      },
+      onTap: SystemNavigator.pop,
     ),
   );
 }

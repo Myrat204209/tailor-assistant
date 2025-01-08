@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_button_bar/animated_button_bar.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:dap_foreman_assis/employees/employees.dart';
@@ -33,6 +35,7 @@ class HomePage extends HookWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
+        log('--------HomePage - PopScope: didPop: $didPop, result: $result');
         if (didPop) {
           return;
         } else {
@@ -96,20 +99,14 @@ class HomePage extends HookWidget {
 
   Future<void> _onWillPop(BuildContext context) async {
     await showDialog<bool>(
-    barrierDismissible: false,
+      barrierDismissible: false,
       context: context,
-      builder: (BuildContext context) => AppDialog(
+      builder: (BuildContext context) => const AppDialog(
         buttonText: 'Выход',
         title: 'Вы хотите выйти из приложения?',
-        onTap: () {
-          Navigator.of(context).pop(true);
-        },
+        onTap: SystemNavigator.pop,
       ),
-    ).then((value) {
-      if (value ?? true) {
-        SystemNavigator.pop();
-      }
-    });
+    );
   }
 
   // Button builder

@@ -121,6 +121,7 @@ class PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppTextField(
+    
       hintText: 'Введите ваш пароль',
       titleText: 'Пароль',
       onSubmitted: (p0) {

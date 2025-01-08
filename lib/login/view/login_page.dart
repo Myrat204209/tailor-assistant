@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app_ui/app_ui.dart';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:dap_foreman_assis/login/login.dart';
@@ -20,6 +22,7 @@ class LoginPage extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
+        log('--------LoginPage - PopScope: didPop: $didPop, result: $result');
         if (didPop) {
           return;
         } else {

@@ -150,6 +150,10 @@ await      _reportsBox.clearAllReports();
         operations: event.operationsFull,
       );
       log('Reports: $reports');
+      if (reports.isEmpty) {
+        emit(state.copyWith(status: ReportsStatus.success, reports: reports));
+        return;
+      }
       await _reportsRepository.sendReports(reports);
       emit(state.copyWith(status: ReportsStatus.success, reports: reports));
       await exportReportItemsToExcel(reports);

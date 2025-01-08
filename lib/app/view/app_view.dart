@@ -20,6 +20,7 @@ class AppView extends StatefulWidget {
 class _AppViewState extends State<AppView> with WidgetsBindingObserver {
   @override
   void initState() {
+    
     if (!Hive.isAdapterRegistered(0)) {
       Hive.registerAdapters();
     }

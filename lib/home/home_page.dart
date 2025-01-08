@@ -59,10 +59,11 @@ class HomePage extends HookWidget {
               alignment: Alignment.bottomCenter,
               child: SizedBox(
                 // width: 260,
-                width: 155,
+                width: 160,
                 height: 80,
                 child: AnimatedButtonBar(
-                  radius: 50,
+                  radius: 52,
+                  padding: const EdgeInsets.only(right: 5),
                   backgroundColor: selectedColor,
                   foregroundColor: unSelectedColor,
                   children: [
@@ -119,10 +120,15 @@ class HomePage extends HookWidget {
   }) {
     return ButtonBarEntry(
       onTap: onTap,
-      child: Icon(
-        icon,
-        size: 35,
-        color: isSelected ? selectedColor : unSelectedColor,
+      child: Padding(
+        padding: icon == Icons.dry_cleaning_rounded
+            ? const EdgeInsets.only(right: 6)
+            : const EdgeInsets.only(left:  6),
+        child: Icon(
+          icon,
+          size: 36,
+          color: isSelected ? selectedColor : unSelectedColor,
+        ),
       ),
     );
   }

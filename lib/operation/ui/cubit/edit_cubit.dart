@@ -16,6 +16,9 @@ class EditCubit extends Cubit<EditState> {
 
   void addOperation(OperationItem operation) {
     log('Add operation is working...');
+    if (state.operations.contains(operation)) {
+      return;
+    }
     emit(state.copyWith(operations: [...state.operations, operation]));
   }
 

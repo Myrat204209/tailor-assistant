@@ -11,7 +11,7 @@ class AuthRepository {
     _loadInitialStatus();
   }
 
-  Stream<AuthStatus> get status => _controller.stream;
+  Stream<AuthStatus> get status => _controller.stream.asBroadcastStream();
 
   Future<void> _loadInitialStatus() async {
     final prefs = await SharedPreferences.getInstance();

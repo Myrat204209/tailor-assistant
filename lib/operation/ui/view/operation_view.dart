@@ -35,10 +35,11 @@ class OperationView extends HookWidget {
         ),
         const OperationSearchBar(),
         Expanded(
-            child: OperationContent(
-          sewer: sewer,
-          orderItem: orderItem,
-        )),
+          child: OperationContent(
+            sewer: sewer,
+            orderItem: orderItem,
+          ),
+        ),
       ],
     );
   }

@@ -40,16 +40,18 @@ class ReportBoxClient {
     required List<OrderMap> orders,
   }) async {
     try {
-      // If the box already has data for this employee and
-      // the new list is empty, there's nothing to add
-      if (_reportsBox.containsKey(employee.employeeCode) && orders.isEmpty) {
-        return;
+      if (orders.isEmpty) {
+        if (_reportsBox.containsKey(employee.employeeCode)) {
+          await _reportsBox.delete(employee.employeeCode);
+          log('Employee ${employee.employeeName} removed from reportsBox as there are no remaining orders.');
+        }
+      } else {
+        await _reportsBox.put(employee.employeeCode, orders.cast<OrderMap>());
+        log('Employee ${employee.employeeName} orders updated successfully.');
       }
-      // No need to cast to <OrderMap> because 'orders' is already List<OrderMap>
-      await _reportsBox.put(employee.employeeCode, orders.cast<OrderMap>());
     } catch (error, stackTrace) {
       throw Exception(
-          'Error adding employee - ${employee.employeeName}: $error, stack trace: $stackTrace');
+          'Error adding/updating employee - ${employee.employeeName}: $error, stack trace: $stackTrace');
     }
   }
 
@@ -105,10 +107,13 @@ class ReportBoxClient {
 
       if (existingOrderIndex != -1) {
         employeeOrders.removeAt(existingOrderIndex);
+        log('Order ${order.docNumber} removed from ${employee.employeeName}.');
+      } else {
+        log('Order ${order.docNumber} not found for ${employee.employeeName}. No action taken.');
       }
 
       await addEmployee(employee: employee, orders: employeeOrders);
-      log('Order removed successfully for ${employee.employeeName}');
+      log('removeOrder completed for ${employee.employeeName}.');
     } catch (error, stackTrace) {
       throw Exception(
           'Error removing order - ${employee.employeeName}: $error, stacktrace: $stackTrace');
@@ -191,7 +196,7 @@ class ReportBoxClient {
     required OperationItem operation,
   }) async {
     try {
-      log('BoxClient - removeOperation Employee - $employee; order: $order - $operation');
+      log('BoxClient - removeOperation Employee - ${employee.employeeName}; order: ${order.docNumber} - operation: ${operation.workCode}');
 
       final employeeOrders = await getOrders(employee: employee);
       final existingOrderIndex = employeeOrders
@@ -206,11 +211,22 @@ class ReportBoxClient {
           employeeOrders[existingOrderIndex]
               .operationMaps
               .removeAt(existingOperationIndex);
+          log('Operation ${operation.workCode} removed from order ${order.docNumber}.');
+        } else {
+          log('Operation ${operation.workCode} not found in order ${order.docNumber}. No action taken.');
         }
+
+        // Remove the order if it has no remaining operations
+        if (employeeOrders[existingOrderIndex].operationMaps.isEmpty) {
+          employeeOrders.removeAt(existingOrderIndex);
+          log('Order ${order.docNumber} removed from ${employee.employeeName} as it has no remaining operations.');
+        }
+      } else {
+        log('Order ${order.docNumber} not found for ${employee.employeeName}. No action taken.');
       }
 
       await addEmployee(employee: employee, orders: employeeOrders);
-      log('Operation removed successfully for ${employee.employeeName}');
+      log('removeOperation completed for ${employee.employeeName}.');
     } catch (error, stackTrace) {
       throw Exception(
           'Error removing operation - ${employee.employeeName}: $error, stacktrace: $stackTrace');
@@ -313,10 +329,12 @@ class ReportBoxClient {
     });
   }
 
-  Future<void> clearAllReports() async => await _reportsBox.clear().then(
-        (value) {
-          final keys = _reportsBox.keys;
-          _reportsBox.deleteAll(keys);
-        },
-      );
+  Future<void> clearAllReports() async {
+    try {
+      await _reportsBox.clear();
+      log('All reports cleared successfully.');
+    } catch (error, stackTrace) {
+      throw Exception('Error clearing all reports: $error\nStackTrace: $stackTrace');
+    }
+  }
 }

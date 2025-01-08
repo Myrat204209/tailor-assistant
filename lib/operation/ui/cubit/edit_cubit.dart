@@ -19,7 +19,7 @@ class EditCubit extends Cubit<EditState> {
     if (state.operations.contains(operation)) {
       return;
     }
-    emit(state.copyWith(operations: [...state.operations, operation]));
+    emit(state.copyWith(operations: [ operation,...state.operations]));
   }
 
   void removeOperation(OperationItem operation) {

@@ -69,7 +69,7 @@ class AppTextField extends StatelessWidget {
               ),
               const SizedBox(height: 14),
               TextField(
-                obscureText: !isNext,
+                obscureText: isClose == false && !isNext,
                 onSubmitted: onSubmitted,
                 key: textFieldKey,
                 onChanged: onChanged,

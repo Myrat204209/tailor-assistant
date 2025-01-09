@@ -39,6 +39,7 @@ class OperationContent extends StatelessWidget {
 
               return AppTextField(
                 colorScheme: colorScheme,
+                
                 titleText: operation.workName,
                 onSubmitted: (quantity) {
                   context.read<ReportsBloc>().add(ReportOperationAdded(

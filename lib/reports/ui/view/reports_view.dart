@@ -1,6 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:dap_foreman_assis/employees/employees.dart';
-import 'package:dap_foreman_assis/product/profile.dart';
+import 'package:dap_foreman_assis/product/product.dart';
 import 'package:dap_foreman_assis/reports/reports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

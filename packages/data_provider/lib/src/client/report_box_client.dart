@@ -252,7 +252,6 @@ class ReportBoxClient {
       for (final operation in operations) operation.workCode: operation,
     };
 
-    // Each employeeCode stored in the box
     final workers = _reportsBox.keys.cast<String>().toList();
 
     for (final employeeCode in workers) {
@@ -262,12 +261,10 @@ class ReportBoxClient {
         continue;
       }
 
-      // Already typed as List<OrderMap>?
       final boxDataMaps = _reportsBox.get(employeeCode)!;
       final orderMaps = boxDataMaps.map((e) => e as OrderMap).toList();
       log('Fetched data for employeeCode $employeeCode: ${orderMaps.runtimeType}');
 
-      // Build report items based on each OrderMap and its OperationMaps
       for (final orderMapItem in orderMaps) {
         final orderKey = orderMapItem.key;
         final orderItem = orderMap[orderKey];
@@ -314,7 +311,7 @@ class ReportBoxClient {
       }
       return operationCount;
     } catch (error, stackTrace) {
-      log('Error getting number of operations for employeeCode ${employee.employeeCode}: $error, stack trace: $stackTrace');
+      // log('Error getting number of operations for employeeCode ${employee.employeeCode}: $error, stack trace: $stackTrace');
       throw Exception(
           'Error getting number of operations: $error\nStackTrace: $stackTrace');
     }
@@ -324,7 +321,9 @@ class ReportBoxClient {
     // Emit the initial number of operations
     yield await getNumberOfOperations(employee);
     // Watch for changes in the box
-    yield* _reportsBox.watch(key: employee.employeeCode).asyncMap((event) async {
+    yield* _reportsBox
+        .watch(key: employee.employeeCode)
+        .asyncMap((event) async {
       return await getNumberOfOperations(employee);
     });
   }
@@ -334,7 +333,8 @@ class ReportBoxClient {
       await _reportsBox.clear();
       log('All reports cleared successfully.');
     } catch (error, stackTrace) {
-      throw Exception('Error clearing all reports: $error\nStackTrace: $stackTrace');
+      throw Exception(
+          'Error clearing all reports: $error\nStackTrace: $stackTrace');
     }
   }
 }

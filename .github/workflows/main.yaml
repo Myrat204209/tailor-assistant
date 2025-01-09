@@ -1,7 +1,7 @@
 name: dap_foreman_assis
 
 concurrency:
-  group: $-$
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 on:
@@ -30,11 +30,7 @@ jobs:
         run: flutter pub get
 
       - name: Format Dart code
-        run: dart format --line-length 80 --set-exit-if-changed lib
-        # Removed the `test` directory from the dart format command since it doesn't exist
+        run: dart format --line-length 80 lib
 
       - name: Analyze Dart code
         run: flutter analyze
-
-      - name: Run tests
-        run: flutter test

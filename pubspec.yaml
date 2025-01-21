@@ -40,7 +40,7 @@ dependencies:
   shared_preferences: ^2.3.5
   storage:
     path: ./packages/storage/storage
-  syncfusion_flutter_xlsio: ^28.1.38
+  syncfusion_flutter_xlsio: ^28.1.41
   user_repository:
     path: packages/user_repository
 

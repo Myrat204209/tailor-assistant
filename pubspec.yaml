@@ -37,7 +37,7 @@ dependencies:
     path: ./packages/storage/persistent_storage
   secure_storage:
     path: ./packages/storage/secure_storage
-  shared_preferences: ^2.3.5
+  shared_preferences: ^2.5.1
   storage:
     path: ./packages/storage/storage
   syncfusion_flutter_xlsio: ^28.1.38

@@ -502,10 +502,10 @@ packages:
     dependency: "direct main"
     description:
       name: hive_ce_flutter
-      sha256: e74e11d3ed622630ff1ee758037dab21a59d2182fa7b61378726c673742d2ab9
+      sha256: "74c1d5f10d803446b4e7913bb272137e2724ba8a56465444f9e7713aeb60a877"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.2.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -1048,26 +1048,26 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: "12735505d616320aebe39a6fc90b6608a09116378d66aee9636b0eddf7b75971"
+      sha256: dafeebdf8673d6dd874191bf579bc17c76b4b84e09fc0e4ae5bc7e56c0c91f4b
       url: "https://pub.dev"
     source: hosted
-    version: "28.1.38"
+    version: "28.2.5"
   syncfusion_flutter_xlsio:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_xlsio
-      sha256: dde3d8fcf9005fd8fa9ae93b6c3db67dc486a40692f9ac180304e733e619eb7a
+      sha256: "631e6eab40a223fccf289fe2ee796d206c987335a80005c39b9a013ef71ed7e1"
       url: "https://pub.dev"
     source: hosted
-    version: "28.1.38"
+    version: "28.2.5"
   syncfusion_officecore:
     dependency: transitive
     description:
       name: syncfusion_officecore
-      sha256: "54f53f1107514a1585d31ed5d2c871b13e68c75b9b9ae5f3ec3312b16b3863ec"
+      sha256: "7f2e735c2e777a90517175515169cdf59f7e049200dbf374a881a33145ad99d8"
       url: "https://pub.dev"
     source: hosted
-    version: "28.1.38"
+    version: "28.2.5"
   synchronized:
     dependency: transitive
     description:
